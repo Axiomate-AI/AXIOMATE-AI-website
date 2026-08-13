@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AXIOMATE AI · Engineered Style</title>
+    <!-- Tailwind via CDN + FontAwesome 6 -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            scroll-behavior: smooth;
+            box-sizing: border-box;
+        }
+        body {
+            background: #FAF9F6;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #1A1A1A;
+        }
+
+        /* ── Typography helpers ── */
+        .font-serif-alt {
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+        .text-gold {
+            color: #D4AF37;
+        }
+        .border-gold {
+            border-color: #D4AF37;
+        }
+        .bg-gold-soft {
+            background: #F5EFE6;
+        }
+        .bg-gold {
+            background: #D4AF37;
+        }
+        .bg-gold:hover {
+            background: #C5A880;
+        }
+        .text-muted-blue {
+            color: #4A6572;
+        }
+        .border-muted-blue {
+            border-color: #4A6572;
+        }
+
+        /* ── Cards & containers ── */
+        .card-light {
+            background: #FFFFFF;
+            border: 1px solid #EAE7E0;
+            transition: all 0.3s ease;
+        }
+        .card-light:hover {
+            border-color: #D4AF37;
+            box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
+        }
+        .card-warm {
+            background: #FCFAF7;
+            border: 1px solid #EAE7E0;
+        }
+
+        /* ── Inputs ── */
+        input,
+        select,
+        textarea {
+            background: #FFFFFF;
+            border: 1px solid #E2DDD4;
+            color: #1A1A1A;
+            transition: 0.2s;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.12);
+            outline: none;
+        }
+
+        /* ── Buttons ── */
+        .btn-gold {
+            background: #D4AF37;
+            color: #1A1A1A;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 40px;
+            transition: all 0.25s;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-gold:hover {
+            background: #C5A880;
+            box-shadow: 0 8px 28px rgba(212, 175, 55, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-outline-gold {
+            background: transparent;
+            color: #1A1A1A;
+            font-weight: 500;
+            padding: 0.75rem 2rem;
+            border-radius: 40px;
+            border: 1.5px solid #D4AF37;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-outline-gold:hover {
+            background: #D4AF37;
+            color: #1A1A1A;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2);
+        }
+        .btn-whatsapp {
+            background: #25D366;
+            color: #FFFFFF;
+            font-weight: 600;
+            padding: 0.65rem 1.5rem;
+            border-radius: 40px;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-whatsapp:hover {
+            background: #1DA851;
+            box-shadow: 0 8px 28px rgba(37, 211, 102, 0.30);
+            transform: translateY(-1px);
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+            background: #FAF9F6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 20px;
+        }
+
+        /* ── Product image wrapper ── */
+        .product-img-wrap {
+            border-radius: 16px;
+            overflow: hidden;
+            height: 220px;
+            background: #F5F2EC;
+            border: 1px solid #EAE7E0;
+            transition: 0.3s;
+        }
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-light:hover .product-img-wrap {
+            border-color: #D4AF37;
+        }
+
+        /* ── AI badge ── */
+        .badge-ai {
+            background: #D4AF37;
+            color: #1A1A1A;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+            text-transform: uppercase;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .badge-ai-pulse {
+            animation: pulse-gold 2s infinite;
+        }
+        @keyframes pulse-gold {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(212, 175, 55, 0);
+            }
+        }
+
+        /* ── Filter chips ── */
+        .filter-chip {
+            background: #F5F2EC;
+            border: 1px solid #EAE7E0;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2D3748;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: #D4AF37;
+            border-color: #D4AF37;
+            color: #1A1A1A;
+            box-shadow: 0 4px 14px rgba(212, 175, 55, 0.2);
+        }
+
+        /* ── Trust icon ── */
+        .trust-icon {
+            width: 52px;
+            height: 52px;
+            background: #F5F2EC;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #D4AF37;
+            margin: 0 auto 0.75rem;
+            border: 1px solid #EAE7E0;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.2rem !important;
+                line-height: 1.2;
+            }
+            .product-img-wrap {
+                height: 170px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════ TOP ANNOUNCEMENT BAR ═══════════ -->
+    <div class="bg-[#1A1A1A] text-[#EAE7E0] text-xs sm:text-sm font-medium py-2.5 px-4 text-center tracking-wide border-b border-[#2D3748]/20">
+        <span class="text-gold">✦</span> Engineered Style • AI-Powered Fashion Curation • Free Shipping Above ₹999
+        <span class="hidden sm:inline ml-2 text-gold">✦</span>
+    </div>
+
+    <!-- ═══════════ NAVBAR ═══════════ -->
+    <nav class="sticky top-0 z-50 bg-white/92 backdrop-blur-md border-b border-[#EAE7E0] py-3 px-4 sm:px-6 transition-shadow shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <span class="text-2xl font-extrabold tracking-tight text-[#1A1A1A]">
+                AXIOMATE <span class="text-gold font-serif-alt">AI</span>
+            </span>
+            <div class="hidden md:flex items-center gap-7 text-sm text-[#2D3748] font-medium">
+                <a href="#collections" class="hover:text-gold transition">Collections</a>
+                <a href="#ai-studio" class="hover:text-gold transition">AI Studio</a>
+                <a href="#bestsellers" class="hover:text-gold transition">Best Sellers</a>
+                <a href="#reviews" class="hover:text-gold transition">Reviews</a>
+                <a href="#contact" class="hover:text-gold transition">Contact</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:" target="_blank" class="btn-whatsapp text-sm px-5 py-2.5 shadow-md">
+                    <i class="fab fa-whatsapp"></i> Order Now
+                </a>
+                <div class="md:hidden text-[#1A1A1A] text-xl"><i class="fas fa-bars"></i></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══════════ HERO SECTION ═══════════ -->
+    <section class="bg-[#FAF9F6] py-20 md:py-28 px-4 sm:px-6 border-b border-[#EAE7E0]">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+
+            <!-- LEFT: Hero content -->
+            <div class="flex-1 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 bg-[#F5F2EC] px-4 py-1.5 rounded-full text-xs font-semibold text-[#4A6572] tracking-wider mb-5 border border-[#EAE7E0]">
+                    <i class="fas fa-microchip text-gold"></i> AI-POWERED FASHION
+                </div>
+                <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-[#1A1A1A]">
+                    Fashion Meets<br />
+                    <span class="text-gold font-serif-alt">Intelligence.</span><br />
+                    Tailored to Your Unique Vibe.
+                </h1>
+                <p class="text-[#4A6572] max-w-xl mx-auto lg:mx-0 mt-5 text-base sm:text-lg leading-relaxed">
+                    Experience hyper-personalized fashion. Our AI curates premium fabrics,
+                    perfect fits, and timeless designs instantly.
+                </p>
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-8">
+                    <a href="#collections" class="btn-gold">
+                        <i class="fas fa-sparkles"></i> Explore Collection
+                    </a>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:" target="_blank" class="btn-outline-gold">
+                        <i class="fab fa-whatsapp"></i> Style on WhatsApp
+                    </a>
+                </div>
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-6 mt-8 text-sm text-[#4A6572]">
+                    <span class="flex items-center gap-1.5"><i class="fas fa-check-circle text-gold"></i> 99.8% Fit Accuracy</span>
+                    <span class="flex items-center gap-1.5"><i class="fas fa-brain text-gold"></i> AI Personalized Curation</span>
+                </div>
+            </div>
+
+            <!-- RIGHT: AI Style Assistant card -->
+            <div class="flex-1 flex justify-center">
+                <div class="card-light rounded-3xl p-7 w-full max-w-sm shadow-lg border-[#EAE7E0]">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-gold-soft w-12 h-12 rounded-full flex items-center justify-center text-gold text-xl border border-gold/30">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div>
+                            <span class="block text-sm font-bold text-[#1A1A1A]">AI Style Assistant</span>
+                            <span class="text-xs text-[#4A6572]">✨ Live · 24/7</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#FCFAF7] rounded-2xl p-4 border border-[#EAE7E0] mb-4">
+                        <p class="text-sm text-[#2D3748] italic">“Based on your vibe, we recommend the <strong class="text-gold">Minimalist Off-White Hoodie</strong> — 96% match.”</p>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-[#4A6572]">
+                        <span><i class="fas fa-star text-gold"></i> 2,341 styles analyzed</span>
+                        <span class="badge-ai badge-ai-pulse">AI Curated</span>
+                    </div>
+                    <a href="#ai-studio" class="mt-4 block text-center text-sm font-medium text-gold border-t border-[#EAE7E0] pt-4 hover:underline">
+                        <i class="fas fa-arrow-right mr-1"></i> Try the AI Studio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ SMART AI OUTFIT GENERATOR ═══════════ -->
+    <section id="ai-studio" class="py-16 px-4 sm:px-6 bg-white border-b border-[#EAE7E0]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto">
+                <span class="badge-ai mb-3 inline-block">AI STUDIO</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#1A1A1A]">
+                    Personalized Styling, Driven by <span class="text-gold font-serif-alt">AXIOMATE AI</span>
+                </h2>
+                <p class="text-[#4A6572] mt-3 text-sm md:text-base">Select your mood and let our AI generate a curated outfit just for you.</p>
+            </div>
+
+            <!-- Filter chips -->
+            <div class="flex flex-wrap justify-center gap-3 mt-8">
+                <button class="filter-chip active" data-filter="all">All Styles</button>
+                <button class="filter-chip" data-filter="casual">Casual Minimalist</button>
+                <button class="filter-chip" data-filter="office">Office Classic</button>
+                <button class="filter-chip" data-filter="weekend">Weekend Chill</button>
+            </div>
+
+            <!-- AI outfit cards (3) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <!-- Card 1 -->
+                <div class="card-light rounded-2xl p-5 text-center" data-style="casual">
+                    <div class="bg-[#F5F2EC] rounded-2xl h-40 flex items-center justify-center text-4xl text-[#C5B8A0] border border-[#EAE7E0] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=300&fit=crop&crop=center" alt="Casual look" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="font-bold text-[#1A1A1A] text-sm">Casual Minimalist</span>
+                        <span class="badge-ai text-[0.6rem]">96% Match</span>
+                    </div>
+                    <p class="text-[#4A6572] text-sm mt-1">Oversized tee + relaxed chinos</p>
+                    <div class="flex items-center justify-center gap-3 mt-3 text-xs text-[#4A6572]">
+                        <span><i class="fas fa-tshirt text-gold"></i> ₹1,899</span>
+                        <span><i class="fas fa-tag text-gold"></i> -15%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Casual%20Minimalist%20set" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Get This Look
+                    </a>
+                </div>
+                <!-- Card 2 -->
+                <div class="card-light rounded-2xl p-5 text-center" data-style="office">
+                    <div class="bg-[#F5F2EC] rounded-2xl h-40 flex items-center justify-center text-4xl text-[#C5B8A0] border border-[#EAE7E0] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400&h=300&fit=crop&crop=center" alt="Office look" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="font-bold text-[#1A1A1A] text-sm">Office Classic</span>
+                        <span class="badge-ai text-[0.6rem]">98% Match</span>
+                    </div>
+                    <p class="text-[#4A6572] text-sm mt-1">Tailored shirt + smart trousers</p>
+                    <div class="flex items-center justify-center gap-3 mt-3 text-xs text-[#4A6572]">
+                        <span><i class="fas fa-tshirt text-gold"></i> ₹2,899</span>
+                        <span><i class="fas fa-tag text-gold"></i> -12%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Office%20Classic%20set" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Get This Look
+                    </a>
+                </div>
+                <!-- Card 3 -->
+                <div class="card-light rounded-2xl p-5 text-center" data-style="weekend">
+                    <div class="bg-[#F5F2EC] rounded-2xl h-40 flex items-center justify-center text-4xl text-[#C5B8A0] border border-[#EAE7E0] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1516826957135-700dedea698c?w=400&h=300&fit=crop&crop=center" alt="Weekend look" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="font-bold text-[#1A1A1A] text-sm">Weekend Chill</span>
+                        <span class="badge-ai text-[0.6rem]">94% Match</span>
+                    </div>
+                    <p class="text-[#4A6572] text-sm mt-1">Hoodie + denim jacket</p>
+                    <div class="flex items-center justify-center gap-3 mt-3 text-xs text-[#4A6572]">
+                        <span><i class="fas fa-tshirt text-gold"></i> ₹2,199</span>
+                        <span><i class="fas fa-tag text-gold"></i> -10%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Weekend%20Chill%20set" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Get This Look
+                    </a>
+                </div>
+            </div>
+            <p class="text-center text-xs text-[#4A6572] mt-5">
+                <i class="fas fa-robot text-gold mr-1"></i> AI recommendations based on 2,341 style preferences
+            </p>
+        </div>
+    </section>
+
+    <!-- ═══════════ BEST SELLERS (8 product cards) ═══════════ -->
+    <section id="bestsellers" class="py-16 px-4 sm:px-6 bg-[#FAF9F6] border-b border-[#EAE7E0]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto">
+                <span class="badge-ai mb-3 inline-block">CURATED</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#1A1A1A]">
+                    Handpicked Classics • Curated by Data, <span class="text-gold font-serif-alt">Crafted for Comfort</span>
+                </h2>
+            </div>
+
+            <div id="collections" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+                <!-- 1. Classic Linen Beige Shirt -->
+                <div class="card-light rounded-2xl p-5 flex flex-col">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=300&fit=crop&crop=center" alt="Classic Linen Beige Shirt" loading="lazy" />
+                    </div>
+                    <div class="flex items-start justify-between mt-3">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-[#4A6572] font-semibold">Men's Casual</span>
+                            <h4 class="text-[#1A1A1A] font-bold text-base leading-tight">Classic Linen Beige Shirt</h4>
+                        </div>
+                        <span class="badge-ai text-[0.55rem] flex-shrink-0 ml-2">AI Top Pick</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-gold font-bold text-lg">₹1,499</span>
+                        <span class="text-[#4A6572] text-xs line-through">₹2,499</span>
+                        <span class="text-[#4A6572] text-xs bg-[#F5F2EC] px-2 py-0.5 rounded-full">-40%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Classic%20Linen%20Beige%20Shirt" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+
+                <!-- 2. Oversized Vintage Cotton Tee -->
+                <div class="card-light rounded-2xl p-5 flex flex-col">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop&crop=center" alt="Oversized Vintage Cotton Tee" loading="lazy" />
+                    </div>
+                    <div class="flex items-start justify-between mt-3">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-[#4A6572] font-semibold">Streetwear</span>
+                            <h4 class="text-[#1A1A1A] font-bold text-base leading-tight">Oversized Vintage Cotton Tee</h4>
+                        </div>
+                        <span class="badge-ai text-[0.55rem] flex-shrink-0 ml-2">99% Match</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-gold font-bold text-lg">₹899</span>
+                        <span class="text-[#4A6572] text-xs line-through">₹1,499</span>
+                        <span class="text-[#4A6572] text-xs bg-[#F5F2EC] px-2 py-0.5 rounded-full">-40%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Oversized%20Vintage%20Cotton%20Tee" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+
+                <!-- 3. Tailored Charcoal Chino Pants -->
+                <div class="card-light rounded-2xl p-5 flex flex-col">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400&h=300&fit=crop&crop=center" alt="Tailored Charcoal Chino Pants" loading="lazy" />
+                    </div>
+                    <div class="flex items-start justify-between mt-3">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-[#4A6572] font-semibold">Formal/Casual</span>
+                            <h4 class="text-[#1A1A1A] font-bold text-base leading-tight">Tailored Charcoal Chino Pants</h4>
+                        </div>
+                        <span class="badge-ai text-[0.55rem] flex-shrink-0 ml-2">Trending</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-gold font-bold text-lg">₹1,899</span>
+                        <span class="text-[#4A6572] text-xs line-through">₹2,999</span>
+                        <span class="text-[#4A6572] text-xs bg-[#F5F2EC] px-2 py-0.5 rounded-full">-37%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Tailored%20Charcoal%20Chino%20Pants" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+
+                <!-- 4. Minimalist Off-White Hoodie -->
+                <div class="card-light rounded-2xl p-5 flex flex-col">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1556907401-1d69c57227f9?w=400&h=300&fit=crop&crop=center" alt="Minimalist Off-White Hoodie" loading="lazy" />
+                    </div>
+                    <div class="flex items-start justify-between mt-3">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-[#4A6572] font-semibold">Winters</span>
+                            <h4 class="text-[#1A1A1A] font-bold text-base leading-tight">Minimalist Off-White Hoodie</h4>
+                        </div>
+                        <span class="badge-ai text-[0.55rem] flex-shrink-0 ml-2">AI Rec.</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-gold font-bold text-lg">₹1,699</span>
+                        <span class="text-[#4A6572] text-xs line-through">₹2,599</span>
+                        <span class="text-[#4A6572] text-xs bg-[#F5F2EC] px-2 py-0.5 rounded-full">-35%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Minimalist%20Off-White%20Hoodie" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+
+                <!-- 5. Chic Silk Blend Wrap Dress -->
+                <div class="card-light rounded-2xl p-5 flex flex-col">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400&h=300&fit=crop&crop=center" alt="Chic Silk Blend Wrap Dress" loading="lazy" />
+                    </div>
+                    <div class="flex items-start justify-between mt-3">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-[#4A6572] font-semibold">Women's</span>
+                            <h4 class="text-[#1A1A1A] font-bold text-base leading-tight">Chic Silk Blend Wrap Dress</h4>
+                        </div>
+                        <span class="badge-ai text-[0.55rem] flex-shrink-0 ml-2">Highly Rated</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-gold font-bold text-lg">₹2,299</span>
+                        <span class="text-[#4A6572] text-xs line-through">₹3,899</span>
+                        <span class="text-[#4A6572] text-xs bg-[#F5F2EC] px-2 py-0.5 rounded-full">-41%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Chic%20Silk%20Blend%20Wrap%20Dress" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+
+                <!-- 6. Classic Denim Trucker Jacket -->
+                <div class="card-light rounded-2xl p-5 flex flex-col">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=400&h=300&fit=crop&crop=center" alt="Classic Denim Trucker Jacket" loading="lazy" />
+                    </div>
+                    <div class="flex items-start justify-between mt-3">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-[#4A6572] font-semibold">Outerwear</span>
+                            <h4 class="text-[#1A1A1A] font-bold text-base leading-tight">Classic Denim Trucker Jacket</h4>
+                        </div>
+                        <span class="badge-ai text-[0.55rem] flex-shrink-0 ml-2">Premium Pick</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-gold font-bold text-lg">₹2,799</span>
+                        <span class="text-[#4A6572] text-xs line-through">₹4,299</span>
+                        <span class="text-[#4A6572] text-xs bg-[#F5F2EC] px-2 py-0.5 rounded-full">-35%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Classic%20Denim%20Trucker%20Jacket" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+
+                <!-- 7. Pleated Smart Fit Trousers -->
+                <div class="card-light rounded-2xl p-5 flex flex-col">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=300&fit=crop&crop=center" alt="Pleated Smart Fit Trousers" loading="lazy" />
+                    </div>
+                    <div class="flex items-start justify-between mt-3">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-[#4A6572] font-semibold">Everyday Classic</span>
+                            <h4 class="text-[#1A1A1A] font-bold text-base leading-tight">Pleated Smart Fit Trousers</h4>
+                        </div>
+                        <span class="badge-ai text-[0.55rem] flex-shrink-0 ml-2">96% Match</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-gold font-bold text-lg">₹1,599</span>
+                        <span class="text-[#4A6572] text-xs line-through">₹2,299</span>
+                        <span class="text-[#4A6572] text-xs bg-[#F5F2EC] px-2 py-0.5 rounded-full">-30%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Pleated%20Smart%20Fit%20Trousers" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+
+                <!-- 8. Monochrome Graphic Street Tee -->
+                <div class="card-light rounded-2xl p-5 flex flex-col">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400&h=300&fit=crop&crop=center" alt="Monochrome Graphic Street Tee" loading="lazy" />
+                    </div>
+                    <div class="flex items-start justify-between mt-3">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-[#4A6572] font-semibold">Unisex</span>
+                            <h4 class="text-[#1A1A1A] font-bold text-base leading-tight">Monochrome Graphic Street Tee</h4>
+                        </div>
+                        <span class="badge-ai text-[0.55rem] flex-shrink-0 ml-2">New Arrival</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="text-gold font-bold text-lg">₹999</span>
+                        <span class="text-[#4A6572] text-xs line-through">₹1,299</span>
+                        <span class="text-[#4A6572] text-xs bg-[#F5F2EC] px-2 py-0.5 rounded-full">-23%</span>
+                    </div>
+                    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:%20Monochrome%20Graphic%20Street%20Tee" target="_blank" class="btn-whatsapp text-xs w-full justify-center mt-3 py-2.5">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ WHY SHOP WITH US (4 trust badges) ═══════════ -->
+    <section class="py-16 px-4 sm:px-6 bg-white border-b border-[#EAE7E0]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#1A1A1A] text-center">
+                Why <span class="text-gold font-serif-alt">Shop With Us</span>
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10">
+                <div class="card-light rounded-2xl p-6 text-center">
+                    <div class="trust-icon"><i class="fas fa-leaf"></i></div>
+                    <div class="text-[#1A1A1A] font-semibold text-sm">Precision Fabric Matching</div>
+                    <div class="text-[#4A6572] text-xs mt-1">100% Premium Natural Cotton</div>
+                </div>
+                <div class="card-light rounded-2xl p-6 text-center">
+                    <div class="trust-icon"><i class="fas fa-ruler-combined"></i></div>
+                    <div class="text-[#1A1A1A] font-semibold text-sm">AI Size Guarantee</div>
+                    <div class="text-[#4A6572] text-xs mt-1">Zero-risk fit recommendation</div>
+                </div>
+                <div class="card-light rounded-2xl p-6 text-center">
+                    <div class="trust-icon"><i class="fas fa-truck"></i></div>
+                    <div class="text-[#1A1A1A] font-semibold text-sm">Seamless Express Delivery</div>
+                    <div class="text-[#4A6572] text-xs mt-1">2–3 Business Days</div>
+                </div>
+                <div class="card-light rounded-2xl p-6 text-center">
+                    <div class="trust-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="text-[#1A1A1A] font-semibold text-sm">Verified Smart Checkout</div>
+                    <div class="text-[#4A6572] text-xs mt-1">Safe &amp; Instant Order Placement</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ CUSTOMER REVIEWS (3 cards, 5-star) ═══════════ -->
+    <section id="reviews" class="py-16 px-4 sm:px-6 bg-[#FAF9F6] border-b border-[#EAE7E0]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#1A1A1A] text-center">
+                What Our <span class="text-gold font-serif-alt">Customers Say</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+                <div class="card-light rounded-2xl p-6">
+                    <div class="flex text-gold text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-[#2D3748] text-sm mt-2">“The linen shirt is incredibly breathable. The AI fit recommendation was spot on — first time I've had a perfect fit online.”</p>
+                    <span class="block text-[#1A1A1A] font-medium mt-3">— Arjun S.</span>
+                </div>
+                <div class="card-light rounded-2xl p-6">
+                    <div class="flex text-gold text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-[#2D3748] text-sm mt-2">“The wrap dress is gorgeous — perfect for work and evenings. Loved the AI styling suggestions too!”</p>
+                    <span class="block text-[#1A1A1A] font-medium mt-3">— Priya R.</span>
+                </div>
+                <div class="card-light rounded-2xl p-6">
+                    <div class="flex text-gold text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-[#2D3748] text-sm mt-2">“The denim jacket is pure quality. My new go-to brand for streetwear that actually fits well.”</p>
+                    <span class="block text-[#1A1A1A] font-medium mt-3">— Vikram D.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ FOOTER / QUICK ORDER + AI WARDROBE FORM ═══════════ -->
+    <footer id="contact" class="py-16 px-4 sm:px-6 bg-white">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+            <!-- LEFT: Get AI Wardrobe Recommendations form -->
+            <div>
+                <h3 class="text-2xl font-bold text-[#1A1A1A]">
+                    Get <span class="text-gold font-serif-alt">AI Wardrobe</span> Recommendations
+                </h3>
+                <p class="text-[#4A6572] text-sm mb-5">Tell us your style preferences and we'll curate a personalized look.</p>
+                <form class="space-y-4" action="https://wa.me/919004600946" method="GET" target="_blank">
+                    <input type="hidden" name="text" value="Hi Axiomate AI, I want AI wardrobe recommendations:" />
+                    <div>
+                        <label class="block text-sm text-[#2D3748] font-medium mb-1">Full Name</label>
+                        <input type="text" name="text" placeholder="e.g. Aisha Sharma" required />
+                    </div>
+                    <div>
+                        <label class="block text-sm text-[#2D3748] font-medium mb-1">Phone Number</label>
+                        <input type="tel" placeholder="+91 9004600946" required />
+                    </div>
+                    <div>
+                        <label class="block text-sm text-[#2D3748] font-medium mb-1">Your Style Vibe</label>
+                        <select required>
+                            <option value="">Select your mood</option>
+                            <option>Casual Minimalist</option>
+                            <option>Office Classic</option>
+                            <option>Weekend Chill</option>
+                            <option>Bohemian Luxe</option>
+                            <option>Sporty Modern</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-[#2D3748] font-medium mb-1">Preferred Fabric</label>
+                        <select>
+                            <option value="">Select fabric</option>
+                            <option>100% Cotton</option>
+                            <option>Linen Blend</option>
+                            <option>Premium Polyester</option>
+                            <option>Wool Blend</option>
+                            <option>Silk Touch</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-gold w-full justify-center text-sm py-3.5">
+                        <i class="fab fa-whatsapp"></i> Send to WhatsApp · Get AI Picks
+                    </button>
+                    <p class="text-[10px] text-[#4A6572] text-center mt-2">
+                        <i class="fas fa-lock text-gold mr-1"></i> Your preferences are safe with us
+                    </p>
+                </form>
+            </div>
+
+            <!-- RIGHT: Contact & social -->
+            <div>
+                <h4 class="text-xl font-bold text-[#1A1A1A]">Get in <span class="text-gold font-serif-alt">Touch</span></h4>
+                <div class="mt-4 space-y-2 text-sm text-[#2D3748]">
+                    <p><i class="fas fa-map-pin mr-3 text-gold w-5"></i> Mumbai, Maharashtra — 400102</p>
+                    <p><i class="fas fa-phone mr-3 text-gold w-5"></i> +91 9004600946</p>
+                    <p><i class="fas fa-envelope mr-3 text-gold w-5"></i> owaisworkai@gmail.com</p>
+                </div>
+                <div class="flex gap-5 mt-6 text-xl text-[#4A6572]">
+                    <a href="#" class="hover:text-gold transition"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/919004600946" target="_blank" class="hover:text-gold transition"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="hover:text-gold transition"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="hover:text-gold transition"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="mt-8 bg-[#FCFAF7] rounded-2xl p-6 border border-[#EAE7E0] flex items-center gap-5">
+                    <div class="bg-gold-soft w-14 h-14 rounded-full flex items-center justify-center text-gold text-2xl border border-gold/30">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <span class="block text-sm font-bold text-[#1A1A1A]">AXIOMATE AI Studio</span>
+                        <span class="text-xs text-[#4A6572]">Style intelligence, live.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer bottom -->
+        <div class="max-w-7xl mx-auto border-t border-[#EAE7E0] mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-[#4A6572]">
+            <span class="text-[#1A1A1A] font-bold text-sm">AXIOMATE <span class="text-gold">AI</span></span>
+            <span>© 2026 · Engineered Style</span>
+            <span>All rights reserved.</span>
+        </div>
+    </footer>
+
+    <!-- ═══════════ FLOATING WHATSAPP BUTTON ═══════════ -->
+    <a href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20want%20to%20order:" target="_blank"
+    class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#1DA851] transition flex items-center gap-2 text-sm font-semibold px-6 border border-white/10">
+    <i class="fab fa-whatsapp text-xl"></i>
+    <span class="hidden sm:inline">Chat</span>
+</a>
+
+<!-- ── Filter interaction ── -->
+<script>
+    (function() {
+        const chips = document.querySelectorAll('.filter-chip');
+        const cards = document.querySelectorAll('[data-style]');
+
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                chips.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+
+                cards.forEach(card => {
+                    if (filter === 'all' || card.dataset.style === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    })();
+</script>
+
+</body>
+</html>

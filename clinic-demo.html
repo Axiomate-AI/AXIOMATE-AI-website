@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura Health Clinic · Modern Healthcare</title>
+  <!-- Tailwind via CDN + FontAwesome 6 (free) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- subtle custom smoothness & teal accents -->
+  <style>
+    * { scroll-behavior: smooth; }
+    body { background: #f9fbfc; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .teal-badge { background: #0d9488; } /* teal-600 */
+    .teal-text { color: #0d9488; }
+    .teal-border { border-color: #0d9488; }
+    .bg-teal-soft { background: #e6f7f5; }
+    .card-shadow { box-shadow: 0 12px 30px rgba(13, 148, 136, 0.08), 0 4px 10px rgba(0,0,0,0.02); transition: all 0.2s; }
+    .card-shadow:hover { box-shadow: 0 20px 40px rgba(13, 148, 136, 0.12), 0 6px 16px rgba(0,0,0,0.04); transform: translateY(-3px); }
+    .hero-pattern { background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 70%); }
+    .whatsapp-btn { background: #25d366; }
+    .whatsapp-btn:hover { background: #1ebe5c; }
+    .star-gold { color: #fbbf24; }
+    .border-teal-200 { border-color: #99f6e4; }
+    .footer-bg { background: #0f2e2c; } /* dark teal */
+    .footer-text { color: #cbd5e1; }
+    .map-placeholder { background: #d9e2e1; border: 2px dashed #0d9488; }
+    input, select, textarea { transition: 0.2s; }
+    input:focus, select:focus, textarea:focus { border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.2); outline: none; }
+    .doctor-img-placeholder { background: #cbd5e1; width: 120px; height: 120px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; margin: 0 auto; color: #475569; font-size: 3rem; }
+  </style>
+</head>
+<body>
+
+  <!-- ========== TOP HEADER ========== -->
+  <header class="bg-white border-b border-teal-200/40 shadow-sm py-2 text-sm text-gray-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-4 flex-wrap">
+        <span class="flex items-center gap-1"><i class="fas fa-map-pin teal-text"></i> 42, Green Valley, New Delhi</span>
+        <span class="flex items-center gap-1"><i class="fas fa-phone-alt teal-text"></i> +91 98765 43210</span>
+        <span class="flex items-center gap-1"><i class="far fa-clock teal-text"></i> Mon–Sat 8:00 AM – 8:00 PM</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="hidden sm:inline-block text-gray-500 text-xs">Emergency: </span>
+        <span class="font-semibold text-teal-700 bg-teal-soft px-3 py-1 rounded-full text-xs"><i class="fas fa-ambulance mr-1"></i> +91 99999 00000</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section class="hero-pattern py-12 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center gap-10">
+      <div class="flex-1 text-center md:text-left">
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight text-gray-800">
+          <span class="teal-text">Aapki Sehat,</span><br />
+          <span class="text-gray-700">Hamari Prathmikta</span>
+        </h1>
+        <p class="text-gray-600 max-w-lg mx-auto md:mx-0 mt-4 text-lg leading-relaxed">
+          Experience compassionate, technology-driven healthcare at Aura Health Clinic. 
+          Your well-being is our mission.
+        </p>
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-6">
+          <a href="#appointment-form" class="inline-flex items-center bg-teal-600 hover:bg-teal-700 text-white font-medium px-6 py-3 rounded-full transition shadow-md hover:shadow-lg">
+            <i class="fas fa-calendar-check mr-2"></i> Book Appointment
+          </a>
+          <a href="#" class="inline-flex items-center whatsapp-btn text-white font-medium px-6 py-3 rounded-full transition shadow-md hover:shadow-lg">
+            <i class="fab fa-whatsapp mr-2 text-lg"></i> Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="flex-1 flex justify-center md:justify-end">
+        <div class="bg-white/70 backdrop-blur-sm p-6 rounded-3xl shadow-xl border border-teal-100 max-w-sm w-full">
+          <div class="flex items-center gap-4">
+            <div class="bg-teal-600/10 p-3 rounded-full"><i class="fas fa-heartbeat text-3xl teal-text"></i></div>
+            <div><span class="block text-2xl font-bold text-gray-800">Trusted Care</span><span class="text-sm text-gray-500">since 2010</span></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
+            <div class="bg-teal-soft p-3 rounded-xl text-center"><i class="fas fa-user-md teal-text"></i> <span class="block font-medium">15+ Experts</span></div>
+            <div class="bg-teal-soft p-3 rounded-xl text-center"><i class="fas fa-stethoscope teal-text"></i> <span class="block font-medium">Modern Tech</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SERVICES SECTION (4 cards) ========== -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Our <span class="teal-text">Services</span></h2>
+        <p class="text-gray-500 max-w-lg mx-auto mt-2">Comprehensive care tailored to your needs</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- card 1 -->
+        <div class="card-shadow bg-white rounded-2xl p-6 border border-teal-100/60 text-center hover:border-teal-300 transition">
+          <div class="bg-teal-soft w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-user-md text-3xl teal-text"></i></div>
+          <h3 class="text-xl font-semibold text-gray-800">General Consultation</h3>
+          <p class="text-gray-500 text-sm mt-2">Comprehensive check-ups &amp; family medicine.</p>
+        </div>
+        <!-- card 2 -->
+        <div class="card-shadow bg-white rounded-2xl p-6 border border-teal-100/60 text-center hover:border-teal-300 transition">
+          <div class="bg-teal-soft w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-microscope text-3xl teal-text"></i></div>
+          <h3 class="text-xl font-semibold text-gray-800">Specialized Treatments</h3>
+          <p class="text-gray-500 text-sm mt-2">Cardiology, orthopedics, and more.</p>
+        </div>
+        <!-- card 3 -->
+        <div class="card-shadow bg-white rounded-2xl p-6 border border-teal-100/60 text-center hover:border-teal-300 transition">
+          <div class="bg-teal-soft w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-flask text-3xl teal-text"></i></div>
+          <h3 class="text-xl font-semibold text-gray-800">Diagnostic Tests</h3>
+          <p class="text-gray-500 text-sm mt-2">Lab tests, imaging &amp; health screenings.</p>
+        </div>
+        <!-- card 4 -->
+        <div class="card-shadow bg-white rounded-2xl p-6 border border-teal-100/60 text-center hover:border-teal-300 transition">
+          <div class="bg-teal-soft w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-home text-3xl teal-text"></i></div>
+          <h3 class="text-xl font-semibold text-gray-800">Home Visits</h3>
+          <p class="text-gray-500 text-sm mt-2">Doctor at your doorstep, whenever you need.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WHY CHOOSE US (4 trust badges) ========== -->
+  <section class="py-14 bg-teal-soft/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Why <span class="teal-text">Choose Us</span></h2>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center border border-teal-100/50">
+          <i class="fas fa-calendar-alt text-4xl teal-text mb-2"></i>
+          <div class="text-2xl font-bold text-gray-800">15+</div>
+          <div class="text-sm text-gray-600">Yrs Experience</div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center border border-teal-100/50">
+          <i class="fas fa-clock text-4xl teal-text mb-2"></i>
+          <div class="text-2xl font-bold text-gray-800">Zero</div>
+          <div class="text-sm text-gray-600">Wait Time</div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center border border-teal-100/50">
+          <i class="fas fa-microchip text-4xl teal-text mb-2"></i>
+          <div class="text-2xl font-bold text-gray-800">Modern</div>
+          <div class="text-sm text-gray-600">Tech &amp; Tools</div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center border border-teal-100/50">
+          <i class="fas fa-users text-4xl teal-text mb-2"></i>
+          <div class="text-2xl font-bold text-gray-800">5000+</div>
+          <div class="text-sm text-gray-600">Happy Patients</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCTOR PROFILE ========== -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Meet Our <span class="teal-text">Doctor</span></h2>
+      </div>
+      <div class="max-w-md mx-auto bg-teal-soft/30 rounded-3xl p-8 shadow-lg border border-teal-100 flex flex-col items-center">
+        <div class="doctor-img-placeholder"><i class="fas fa-user-circle"></i></div>
+        <h3 class="text-2xl font-bold text-gray-800 mt-4">Dr. Ananya Sharma</h3>
+        <span class="inline-block bg-teal-600/10 teal-text px-4 py-1 rounded-full text-sm font-medium mt-1">MBBS, MD (Internal Medicine)</span>
+        <p class="text-gray-600 mt-3 text-center max-w-xs">Senior Consultant · 18 years of experience in comprehensive healthcare &amp; preventive medicine.</p>
+        <div class="flex gap-3 mt-4">
+          <span class="bg-white px-4 py-1 rounded-full text-sm shadow-sm"><i class="fas fa-phone teal-text mr-1"></i> +91 98765 43210</span>
+          <span class="bg-white px-4 py-1 rounded-full text-sm shadow-sm"><i class="fas fa-envelope teal-text mr-1"></i> dr.ananya@auraclinic.in</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TESTIMONIALS (3 reviews with 5 stars) ========== -->
+  <section class="py-16 bg-teal-soft/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Patient <span class="teal-text">Testimonials</span></h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- review 1 -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-teal-100/60">
+          <div class="flex text-star-gold mb-2"><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i></div>
+          <p class="text-gray-700 text-sm leading-relaxed">"Aura Health Clinic is truly a blessing. The doctors are attentive, and the home visit service saved my elderly mother."</p>
+          <div class="flex items-center gap-3 mt-4"><span class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500"><i class="fas fa-user"></i></span><div><span class="block font-medium text-gray-800">Rajesh K.</span><span class="text-xs text-gray-400">Delhi</span></div></div>
+        </div>
+        <!-- review 2 -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-teal-100/60">
+          <div class="flex text-star-gold mb-2"><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i></div>
+          <p class="text-gray-700 text-sm leading-relaxed">"Zero wait time and very professional staff. The diagnostic tests are quick and accurate. Highly recommended!"</p>
+          <div class="flex items-center gap-3 mt-4"><span class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500"><i class="fas fa-user"></i></span><div><span class="block font-medium text-gray-800">Priya M.</span><span class="text-xs text-gray-400">Noida</span></div></div>
+        </div>
+        <!-- review 3 -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-teal-100/60">
+          <div class="flex text-star-gold mb-2"><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i><i class="fas fa-star star-gold"></i></div>
+          <p class="text-gray-700 text-sm leading-relaxed">"I love the modern approach and the care they take. Dr. Ananya is incredibly knowledgeable and kind."</p>
+          <div class="flex items-center gap-3 mt-4"><span class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500"><i class="fas fa-user"></i></span><div><span class="block font-medium text-gray-800">Suresh R.</span><span class="text-xs text-gray-400">Gurugram</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LEAD FORM + GOOGLE MAPS PLACEHOLDER + FOOTER ========== -->
+  <section id="appointment-form" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- FORM -->
+        <div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">Book an <span class="teal-text">Appointment</span></h3>
+          <p class="text-gray-500 text-sm mb-6">Fill in the details and we’ll get back to you shortly.</p>
+          <form class="space-y-4">
+            <div><label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label><input type="text" placeholder="Your name" class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50/50 focus:bg-white" /></div>
+            <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label><input type="tel" placeholder="+91 98765 43210" class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50/50 focus:bg-white" /></div>
+            <div class="grid grid-cols-2 gap-4">
+              <div><label class="block text-sm font-medium text-gray-700 mb-1">Date</label><input type="date" class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50/50 focus:bg-white" /></div>
+              <div><label class="block text-sm font-medium text-gray-700 mb-1">Preferred Time</label><input type="time" class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50/50 focus:bg-white" /></div>
+            </div>
+            <div><label class="block text-sm font-medium text-gray-700 mb-1">Service</label>
+              <select class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50/50 focus:bg-white">
+                <option>General Consultation</option><option>Specialized Treatments</option><option>Diagnostic Tests</option><option>Home Visits</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-xl transition shadow-md hover:shadow-lg"><i class="fas fa-paper-plane mr-2"></i> Submit Appointment</button>
+          </form>
+        </div>
+        <!-- MAP placeholder + info -->
+        <div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">Find <span class="teal-text">Us</span></h3>
+          <p class="text-gray-500 text-sm mb-4">42, Green Valley, New Delhi – 110001</p>
+          <div class="map-placeholder rounded-2xl w-full h-64 flex items-center justify-center text-gray-600 text-lg flex-col">
+            <i class="fas fa-map-marked-alt text-5xl teal-text mb-2"></i>
+            <span>Google Maps Placeholder</span>
+            <span class="text-sm text-gray-400">📍 Aura Health Clinic</span>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-4 text-sm text-gray-600">
+            <span><i class="fas fa-phone teal-text mr-1"></i> +91 98765 43210</span>
+            <span><i class="fas fa-envelope teal-text mr-1"></i> info@auraclinic.in</span>
+            <span><i class="fas fa-clock teal-text mr-1"></i> Mon–Sat 8am–8pm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER with copyright ========== -->
+  <footer class="footer-bg text-footer-text py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-white text-xl font-semibold tracking-tight"><i class="fas fa-heartbeat teal-text mr-1"></i>Aura Health</span>
+        <span class="hidden sm:inline-block text-gray-400 text-sm">|</span>
+        <span class="text-sm text-gray-300">Modern care, traditional values.</span>
+      </div>
+      <div class="text-sm text-gray-400">
+        <span>© 2026 <span class="text-white font-medium">OS Work AI Demo</span></span>
+      </div>
+      <div class="flex gap-4 text-gray-300">
+        <a href="#" class="hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="hover:text-white transition"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="text-center text-[10px] text-gray-500 mt-3 border-t border-gray-700/40 pt-3 max-w-7xl mx-auto">Aura Health Clinic · All rights reserved · Demo for OS Work AI</div>
+  </footer>
+
+  <!-- small floating emergency (optional) -->
+  <div class="fixed bottom-6 right-6 z-50 bg-teal-600 text-white p-3 rounded-full shadow-lg hover:bg-teal-700 transition flex items-center gap-2 text-sm font-medium px-5">
+    <i class="fas fa-phone-alt"></i> <span class="hidden sm:inline">Emergency</span>
+  </div>
+
+</body>
+</html>

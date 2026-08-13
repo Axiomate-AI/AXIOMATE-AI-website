@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÉLAN | Luxury Curated Essentials</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: {
+                            DEFAULT: '#C5A059',
+                            light: '#D4B87A',
+                            dark: '#B08D3E',
+                        },
+                        cream: '#FAF8F5',
+                        charcoal: '#111111',
+                    },
+                    animation: {
+                        'pulse-dot': 'pulseDot 2s infinite ease-in-out',
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'slide-in-right': 'slideInRight 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    },
+                    keyframes: {
+                        pulseDot: {
+                            '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+                            '50%': { opacity: '0.5', transform: 'scale(1.3)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #FAF8F5;
+            color: #111111;
+        }
+
+        /* Cart & Modal scrollbar */
+        .lux-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .lux-scroll::-webkit-scrollbar-track {
+            background: #F3F0EB;
+            border-radius: 8px;
+        }
+        .lux-scroll::-webkit-scrollbar-thumb {
+            background: #D6CEBF;
+            border-radius: 8px;
+        }
+        .lux-scroll::-webkit-scrollbar-thumb:hover {
+            background: #B8AD99;
+        }
+
+        /* Product card hover */
+        .product-card {
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.08), 0 4px 18px rgba(0, 0, 0, 0.04);
+            border-color: #C5A059;
+        }
+
+        /* Gold accent underline */
+        .gold-underline {
+            background: linear-gradient(to right, #C5A059, #D4B87A);
+            height: 2px;
+            width: 60px;
+            margin: 0 auto;
+            border-radius: 1px;
+        }
+
+        /* Filter pill active */
+        .filter-pill.active {
+            background-color: #C5A059;
+            color: white;
+            border-color: #C5A059;
+            box-shadow: 0 4px 14px rgba(197, 160, 89, 0.3);
+        }
+
+        /* Cart drawer */
+        .cart-drawer {
+            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .cart-drawer.open {
+            transform: translateX(0);
+        }
+        .cart-drawer.closed {
+            transform: translateX(100%);
+        }
+
+        /* Overlay */
+        .overlay {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Checkout modal */
+        .modal-container {
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-container.hidden {
+            opacity: 0;
+            transform: scale(0.92) translateY(30px);
+            pointer-events: none;
+        }
+        .modal-container.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-gold/20 selection:text-charcoal">
+
+    <!-- ============ LIVE DEMO BADGE ============ -->
+    <div class="fixed top-4 right-4 z-[100] bg-white/80 backdrop-blur-md border border-amber-200/50 shadow-lg text-slate-800 text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full flex items-center gap-2 animate-fade-in">
+        <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+        </span>
+        <span class="text-[10px] tracking-[0.15em] text-slate-700">LIVE DEMO CATALOG</span>
+    </div>
+
+    <!-- ============ STICKY HEADER ============ -->
+    <header class="sticky top-0 z-50 bg-cream/90 backdrop-blur-lg border-b border-[#E8E3DB] shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-18">
+                <!-- Logo -->
+                <a href="#" class="font-serif text-2xl md:text-3xl font-bold tracking-wide text-charcoal select-none" onclick="scrollToTop()">
+                    ÉLAN
+                </a>
+
+                <!-- Cart Icon -->
+                <button onclick="openCart()" id="cartTriggerBtn" class="relative flex items-center justify-center w-11 h-11 rounded-full bg-white border border-gray-200 hover:border-gold shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group">
+                    <i class="fa-solid fa-bag-shopping text-lg text-gray-700 group-hover:text-gold transition-colors"></i>
+                    <span id="cartBadge" class="absolute -top-1.5 -right-1.5 bg-gold text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-gold/30 transition-all duration-300" style="display: none;">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============ HERO SECTION ============ -->
+    <section class="relative pt-16 pb-10 md:pt-24 md:pb-16 px-4 sm:px-6 lg:px-8 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-charcoal tracking-tight leading-tight mb-4">
+                Curated Elegance
+            </h1>
+            <div class="gold-underline mb-6"></div>
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8 font-light tracking-wide">
+                Discover a hand-selected collection of luxury essentials, delivered with discretion.
+            </p>
+            <button onclick="document.getElementById('product-section').scrollIntoView({behavior:'smooth'})" 
+            class="inline-flex items-center gap-2 px-8 py-3.5 bg-gold hover:bg-gold-light text-white font-semibold rounded-full shadow-xl shadow-gold/20 hover:shadow-gold/30 transition-all duration-300 text-sm tracking-wider uppercase cursor-pointer">
+                Explore Collection <i class="fa-solid fa-arrow-right text-xs ml-1"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- ============ PRODUCT SECTION ============ -->
+    <section id="product-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <!-- Search & Filters -->
+        <div class="flex flex-col sm:flex-row items-center justify-between mb-10 gap-4">
+            <div class="relative w-full sm:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search essentials..."
+                class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-full text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all text-sm shadow-sm">
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="filterByCategory('All')" id="filterAll" class="filter-pill active px-4 py-1.5 rounded-full text-xs font-medium border border-gray-300 bg-white text-gray-600 hover:border-gold transition-all cursor-pointer tracking-wide">All</button>
+                <button onclick="filterByCategory('Fashion')" id="filterFashion" class="filter-pill px-4 py-1.5 rounded-full text-xs font-medium border border-gray-300 bg-white text-gray-600 hover:border-gold transition-all cursor-pointer tracking-wide">Fashion</button>
+                <button onclick="filterByCategory('Electronics')" id="filterElectronics" class="filter-pill px-4 py-1.5 rounded-full text-xs font-medium border border-gray-300 bg-white text-gray-600 hover:border-gold transition-all cursor-pointer tracking-wide">Electronics</button>
+                <button onclick="filterByCategory('Lifestyle')" id="filterLifestyle" class="filter-pill px-4 py-1.5 rounded-full text-xs font-medium border border-gray-300 bg-white text-gray-600 hover:border-gold transition-all cursor-pointer tracking-wide">Lifestyle</button>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            <!-- JS rendered -->
+        </div>
+        <div id="noResults" class="text-center py-20 hidden">
+            <i class="fa-regular fa-face-sad-tear text-5xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500 font-light text-lg">No pieces found matching your taste.</p>
+            <button onclick="resetFilters()" class="mt-4 text-gold hover:text-gold-dark underline underline-offset-4 font-medium cursor-pointer">Clear all filters</button>
+        </div>
+    </section>
+
+    <!-- ============ CART DRAWER OVERLAY ============ -->
+    <div id="cartOverlay" class="overlay hidden fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm" onclick="closeCart()"></div>
+
+    <!-- ============ CART DRAWER ============ -->
+    <div id="cartDrawer" class="cart-drawer closed fixed top-0 right-0 h-full w-full max-w-md bg-white z-[70] shadow-2xl flex flex-col border-l border-gray-100">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-white/95">
+            <h2 class="font-serif text-xl font-bold text-charcoal tracking-wide">Your Cart</h2>
+            <button onclick="closeCart()" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer text-gray-500">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <!-- Cart Items -->
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto lux-scroll px-6 py-5 space-y-4">
+            <div id="emptyCartMsg" class="text-center py-16">
+                <i class="fa-regular fa-bag-shopping text-5xl text-gray-300 mb-4 block"></i>
+                <p class="text-gray-500 font-light">Your cart is empty</p>
+                <p class="text-gray-400 text-sm mt-1">Add luxury pieces to begin</p>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="border-t border-gray-100 px-6 py-5 bg-white">
+            <div class="flex justify-between mb-2 text-sm text-gray-500">
+                <span>Subtotal</span>
+                <span id="cartSubtotal" class="font-semibold text-charcoal text-base">₹0</span>
+            </div>
+            <p class="text-xs text-gray-400 mb-4">Shipping calculated at checkout</p>
+            <button onclick="openCheckout()" id="checkoutBtn" disabled
+            class="w-full py-3.5 bg-gold hover:bg-gold-light text-white font-semibold rounded-full shadow-lg shadow-gold/20 hover:shadow-gold/30 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none">
+                <i class="fa-brands fa-whatsapp"></i> Checkout via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- ============ CHECKOUT MODAL OVERLAY ============ -->
+    <div id="checkoutOverlay" class="overlay hidden fixed inset-0 bg-black/50 z-[80] backdrop-blur-sm flex items-center justify-center p-4" onclick="closeCheckout()"></div>
+
+    <!-- ============ CHECKOUT MODAL ============ -->
+    <div id="checkoutModal" class="modal-container hidden fixed inset-0 z-[90] flex items-center justify-center p-4 pointer-events-none">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto lux-scroll border border-gray-100" onclick="event.stopPropagation()">
+            <button onclick="closeCheckout()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer text-gray-500">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 class="font-serif text-2xl font-bold text-charcoal mb-6">Delivery Details</h2>
+
+            <form id="checkoutForm" onsubmit="handleCheckoutSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">Full Name *</label>
+                    <input type="text" id="customerName" required placeholder="Enter your name"
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-charcoal placeholder-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">Delivery Address *</label>
+                    <textarea id="customerAddress" required rows="2" placeholder="Street, landmark, city..."
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-charcoal placeholder-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all text-sm resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">Payment Method *</label>
+                    <div class="flex gap-3">
+                        <label class="flex items-center gap-2 cursor-pointer bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1 hover:border-gold transition-all has-[:checked]:border-gold has-[:checked]:bg-gold/5 has-[:checked]:ring-2 has-[:checked]:ring-gold/20">
+                            <input type="radio" name="paymentMethod" value="COD" checked class="accent-gold w-4 h-4">
+                            <span class="text-gray-700 font-medium text-sm">Cash on Delivery</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1 hover:border-gold transition-all has-[:checked]:border-gold has-[:checked]:bg-gold/5 has-[:checked]:ring-2 has-[:checked]:ring-gold/20">
+                            <input type="radio" name="paymentMethod" value="UPI" class="accent-gold w-4 h-4">
+                            <span class="text-gray-700 font-medium text-sm">UPI / Online</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Order Summary</h3>
+                    <div id="checkoutOrderSummary" class="text-sm text-gray-600 space-y-1 max-h-32 overflow-y-auto lux-scroll"></div>
+                    <div class="border-t border-gray-200 mt-3 pt-3 flex justify-between font-semibold">
+                        <span class="text-gray-700">Grand Total</span>
+                        <span id="checkoutGrandTotal" class="text-gold text-lg">₹0</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-gold hover:bg-gold-light text-white font-semibold rounded-full shadow-lg shadow-gold/20 hover:shadow-gold/30 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Send to WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="bg-white border-t border-gray-100 py-12 px-4 sm:px-6 lg:px-8 mt-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div>
+                <h3 class="font-serif text-xl font-bold text-charcoal mb-3">ÉLAN</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">Curating refined essentials for the modern connoisseur. Based in Mumbai, delivering luxury with care.</p>
+            </div>
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Contact</h3>
+                <ul class="space-y-2.5 text-sm text-gray-600">
+                    <li class="flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-phone text-gold w-4"></i>
+                        <a href="tel:+919004600946" class="hover:text-gold transition-colors">+91 9004600946</a>
+                    </li>
+                    <li class="flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-brands fa-whatsapp text-gold w-4"></i>
+                        <a href="https://api.whatsapp.com/send?phone=919004600946" target="_blank" class="hover:text-gold transition-colors">WhatsApp</a>
+                    </li>
+                    <li class="flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-regular fa-envelope text-gold w-4"></i>
+                        <a href="mailto:owaisworkai@gmail.com" class="hover:text-gold transition-colors break-all">owaisworkai@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Visit Us</h3>
+                <ul class="space-y-2.5 text-sm text-gray-600">
+                    <li class="flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-location-dot text-gold w-4"></i>
+                        <span>Mumbai, Maharashtra</span>
+                    </li>
+                    <li class="flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-map-pin text-gray-400 w-4"></i>
+                        <span>400102</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-100 mt-10 pt-6 text-center text-xs text-gray-400">
+            <p>&copy; 2026 ÉLAN. All rights reserved. Crafted with precision.</p>
+        </div>
+    </footer>
+
+    <!-- ============ JAVASCRIPT ============ -->
+    <script>
+        (function() {
+            // Luxury Product Data
+            const products = [
+                { id: 1, name: "Men's Handtailored Cotton Shirt", category: "Fashion", price: 1299, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop", hasVariants: true, variantLabel: "Size", variants: ["S", "M", "L", "XL"] },
+                { id: 2, name: "High-Fidelity ANC Headphones", category: "Electronics", price: 2499, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=500&fit=crop", hasVariants: true, variantLabel: "Color", variants: ["Matte Black", "Cream White"] },
+                { id: 3, name: "Ceremonial Match Green Tea (500g)", category: "Lifestyle", price: 499, image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=500&fit=crop", hasVariants: false, variantLabel: "", variants: [] },
+                { id: 4, name: "Italian Calfskin Leather Wallet", category: "Fashion", price: 899, image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&h=500&fit=crop", hasVariants: true, variantLabel: "Color", variants: ["Chestnut", "Black"] },
+                { id: 5, name: "Smart Executive Watch", category: "Electronics", price: 3199, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=500&fit=crop", hasVariants: true, variantLabel: "Finish", variants: ["Rose Gold", "Onyx Black"] },
+                { id: 6, name: "Handcrafted Ceramic Mug Set (Set of 4)", category: "Lifestyle", price: 649, image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&h=500&fit=crop", hasVariants: false, variantLabel: "", variants: [] }
+            ];
+
+            let cart = [];
+            let activeCategory = 'All';
+            let searchQuery = '';
+
+            const productGrid = document.getElementById('productGrid');
+            const noResults = document.getElementById('noResults');
+            const cartDrawer = document.getElementById('cartDrawer');
+            const cartOverlay = document.getElementById('cartOverlay');
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const cartBadge = document.getElementById('cartBadge');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const checkoutOverlay = document.getElementById('checkoutOverlay');
+            const checkoutModal = document.getElementById('checkoutModal');
+            const checkoutOrderSummary = document.getElementById('checkoutOrderSummary');
+            const checkoutGrandTotal = document.getElementById('checkoutGrandTotal');
+            const searchInput = document.getElementById('searchInput');
+
+            function getFilteredProducts() {
+                return products.filter(p => {
+                    const catMatch = activeCategory === 'All' || p.category === activeCategory;
+                    const searchMatch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
+                    return catMatch && searchMatch;
+                });
+            }
+
+            function renderProducts() {
+                const filtered = getFilteredProducts();
+                productGrid.innerHTML = '';
+                if (filtered.length === 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                    filtered.forEach(product => {
+                        const card = document.createElement('div');
+                        card.className = 'product-card bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col group shadow-sm';
+                        card.innerHTML = `
+                            <div class="relative h-56 sm:h-64 bg-gray-50 overflow-hidden">
+                                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=500&fit=crop';">
+                                <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-medium px-2.5 py-1 rounded-full text-gray-500 shadow-sm">
+                                    ${product.category}
+                                </div>
+                            </div>
+                            <div class="p-5 flex flex-col flex-1">
+                                <h3 class="font-serif font-semibold text-lg text-charcoal leading-tight mb-1 flex-1">${product.name}</h3>
+                                <p class="text-gold font-bold text-xl mb-4">₹${product.price.toLocaleString('en-IN')}</p>
+                                ${product.hasVariants ? `
+                                <div class="mb-4">
+                                    <label class="text-xs text-gray-400 font-medium mb-1.5 block">${product.variantLabel}</label>
+                                    <select class="variant-select w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all cursor-pointer" data-product-id="${product.id}">
+                                        ${product.variants.map(v => `<option value="${v}">${v}</option>`).join('')}
+                                    </select>
+                                </div>` : ''}
+                                <button onclick="addToCartDirect(${product.id}, ${product.hasVariants})" class="w-full mt-auto py-2.5 bg-white border border-gray-200 hover:border-gold hover:bg-gold/5 text-charcoal font-medium rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 text-sm shadow-sm hover:shadow-md">
+                                    <i class="fa-solid fa-plus text-xs"></i> Add to Cart
+                                </button>
+                            </div>
+                        `;
+                        productGrid.appendChild(card);
+                    });
+                }
+            }
+
+            window.addToCartDirect = function(productId, hasVariants) {
+                const product = products.find(p => p.id === productId);
+                if (!product) return;
+                let variant = null;
+                if (hasVariants) {
+                    const selectEl = document.querySelector(`.variant-select[data-product-id="${productId}"]`);
+                    variant = selectEl ? selectEl.value : product.variants[0];
+                }
+                const existing = cart.find(item => item.productId === productId && item.variant === variant);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push({
+                        productId, variant, quantity: 1,
+                        name: product.name, price: product.price, image: product.image,
+                        variantLabel: product.variantLabel
+                    });
+                }
+                updateCartUI();
+                const cartBtn = document.getElementById('cartTriggerBtn');
+                cartBtn.classList.add('ring-2', 'ring-gold', 'ring-offset-2');
+                setTimeout(() => cartBtn.classList.remove('ring-2', 'ring-gold', 'ring-offset-2'), 500);
+            };
+
+            function updateCartUI() {
+                const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
+                const subtotal = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+                cartBadge.style.display = totalItems > 0 ? 'flex' : 'none';
+                cartBadge.textContent = totalItems;
+                cartSubtotal.textContent = '₹' + subtotal.toLocaleString('en-IN');
+                checkoutBtn.disabled = totalItems === 0;
+                renderCartItems();
+            }
+
+            function renderCartItems() {
+                cartItemsContainer.innerHTML = '';
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = `<div id="emptyCartMsg" class="text-center py-16">
+                        <i class="fa-regular fa-bag-shopping text-5xl text-gray-300 mb-4 block"></i>
+                        <p class="text-gray-500 font-light">Your cart is empty</p>
+                        <p class="text-gray-400 text-sm mt-1">Add luxury pieces to begin</p>
+                    </div>`;
+                    return;
+                }
+                cart.forEach((item, idx) => {
+                    const div = document.createElement('div');
+                    div.className = 'flex gap-4 bg-gray-50 rounded-xl p-3 border border-gray-100';
+                    div.innerHTML = `
+                        <div class="w-16 h-16 rounded-lg overflow-hidden bg-white flex-shrink-0">
+                            <img src="${item.image}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=100&h=100';">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-charcoal truncate">${item.name}</p>
+                            ${item.variant ? `<p class="text-xs text-gold">${item.variantLabel}: ${item.variant}</p>` : ''}
+                            <p class="text-sm font-semibold text-gold">₹${item.price.toLocaleString()}</p>
+                        </div>
+                        <div class="flex flex-col items-end justify-between">
+                            <button onclick="removeCartItem(${idx})" class="text-gray-400 hover:text-red-400 text-xs"><i class="fa-regular fa-trash-can"></i></button>
+                            <div class="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-2 py-0.5">
+                                <button onclick="updateQty(${idx}, -1)" class="w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xs font-bold text-charcoal">−</button>
+                                <span class="text-sm font-semibold w-6 text-center">${item.quantity}</span>
+                                <button onclick="updateQty(${idx}, 1)" class="w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xs font-bold text-charcoal">+</button>
+                            </div>
+                        </div>`;
+                    cartItemsContainer.appendChild(div);
+                });
+            }
+
+            window.updateQty = (i, d) => { if (cart[i]) { cart[i].quantity += d; if (cart[i].quantity <= 0) cart.splice(i,1); updateCartUI(); } };
+            window.removeCartItem = (i) => { cart.splice(i,1); updateCartUI(); };
+
+            window.openCart = () => { cartDrawer.classList.replace('closed','open'); cartOverlay.classList.replace('hidden','visible'); document.body.style.overflow='hidden'; };
+            window.closeCart = () => { cartDrawer.classList.replace('open','closed'); cartOverlay.classList.replace('visible','hidden'); document.body.style.overflow=''; };
+
+            window.openCheckout = () => {
+                if (!cart.length) return;
+                let html = ''; let total=0;
+                cart.forEach(item => { const itotal = item.price*item.quantity; total+=itotal;
+                    html += `<div class="flex justify-between text-sm"><span>${item.name}${item.variant?' ('+item.variantLabel+': '+item.variant+')':''} ×${item.quantity}</span><span>₹${itotal.toLocaleString()}</span></div>`; });
+                checkoutOrderSummary.innerHTML = html || '<p class="text-gray-400">No items</p>';
+                checkoutGrandTotal.textContent = '₹'+total.toLocaleString();
+                checkoutOverlay.classList.replace('hidden','visible'); checkoutModal.classList.replace('hidden','visible'); document.body.style.overflow='hidden';
+            };
+            window.closeCheckout = () => {
+                checkoutOverlay.classList.replace('visible','hidden'); checkoutModal.classList.replace('visible','hidden'); document.body.style.overflow='';
+                document.getElementById('checkoutForm').reset();
+            };
+
+            window.handleCheckoutSubmit = (e) => {
+                e.preventDefault();
+                const name = document.getElementById('customerName').value.trim();
+                const addr = document.getElementById('customerAddress').value.trim();
+                const pay = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'COD';
+                if (!name || !addr) return alert('Please fill all fields.');
+                const total = cart.reduce((s,i)=>s+(i.price*i.quantity),0);
+                let itemsText = '';
+                cart.forEach(i => itemsText += `• ${i.name}${i.variant?' ('+i.variantLabel+': '+i.variant+')':''} ×${i.quantity} — ₹${(i.price*i.quantity).toLocaleString()}\n`);
+                const msg = `🛍️ *NEW ÉLAN ORDER!*\n\n👤 Name: ${name}\n📍 Address: ${addr}\n💳 Payment: ${pay}\n\n📦 Items:\n${itemsText}\n💰 Total: ₹${total.toLocaleString()}\n\n📅 Via ÉLAN Catalog`;
+                window.open(`https://api.whatsapp.com/send?phone=919004600946&text=${encodeURIComponent(msg)}`, '_blank');
+                cart = []; updateCartUI(); closeCheckout(); closeCart(); document.getElementById('checkoutForm').reset();
+            };
+
+            window.filterByCategory = (cat) => { activeCategory=cat; document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active')); document.getElementById('filter'+cat)?.classList.add('active'); renderProducts(); };
+            window.handleSearch = () => { searchQuery = searchInput.value.trim(); renderProducts(); };
+            window.resetFilters = () => { activeCategory='All'; searchQuery=''; searchInput.value=''; document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active')); document.getElementById('filterAll').classList.add('active'); renderProducts(); };
+            window.scrollToTop = () => window.scrollTo({top:0,behavior:'smooth'});
+
+            document.addEventListener('keydown', e => { if (e.key==='Escape') { if(!checkoutModal.classList.contains('hidden')) closeCheckout(); else if(!cartOverlay.classList.contains('hidden')) closeCart(); } });
+            renderProducts();
+            updateCartUI();
+        })();
+    </script>
+</body>
+</html>
