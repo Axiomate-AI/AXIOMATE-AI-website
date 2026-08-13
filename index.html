@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Axiomate AI | Next-Gen AI Websites & Business Automation</title>
+    <!-- Tailwind + FontAwesome -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+        body {
+            background: #0b1120;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .glow-text {
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+        }
+        .neon-glow {
+            box-shadow: 0 0 30px rgba(0, 200, 255, 0.08), 0 0 60px rgba(255, 0, 200, 0.03);
+        }
+        .neon-border {
+            border: 1px solid rgba(0, 200, 255, 0.15);
+        }
+        .card-bg {
+            background: rgba(18, 30, 51, 0.7);
+            backdrop-filter: blur(6px);
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #00c8ff, #d946ef);
+        }
+        .gradient-primary:hover {
+            background: linear-gradient(135deg, #00d4ff, #e879f9);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00c8ff, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .btn-whatsapp {
+            background: #25d366;
+        }
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+        .border-glow {
+            border-color: rgba(0, 200, 255, 0.25);
+        }
+        input,
+        select {
+            background: #111c2e;
+            border: 1px solid #1f3147;
+            color: #e2e8f0;
+            transition: 0.2s;
+        }
+        input:focus,
+        select:focus {
+            border-color: #00c8ff;
+            box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.15);
+            outline: none;
+            background: #0b1120;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            background: #0b1120;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00c8ff;
+            border-radius: 20px;
+        }
+        .trust-card {
+            background: rgba(18, 30, 51, 0.5);
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        .price-tag {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00c8ff, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Toggle styles */
+        .toggle-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+            opacity: 0;
+            padding-top: 0;
+        }
+        .toggle-details.open {
+            max-height: 600px;
+            opacity: 1;
+            padding-top: 0.75rem;
+        }
+        .toggle-btn {
+            cursor: pointer;
+            user-select: none;
+        }
+        .toggle-btn .fa-chevron-down {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        .toggle-btn.open .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        /* Sub-pack styles */
+        .sub-pack {
+            background: rgba(11, 17, 32, 0.5);
+            border-radius: 0.75rem;
+            padding: 0.6rem 0.9rem;
+            border: 1px solid rgba(0, 200, 255, 0.06);
+        }
+        .sub-pack.popular {
+            border-color: rgba(0, 200, 255, 0.3);
+            background: rgba(0, 200, 255, 0.04);
+        }
+
+        /* Option styles for WhatsApp card */
+        .whatsapp-option {
+            background: rgba(11, 17, 32, 0.4);
+            border-radius: 0.75rem;
+            padding: 0.6rem 0.9rem;
+            border: 1px solid rgba(0, 200, 255, 0.06);
+        }
+        .whatsapp-option.recommended {
+            border-color: rgba(0, 200, 255, 0.25);
+            background: rgba(0, 200, 255, 0.04);
+        }
+
+        /* contrast boost for dark mode */
+        .text-bright {
+            color: #f1f5f9;
+        }
+        .text-soft {
+            color: #cbd5e1;
+        }
+        .text-muted {
+            color: #94a3b8;
+        }
+
+        /* Video Modal Styling — updated with cyan glow from snippet */
+        .video-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-modal-container {
+            position: relative;
+            width: 90%;
+            max-width: 420px;
+            background: #0f172a;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.2);
+        }
+        .video-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .video-modal-body video {
+            display: block;
+            border-radius: 16px;
+            max-height: 80vh;
+            width: 100%;
+        }
+
+        /* Ensure no extra decoration on logo links */
+        .logo-link {
+            text-decoration: none !important;
+            display: inline-flex;
+            align-items: center;
+            background: transparent !important;
+        }
+        .logo-link-footer {
+            text-decoration: none !important;
+            display: inline-flex;
+            align-items: center;
+            background: transparent !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP ANNOUNCEMENT BAR ===== -->
+    <div class="bg-gradient-to-r from-[#0b1120] via-[#152238] to-[#0b1120] border-b border-[#1f3147] py-2.5 px-4 text-center text-sm text-gray-300">
+        <span class="inline-flex items-center gap-2"><i class="fas fa-rocket text-teal-400"></i> 🚀 Special Agency Offer: Get Your AI Website & Chatbot Ready in 3 Days! <span class="hidden sm:inline text-teal-300">|</span> <span class="hidden sm:inline"><i class="fas fa-phone-alt mr-1 text-teal-400"></i> 9004600946</span></span>
+    </div>
+
+    <!-- ===== HEADER / NAVBAR ===== -->
+    <header class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-lg border-b border-[#1f3147] py-3 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <!-- FINAL FIXED GRADIENT & NEON GLOW LOGO (Header) -->
+            <a href="#" class="logo-link">
+                <span style="font-family: 'Montserrat', 'Poppins', sans-serif !important; font-size: 24px !important; font-weight: 900 !important; letter-spacing: 1.5px !important; text-transform: uppercase !important;">
+                    <!-- White Text with Soft Glow -->
+                    <span style="color: #FFFFFF !important; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 25px rgba(0, 210, 255, 0.3) !important;">AXIOMATE</span>
+                    <!-- Neon Gradient Match with 'AI Websites' -->
+                    <span style="background: linear-gradient(135deg, #00d2ff 0%, #9333ea 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important; filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.6)) !important; margin-left: 4px !important;">AI</span>
+                </span>
+            </a>
+            <div class="hidden md:flex items-center gap-5 text-sm text-gray-300">
+                <a href="#services" class="hover:text-white transition">Services</a>
+                <a href="#alacarte" class="hover:text-white transition">Pay Per Service</a>
+                <a href="#packages" class="hover:text-white transition">Packages</a>
+                <a href="#contact" class="hover:text-white transition">Contact Us</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="#contact" class="gradient-primary text-white font-semibold px-5 py-2 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.25)] transition">Book Free Demo</a>
+                <div class="md:hidden text-gray-300 text-xl"><i class="fas fa-bars"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="pt-20 pb-12 px-4 sm:px-6 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-white glow-text">
+                Scale Your Business Faster with <span class="gradient-text">AI Websites</span> &amp; Smart Automation
+            </h1>
+            <p class="text-slate-300 max-w-3xl mx-auto mt-4 text-base sm:text-lg leading-relaxed">
+                We build fast AI websites, viral promo videos, and 24/7 automated WhatsApp systems that turn visitors into paying customers.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-4 mt-6">
+                <a href="#services" class="gradient-primary text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition flex items-center gap-2"><i class="fas fa-play-circle"></i> Explore Services</a>
+                <a href="https://wa.me/919004600946" target="_blank" class="btn-whatsapp text-white font-medium px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition flex items-center gap-2"><i class="fab fa-whatsapp text-xl"></i> Book Free Consultation</a>
+            </div>
+        </div>
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-fuchsia-500/5 rounded-full blur-3xl"></div>
+    </section>
+
+    <!-- ===== DEMO SHOWCASE CARDS ===== -->
+    <section id="demo" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center text-white"><span class="gradient-text">Live</span> Demos</h2>
+            <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Explore our AI-powered websites</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 max-w-4xl mx-auto">
+                <!-- Clinic Demo -->
+                <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col items-center text-center">
+                    <div class="w-full h-36 bg-gradient-to-br from-[#1a2a40] to-[#0b1120] rounded-xl flex items-center justify-center text-4xl text-gray-500 border border-[#1f3147]">
+                        <i class="fas fa-heartbeat text-teal-400 text-5xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mt-4">Healthcare & Clinic</h3>
+                    <p class="text-slate-300 text-sm">Modern UI with appointment booking</p>
+                    <a href="demos/clinic-demo.html" target="_blank" class="mt-4 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-2 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
+                        <i class="fas fa-external-link-alt mr-2"></i> View Live Demo
+                    </a>
+                </div>
+                <!-- Fashion Demo -->
+                <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col items-center text-center">
+                    <div class="w-full h-36 bg-gradient-to-br from-[#1a2a40] to-[#0b1120] rounded-xl flex items-center justify-center text-4xl text-gray-500 border border-[#1f3147]">
+                        <i class="fas fa-tshirt text-pink-400 text-5xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mt-4">Fashion & Clothing Store</h3>
+                    <p class="text-slate-300 text-sm">AI-driven product recommendations</p>
+                    <a href="demos/fashion-demo.html" target="_blank" class="mt-4 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-2 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
+                        <i class="fas fa-external-link-alt mr-2"></i> View Live Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PAY PER SERVICE ===== -->
+    <section id="alacarte" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">Pay Per <span class="gradient-text">Service</span></h2>
+            <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Pick and choose only what you need</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
+
+                <!-- CARD 1: Single Page AI Website -->
+                <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
+                    <div class="flex items-center gap-3 mb-1">
+                        <i class="fas fa-globe text-2xl text-teal-400"></i>
+                        <h3 class="text-white font-bold text-base">Single Page AI Website</h3>
+                    </div>
+                    <div class="price-tag text-2xl my-1">₹1,999</div>
+                    <p class="text-slate-300 text-xs">Single page AI website with visual basic layout, fast loading &amp; mobile responsive.</p>
+                    <div class="flex flex-wrap items-center gap-3 mt-2">
+                        <a href="demos/single-demo.html" target="_blank" class="text-teal-400 hover:text-teal-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Live Demo / Sample</a>
+                    </div>
+                    <div class="toggle-btn text-slate-300 hover:text-white text-xs font-medium mt-2 flex items-center gap-1" onclick="toggleDetails(this)">
+                        <i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features
+                    </div>
+                    <div class="toggle-details text-slate-300 text-xs space-y-1">
+                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> Custom layout &amp; branding</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> Lead capture form integrated</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> Mobile-responsive design</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> 3-day delivery</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> Free Netlify hosting setup</li>
+                    </div>
+                </div>
+
+                <!-- CARD 2: 30-Sec AI Promotional Video Ad -->
+                <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
+                    <div class="flex items-center gap-3 mb-1">
+                        <i class="fas fa-video text-2xl text-pink-400"></i>
+                        <h3 class="text-white font-bold text-base">30-Sec AI Promo Video</h3>
+                    </div>
+                    <div class="space-y-1.5 mt-1">
+                        <div class="sub-pack flex items-center justify-between">
+                            <span class="text-slate-300 text-xs">🥉 Starter Pack</span>
+                            <span class="text-teal-300 font-semibold text-sm">₹1,599</span>
+                            <span class="text-slate-400 text-[10px]">(3 Videos)</span>
+                        </div>
+                        <div class="sub-pack popular flex items-center justify-between border-teal-400/30">
+                            <span class="text-slate-300 text-xs">🥈 Growth Pack <span class="text-teal-400 text-[10px] font-bold ml-1">⭐ Most Popular</span></span>
+                            <span class="text-teal-300 font-semibold text-sm">₹2,799</span>
+                            <span class="text-slate-400 text-[10px]">(6 Videos)</span>
+                        </div>
+                        <div class="sub-pack flex items-center justify-between">
+                            <span class="text-slate-300 text-xs">🥇 Pro Pack</span>
+                            <span class="text-teal-300 font-semibold text-sm">₹4,999</span>
+                            <span class="text-slate-400 text-[10px]">(12 Videos)</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 mt-2">
+                        <!-- Uses video modal (already wired up) -->
+                        <a href="javascript:void(0)" onclick="openVideoModal('demos/axiomate-promo-1.mp4')" class="text-pink-400 hover:text-pink-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> Watch Sample Reel</a>
+                    </div>
+                    <div class="toggle-btn text-slate-300 hover:text-white text-xs font-medium mt-2 flex items-center gap-1" onclick="toggleDetails(this)">
+                        <i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features
+                    </div>
+                    <div class="toggle-details text-slate-300 text-xs space-y-1">
+                        <li class="list-none"><i class="fas fa-check-circle text-pink-400 mr-1.5"></i> Script writing &amp; storyboarding</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-pink-400 mr-1.5"></i> AI Voiceover (Hinglish / English)</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-pink-400 mr-1.5"></i> Auto-subtitles &amp; captions</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-pink-400 mr-1.5"></i> High-quality visuals &amp; background music</li>
+                    </div>
+                </div>
+
+                <!-- CARD 3: WhatsApp AI Auto-Reply & Booking Bot -->
+                <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
+                    <div class="flex items-center gap-3 mb-1">
+                        <i class="fab fa-whatsapp text-2xl text-green-400"></i>
+                        <h3 class="text-white font-bold text-base">WhatsApp AI Bot</h3>
+                    </div>
+                    <div class="space-y-1.5 mt-1">
+                        <div class="whatsapp-option recommended flex items-center justify-between">
+                            <span class="text-slate-300 text-xs">Option 1 <span class="text-teal-400 text-[10px] font-bold ml-1">⭐ Recommended</span></span>
+                            <span class="text-teal-300 font-semibold text-sm">₹499<small class="text-slate-400 text-[10px] font-normal">/mo</small></span>
+                            <span class="text-slate-400 text-[10px]">+ ₹2,999 setup</span>
+                        </div>
+                        <div class="whatsapp-option flex items-center justify-between">
+                            <span class="text-slate-300 text-xs">Option 2 (All-in-One)</span>
+                            <span class="text-teal-300 font-semibold text-sm">₹3,498</span>
+                            <span class="text-slate-400 text-[10px]">1st month</span>
+                        </div>
+                        <div class="whatsapp-option flex items-center justify-between">
+                            <span class="text-slate-300 text-xs">Option 3 (Pro Plan)</span>
+                            <span class="text-teal-300 font-semibold text-sm">₹1,499<small class="text-slate-400 text-[10px] font-normal">/mo</small></span>
+                            <span class="text-slate-400 text-[10px]">+ ₹5,999 setup</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 mt-2">
+                        <a href="banners/whatsapp-gallery.html" target="_blank" class="text-green-400 hover:text-green-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Chatbot Demo</a>
+                    </div>
+                    <div class="toggle-btn text-slate-300 hover:text-white text-xs font-medium mt-2 flex items-center gap-1" onclick="toggleDetails(this)">
+                        <i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features
+                    </div>
+                    <div class="toggle-details text-slate-300 text-xs space-y-1">
+                        <li class="list-none"><i class="fas fa-check-circle text-green-400 mr-1.5"></i> 24/7 AI Automated Customer Support</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-green-400 mr-1.5"></i> Instant Appointment &amp; Booking Handling</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-green-400 mr-1.5"></i> 100% Safe Meta Official Cloud API (0% Ban Risk)</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-green-400 mr-1.5"></i> Custom Business Knowledge Training</li>
+                    </div>
+                </div>
+
+                <!-- CARD 4: E-Commerce Catalog & Website -->
+                <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
+                    <div class="flex items-center gap-3 mb-1">
+                        <i class="fas fa-store text-2xl text-blue-400"></i>
+                        <h3 class="text-white font-bold text-base">E-Commerce Catalog &amp; Website</h3>
+                    </div>
+                    <div class="price-tag text-2xl my-1">₹3,499 One-Time Setup</div>
+                    <p class="text-slate-300 text-xs">Product Catalog Listing, Add to Cart, Order via WhatsApp &amp; more.</p>
+                    <div class="flex flex-wrap items-center gap-3 mt-2">
+                        <a href="demos/ecom-demo.html" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Live Demo / Sample</a>
+                    </div>
+                    <div class="toggle-btn text-slate-300 hover:text-white text-xs font-medium mt-2 flex items-center gap-1" onclick="toggleDetails(this)">
+                        <i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features
+                    </div>
+                    <div class="toggle-details text-slate-300 text-xs space-y-1">
+                        <div class="font-semibold text-slate-200 text-[11px] mt-1">Key Features:</div>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Up to 100 Product Listings – High-quality photos, title, price, &amp; description.</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Product Variants Option – Full support for Sizes (S, M, L, XL) &amp; Colors.</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Category &amp; Sub-Category Filters – Single-click product filtering.</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Instant WhatsApp Checkout – Auto-formatted order details (Name, Items, Total Price, Delivery Address) sent directly to your WhatsApp.</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> UPI QR &amp; Cash on Delivery – Google Pay, PhonePe, Paytm QR integration.</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Self-Manageable Admin Panel – Mobile/PC access to easily manage photos, prices, &amp; stock.</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Mobile-First Responsive Design – Fast loading &amp; smooth UI on all smartphones.</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Zero Monthly Commission – 0% commission on your orders (100% profit is yours).</li>
+                        <div class="font-semibold text-slate-200 text-[11px] mt-2">What’s Included in Setup:</div>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> 1 Year Free Domain (.com / .in)</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> 1 Year Free High-Speed Hosting</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Free SSL Security Certificate (https://)</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> Step-by-Step Video Training Guide (To self-manage products)</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-blue-400 mr-1.5"></i> 1 Year Technical Support</li>
+                        <div class="font-semibold text-slate-200 text-[11px] mt-2">Add-ons &amp; Renewal Terms:</div>
+                        <li class="list-none"><i class="fas fa-plus-circle text-blue-400 mr-1.5"></i> Extra Product Listings: ₹100 per 25–30 additional products.</li>
+                        <li class="list-none"><i class="fas fa-sync-alt text-blue-400 mr-1.5"></i> Annual Renewal (2nd Year Onwards): ₹1,199 / Year (Includes Domain Renewal + Hosting + SSL + Technical Support).</li>
+                    </div>
+                </div>
+
+                <!-- CARD 5: Google Business Profile & Local SEO Setup -->
+                <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
+                    <div class="flex items-center gap-3 mb-1">
+                        <i class="fas fa-map-marked-alt text-2xl text-yellow-400"></i>
+                        <h3 class="text-white font-bold text-base">Google Business Profile</h3>
+                    </div>
+                    <div class="price-tag text-2xl my-1">₹399</div>
+                    <p class="text-slate-300 text-xs">Google Map Pin Location setup &amp; Business Profile Optimization.</p>
+                    <div class="flex flex-wrap items-center gap-3 mt-2">
+                        <a href="banners/google-gallery.html" target="_blank" class="text-yellow-400 hover:text-yellow-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Sample Map Listing</a>
+                    </div>
+                    <div class="toggle-btn text-slate-300 hover:text-white text-xs font-medium mt-2 flex items-center gap-1" onclick="toggleDetails(this)">
+                        <i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features
+                    </div>
+                    <div class="toggle-details text-slate-300 text-xs space-y-1">
+                        <li class="list-none"><i class="fas fa-check-circle text-yellow-400 mr-1.5"></i> Google Map Pin Location setup</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-yellow-400 mr-1.5"></i> Business Profile Optimization</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-yellow-400 mr-1.5"></i> Review Link Generation</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-yellow-400 mr-1.5"></i> Category &amp; Keyword setup for local search</li>
+                    </div>
+                </div>
+
+                <!-- CARD 6: Promo Banner Ads (Festivals & Sales) -->
+                <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
+                    <div class="flex items-center gap-3 mb-1">
+                        <i class="fas fa-images text-2xl text-purple-400"></i>
+                        <h3 class="text-white font-bold text-base">Promo Banner Ads</h3>
+                    </div>
+                    <div class="price-tag text-2xl my-1">₹999</div>
+                    <p class="text-slate-300 text-xs">Pack of 5 High-Converting Social Media Banners.</p>
+                    <div class="flex flex-wrap items-center gap-3 mt-2">
+                        <a href="banners/promo-gallery.html" target="_blank" class="text-purple-400 hover:text-purple-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Sample Banners</a>
+                    </div>
+                    <div class="toggle-btn text-slate-300 hover:text-white text-xs font-medium mt-2 flex items-center gap-1" onclick="toggleDetails(this)">
+                        <i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features
+                    </div>
+                    <div class="toggle-details text-slate-300 text-xs space-y-1">
+                        <li class="list-none"><i class="fas fa-check-circle text-purple-400 mr-1.5"></i> Pack of 5 High-Converting Social Media Banners</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-purple-400 mr-1.5"></i> Custom Branding / Logo integration</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-purple-400 mr-1.5"></i> Festival &amp; Sale Theme Designs</li>
+                        <li class="list-none"><i class="fas fa-check-circle text-purple-400 mr-1.5"></i> Ready-to-post HD JPEG / PNG format</li>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ALL-IN-ONE VALUE BUNDLES ===== -->
+    <section id="packages" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">Value <span class="gradient-text">Bundles</span></h2>
+            <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Complete solutions for maximum impact</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 max-w-5xl mx-auto">
+
+                <!-- CARD 1: Essential Bundle -->
+                <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col relative">
+                    <span class="inline-block bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">Ideal For New Businesses</span>
+                    <h3 class="text-xl font-bold text-white">Essential Bundle</h3>
+                    <div class="price-tag text-3xl my-2">₹5,999</div>
+                    <p class="text-slate-300 text-sm">One-Time · Save ₹1,800+ vs Pay-Per-Service</p>
+                    <ul class="text-slate-300 text-sm space-y-2 mt-4 flex-grow">
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> Single Page AI Business Website</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> WhatsApp AI Auto-Reply Bot Setup</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> Google Business Profile &amp; Map Setup</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> 3 Festival / Promo Banners</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> 3-Day Express Delivery + Free Hosting</li>
+                    </ul>
+                    <a href="https://wa.me/919004600946?text=Hi,%20I%20want%20to%20book%20the%20Launchpad%20Bundle" target="_blank" class="mt-5 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-3 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
+                        <i class="fab fa-whatsapp mr-2"></i> Book Essential Bundle
+                    </a>
+                </div>
+
+                <!-- CARD 2: Dominator Bundle -->
+                <div class="card-bg p-6 rounded-2xl neon-border border-[#00c8ff] transition flex flex-col relative">
+                    <span class="absolute -top-3 right-4 gradient-primary text-white text-xs font-bold px-4 py-1 rounded-full">⭐ MOST POPULAR - COMPLETE SUITE</span>
+                    <h3 class="text-xl font-bold text-white">Dominator Bundle</h3>
+                    <div class="price-tag text-3xl my-2">₹11,999</div>
+                    <p class="text-slate-300 text-sm">One-Time · Save ₹3,500+ (All-In-One Business Automation)</p>
+                    <ul class="text-slate-300 text-sm space-y-2 mt-4 flex-grow">
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> E-Commerce Catalog Website (100 Products + WhatsApp Checkout)</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> Growth Video Pack (6 AI Promotional Reel Ads)</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> Full WhatsApp AI Auto-Reply &amp; Booking Bot</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> Google Business Profile &amp; Local SEO Setup</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> 5 HD Sale &amp; Festival Banner Pack</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> Free 1 Year Domain + High-Speed Hosting + SSL</li>
+                        <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> 5-Day Priority Delivery + 1 Year Support</li>
+                    </ul>
+                    <a href="https://wa.me/919004600946?text=Hi,%20I%20want%20to%20book%20the%20ScaleUp%20Bundle" target="_blank" class="mt-5 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-3 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
+                        <i class="fab fa-whatsapp mr-2"></i> Get Dominator Bundle
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TRUST & AUTOMATION SERVICES SHOWCASE ===== -->
+    <section class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">How We <span class="gradient-text">Grow</span> Your Business</h2>
+            <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Smart AI features engineered to capture leads and boost your daily sales.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 max-w-4xl mx-auto">
+                <div class="trust-card p-4 rounded-2xl text-center">
+                    <i class="fas fa-users text-3xl text-teal-400"></i>
+                    <p class="text-white font-medium mt-2">Instant Lead Capture</p>
+                    <p class="text-slate-300 text-xs mt-1">Converts every website visitor into a qualified WhatsApp inquiry instantly.</p>
+                </div>
+                <div class="trust-card p-4 rounded-2xl text-center">
+                    <i class="fas fa-clock text-3xl text-yellow-400"></i>
+                    <p class="text-white font-medium mt-2">24/7 Auto-Booking</p>
+                    <p class="text-slate-300 text-xs mt-1">Handles customer queries and books appointments round-the-clock without delays.</p>
+                </div>
+                <div class="trust-card p-4 rounded-2xl text-center">
+                    <i class="fas fa-video text-3xl text-pink-400"></i>
+                    <p class="text-white font-medium mt-2">AI Video Promo Ads</p>
+                    <p class="text-slate-300 text-xs mt-1">Eye-catching reel ads designed for social media branding and Meta ads.</p>
+                </div>
+                <div class="trust-card p-4 rounded-2xl text-center">
+                    <i class="fas fa-star text-3xl text-blue-400"></i>
+                    <p class="text-white font-medium mt-2">Google SEO &amp; Reviews</p>
+                    <p class="text-slate-300 text-xs mt-1">Boosts local search ranking and automatically collects 5-star Google reviews.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HIGH-TRUST CUSTOMER SERVICE & CONTACT ===== -->
+    <section id="contact" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <!-- left: Trust & Support Card -->
+            <div class="card-bg p-6 rounded-2xl neon-border">
+                <h3 class="text-2xl font-bold text-white">Client <span class="gradient-text">Trust &amp; Support</span></h3>
+                <div class="space-y-3 mt-4 text-slate-300">
+                    <p><i class="fab fa-whatsapp text-2xl text-green-400 mr-3"></i> +91 9004600946</p>
+                    <p><i class="fas fa-envelope text-2xl text-teal-400 mr-3"></i> owaisworkai@gmail.com</p>
+                    <p><i class="fas fa-map-pin text-2xl text-pink-400 mr-3"></i> Mumbai, Maharashtra - 400102</p>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mt-5">
+                    <div class="bg-[#111c2e] p-3 rounded-xl text-center"><i class="fas fa-shield-alt text-teal-400 text-xl"></i><p class="text-xs text-slate-300 mt-1">100% Transparency</p></div>
+                    <div class="bg-[#111c2e] p-3 rounded-xl text-center"><i class="fas fa-clock text-yellow-400 text-xl"></i><p class="text-xs text-slate-300 mt-1">3-Day Express</p></div>
+                    <div class="bg-[#111c2e] p-3 rounded-xl text-center"><i class="fas fa-headset text-purple-400 text-xl"></i><p class="text-xs text-slate-300 mt-1">24/7 Client Support</p></div>
+                    <div class="bg-[#111c2e] p-3 rounded-xl text-center"><i class="fas fa-brain text-pink-400 text-xl"></i><p class="text-xs text-slate-300 mt-1">Zero Tech Knowledge</p></div>
+                </div>
+                <a href="https://wa.me/919004600946" target="_blank" class="mt-5 inline-flex items-center gap-2 btn-whatsapp text-white font-semibold px-6 py-2.5 rounded-full transition"><i class="fab fa-whatsapp text-xl"></i> Chat on WhatsApp</a>
+            </div>
+
+            <!-- right: Inquiry Form -->
+            <div>
+                <h3 class="text-2xl font-bold text-white">Send Us a <span class="gradient-text">Message</span></h3>
+                <p class="text-slate-300 text-sm mb-5">We'll get back to you within 2 hours</p>
+                <form class="space-y-4">
+                    <div><label class="block text-sm text-slate-300 mb-1">Full Name</label><input type="text" placeholder="Your name" class="w-full rounded-xl px-4 py-3" /></div>
+                    <div><label class="block text-sm text-slate-300 mb-1">Phone Number</label><input type="tel" placeholder="+91 90046 00946" class="w-full rounded-xl px-4 py-3" /></div>
+                    <div><label class="block text-sm text-slate-300 mb-1">Business Type</label><input type="text" placeholder="e.g. Healthcare, E-commerce" class="w-full rounded-xl px-4 py-3" /></div>
+                    <div><label class="block text-sm text-slate-300 mb-1">Service Interested</label>
+                        <select class="w-full rounded-xl px-4 py-3">
+                            <option>AI Website</option><option>AI Chatbot</option><option>Video Ads</option><option>Automation</option><option>Banners</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full gradient-primary text-white font-semibold py-3 rounded-xl transition shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)]"><i class="fas fa-paper-plane mr-2"></i> Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-[#060b16] border-t border-[#1f3147] py-6 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
+            <!-- FINAL FIXED GRADIENT & NEON GLOW LOGO (Footer - slightly smaller) -->
+            <div class="flex items-center gap-3">
+                <a href="#" class="logo-link-footer">
+                    <span style="font-family: 'Montserrat', 'Poppins', sans-serif !important; font-size: 18px !important; font-weight: 900 !important; letter-spacing: 1.5px !important; text-transform: uppercase !important;">
+                        <!-- White Text with Soft Glow -->
+                        <span style="color: #FFFFFF !important; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 25px rgba(0, 210, 255, 0.3) !important;">AXIOMATE</span>
+                        <!-- Neon Gradient Match with 'AI Websites' -->
+                        <span style="background: linear-gradient(135deg, #00d2ff 0%, #9333ea 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important; filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.6)) !important; margin-left: 4px !important;">AI</span>
+                    </span>
+                </a>
+                <span class="text-slate-300">© 2026 Axiomate AI. All Rights Reserved.</span>
+            </div>
+            <div class="flex gap-4 text-slate-300">
+                <a href="https://wa.me/919004600946" target="_blank" class="hover:text-white transition"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="text-center text-[10px] text-slate-400 mt-2 border-t border-[#1a2a40] pt-2">Mumbai, MH · +91 9004600946 · owaisworkai@gmail.com</div>
+    </footer>
+
+    <!-- ===== FLOATING WHATSAPP BUTTON ===== -->
+    <a href="https://wa.me/919004600946" target="_blank" class="fixed bottom-6 right-6 z-50 bg-[#25d366] text-white p-4 rounded-full shadow-2xl hover:bg-[#1da851] transition flex items-center gap-2 text-sm font-semibold px-5">
+        <i class="fab fa-whatsapp text-2xl"></i> <span class="hidden sm:inline">Chat</span>
+    </a>
+
+    <!-- ===== VIDEO MODAL (fully wired) ===== -->
+    <div id="videoModal" class="video-modal-overlay" onclick="closeVideoModal(event)">
+        <div class="video-modal-container">
+            <span class="video-modal-close" onclick="closeVideoModalDirect()">&times;</span>
+            <div class="video-modal-body">
+                <video id="sampleVideoPlayer" controls playsinline width="100%">
+                    <source src="demos/axiomate-promo-1.mp4" type="video/mp4">
+                    Your browser does not support video play.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOGGLE + MODAL JAVASCRIPT ===== -->
+    <script>
+        // Toggle details
+        function toggleDetails(btn) {
+            const card = btn.closest('.card-bg');
+            const details = card.querySelector('.toggle-details');
+            if (!details) return;
+            const isOpen = details.classList.contains('open');
+            if (isOpen) {
+                details.classList.remove('open');
+                btn.classList.remove('open');
+                btn.innerHTML = '<i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features';
+            } else {
+                details.classList.add('open');
+                btn.classList.add('open');
+                btn.innerHTML = '<i class="fas fa-chevron-up text-[10px]"></i> Hide Details';
+            }
+        }
+
+        // Video modal functions
+        function openVideoModal(videoSrc) {
+            var modal = document.getElementById('videoModal');
+            var player = document.getElementById('sampleVideoPlayer');
+            if (videoSrc) {
+                player.src = videoSrc;
+            }
+            modal.style.display = 'flex';
+            player.play();
+        }
+
+        function closeVideoModalDirect() {
+            var modal = document.getElementById('videoModal');
+            var player = document.getElementById('sampleVideoPlayer');
+            modal.style.display = 'none';
+            player.pause();
+        }
+
+        function closeVideoModal(e) {
+            if (e.target.classList.contains('video-modal-overlay')) {
+                closeVideoModalDirect();
+            }
+        }
+    </script>
+
+</body>
+</html>
