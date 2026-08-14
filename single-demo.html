@@ -228,6 +228,94 @@
             border: 1px solid #EAE7E0;
         }
 
+        /* ── Live Demo Badge ── */
+        .live-demo-badge {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 40px;
+            padding: 8px 18px 8px 14px;
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: #1A1A1A;
+            user-select: none;
+            transition: all 0.25s ease;
+        }
+        .live-demo-badge:hover {
+            box-shadow: 0 8px 34px rgba(0, 0, 0, 0.12);
+            transform: translateY(-1px);
+        }
+        .live-demo-badge .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22c55e;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .live-demo-badge .dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: #22c55e;
+            opacity: 0.3;
+            animation: live-pulse 1.8s ease-in-out infinite;
+        }
+        @keyframes live-pulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.6);
+                opacity: 0.05;
+            }
+        }
+        .live-demo-badge .badge-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            background: #22c55e;
+            color: #fff;
+            border-radius: 20px;
+            padding: 0 8px;
+            height: 18px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            margin-left: -2px;
+        }
+        @media (max-width: 480px) {
+            .live-demo-badge {
+                top: 10px;
+                right: 12px;
+                padding: 6px 14px 6px 10px;
+                font-size: 0.7rem;
+                gap: 8px;
+            }
+            .live-demo-badge .dot {
+                width: 8px;
+                height: 8px;
+            }
+            .live-demo-badge .badge-icon {
+                font-size: 0.6rem;
+                height: 16px;
+                padding: 0 6px;
+            }
+        }
+
         /* ── Responsive ── */
         @media (max-width: 640px) {
             .hero-title {
@@ -241,6 +329,13 @@
     </style>
 </head>
 <body>
+
+    <!-- ═══════════ LIVE DEMO WEBSITE BADGE ═══════════ -->
+    <div class="live-demo-badge">
+        <span class="dot"></span>
+        <span>LIVE DEMO WEBSITE</span>
+        <span class="badge-icon">⚡</span>
+    </div>
 
     <!-- ═══════════ TOP ANNOUNCEMENT BAR ═══════════ -->
     <div class="bg-[#1A1A1A] text-[#EAE7E0] text-xs sm:text-sm font-medium py-2.5 px-4 text-center tracking-wide border-b border-[#2D3748]/20">
