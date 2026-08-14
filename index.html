@@ -573,16 +573,17 @@ input, select, textarea {
                 <a href="https://wa.me/919004600946" target="_blank" class="mt-5 inline-flex items-center gap-2 btn-whatsapp text-white font-semibold px-6 py-2.5 rounded-full transition"><i class="fab fa-whatsapp text-xl"></i> Chat on WhatsApp</a>
             </div>
 
-            <!-- right: Inquiry Form -->
+            <!-- right: Inquiry Form (UPDATED with WhatsApp submission) -->
             <div>
                 <h3 class="text-2xl font-bold text-white">Send Us a <span class="gradient-text">Message</span></h3>
                 <p class="text-slate-300 text-sm mb-5">We'll get back to you within 2 hours</p>
-                <form class="space-y-4">
-                    <div><label class="block text-sm text-slate-300 mb-1">Full Name</label><input type="text" placeholder="Your name" class="w-full rounded-xl px-4 py-3" /></div>
-                    <div><label class="block text-sm text-slate-300 mb-1">Phone Number</label><input type="tel" placeholder="+91 90046 00946" class="w-full rounded-xl px-4 py-3" /></div>
-                    <div><label class="block text-sm text-slate-300 mb-1">Business Type</label><input type="text" placeholder="e.g. Healthcare, E-commerce" class="w-full rounded-xl px-4 py-3" /></div>
+                <form id="contactForm" onsubmit="return submitWhatsApp(event)" class="space-y-4">
+                    <div><label class="block text-sm text-slate-300 mb-1">Full Name</label><input type="text" id="fullName" placeholder="Your name" class="w-full rounded-xl px-4 py-3" required /></div>
+                    <div><label class="block text-sm text-slate-300 mb-1">Phone Number</label><input type="tel" id="phoneNumber" placeholder="+91 90046 00946" class="w-full rounded-xl px-4 py-3" required /></div>
+                    <div><label class="block text-sm text-slate-300 mb-1">Business Type</label><input type="text" id="businessType" placeholder="e.g. Healthcare, E-commerce" class="w-full rounded-xl px-4 py-3" required /></div>
                     <div><label class="block text-sm text-slate-300 mb-1">Service Interested</label>
-                        <select class="w-full rounded-xl px-4 py-3">
+                        <select id="serviceInterested" class="w-full rounded-xl px-4 py-3" required>
+                            <option value="">Select a service</option>
                             <option>AI Website</option><option>AI Chatbot</option><option>Video Ads</option><option>Automation</option><option>Banners</option>
                         </select>
                     </div>
@@ -634,7 +635,7 @@ input, select, textarea {
         </div>
     </div>
 
-    <!-- ===== TOGGLE + MODAL JAVASCRIPT ===== -->
+    <!-- ===== TOGGLE + MODAL + FORM JAVASCRIPT ===== -->
     <script>
         // Toggle details
         function toggleDetails(btn) {
@@ -675,6 +676,33 @@ input, select, textarea {
             if (e.target.classList.contains('video-modal-overlay')) {
                 closeVideoModalDirect();
             }
+        }
+
+        // === WhatsApp Form Submission ===
+        function submitWhatsApp(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+            const business = document.getElementById('businessType').value.trim();
+            const service = document.getElementById('serviceInterested').value;
+
+            if (!name || !phone || !business || !service) {
+                alert('Please fill in all fields before sending.');
+                return false;
+            }
+
+            const message = 
+                "🔹 *New Inquiry from Axiomate AI* 🔹\n\n" +
+                "👤 *Full Name:* " + name + "\n" +
+                "📞 *Phone Number:* " + phone + "\n" +
+                "🏢 *Business Type:* " + business + "\n" +
+                "📌 *Service Interested:* " + service + "\n\n" +
+                "🙏 Thank you for reaching out! We'll get back to you shortly.";
+
+            const url = "https://wa.me/919004600946?text=" + encodeURIComponent(message);
+            window.open(url, '_blank');
+            return false;
         }
     </script>
 
