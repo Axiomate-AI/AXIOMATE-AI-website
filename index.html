@@ -207,6 +207,80 @@ select option {
             align-items: center;
             background: transparent !important;
         }
+
+        /* Founder section image styling */
+        .founder-img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 9999px;
+            border: 3px solid rgba(0, 200, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 200, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        .founder-img:hover {
+            border-color: #00c8ff;
+            box-shadow: 0 0 40px rgba(0, 200, 255, 0.25);
+            transform: scale(1.02);
+        }
+        @media (max-width: 640px) {
+            .founder-img {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
+        /* FAQ Accordion Styles */
+        .faq-item {
+            background: rgba(18, 30, 51, 0.5);
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            border-radius: 0.75rem;
+            margin-bottom: 0.75rem;
+            transition: border-color 0.3s ease;
+        }
+        .faq-item:hover {
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        .faq-item summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #e2e8f0;
+            transition: color 0.2s;
+            user-select: none;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: "\f078";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 0.8rem;
+            color: #00c8ff;
+            transition: transform 0.3s ease;
+            margin-left: 1rem;
+        }
+        .faq-item[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .faq-item .faq-content {
+            padding: 0 1.25rem 1.25rem 1.25rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        .faq-item summary:hover {
+            color: #ffffff;
+        }
+        .faq-item[open] {
+            border-color: rgba(0, 200, 255, 0.3);
+            background: rgba(18, 30, 51, 0.7);
+        }
     </style>
 </head>
 <body>
@@ -232,6 +306,7 @@ select option {
                 <a href="#services" class="hover:text-white transition">Services</a>
                 <a href="#alacarte" class="hover:text-white transition">Pay Per Service</a>
                 <a href="#packages" class="hover:text-white transition">Packages</a>
+                <a href="#faq" class="hover:text-white transition">FAQ</a>
                 <a href="#contact" class="hover:text-white transition">Contact Us</a>
             </div>
             <div class="flex items-center gap-3">
@@ -287,6 +362,52 @@ select option {
                         <i class="fas fa-external-link-alt mr-2"></i> View Live Demo
                     </a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CASE STUDY & PROOF SECTION (NEW) ===== -->
+    <section id="case-studies" class="py-16 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white">Proven Results for <span class="gradient-text">Real Businesses</span></h2>
+                <p class="text-slate-300 mt-2 max-w-2xl mx-auto">See how our AI websites and local SEO strategies drive actual growth.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                <!-- Card 1: Local SEO -->
+                <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">Google Maps Ranking</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">From Page 3 to Rank #1 in 30 Days</h3>
+                    <div class="flex flex-wrap gap-3 mt-2 text-sm">
+                        <span class="text-teal-400 font-semibold">📈 +240% Phone Calls</span>
+                        <span class="text-pink-400 font-semibold">📍 +180% Direction Requests</span>
+                    </div>
+                    <p class="text-slate-300 mt-3 text-sm leading-relaxed flex-grow">
+                        Optimized Google Business Profile, local keyword targeting, and automated review collection strategy for a local service business.
+                    </p>
+                </div>
+                <!-- Card 2: WhatsApp Bot -->
+                <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">Lead Automation</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Zero Missed Leads &amp; 2-Second Response Time</h3>
+                    <div class="flex flex-wrap gap-3 mt-2 text-sm">
+                        <span class="text-teal-400 font-semibold">⚡ 100% Instant Response</span>
+                        <span class="text-pink-400 font-semibold">📊 35% Higher Booking Rate</span>
+                    </div>
+                    <p class="text-slate-300 mt-3 text-sm leading-relaxed flex-grow">
+                        Integrated a Meta-approved 24/7 WhatsApp bot to automatically answer FAQs, capture leads, and confirm appointments.
+                    </p>
+                </div>
+            </div>
+            <!-- CTA Button -->
+            <div class="text-center mt-10">
+                <a href="#packages" class="inline-flex items-center gap-2 gradient-primary text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition">
+                    <i class="fas fa-rocket"></i> Get Similar Results For Your Business
+                </a>
             </div>
         </div>
     </section>
@@ -525,6 +646,80 @@ select option {
                     </a>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOUNDER / ABOUT US SECTION ===== -->
+    <section id="founder" class="py-16 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white">Meet the <span class="gradient-text">Founder</span></h2>
+            </div>
+            <div class="flex flex-col md:flex-row items-center gap-10 md:gap-12">
+                <!-- Image Column -->
+                <div class="flex-shrink-0">
+                    <img src="https://via.placeholder.com/400x400/1a2a40/00c8ff?text=Owais" alt="Owais - Founder of Axiomate AI" class="founder-img" />
+                </div>
+                <!-- Text Column -->
+                <div class="flex-1 text-center md:text-left">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">Owais <span class="gradient-text">— Founder, Axiomate AI</span></h3>
+                    <p class="text-slate-300 mt-4 text-base md:text-lg leading-relaxed max-w-2xl mx-auto md:mx-0">
+                        I help modern businesses stop losing leads to slow responses and outdated websites. At Axiomate AI, we build high-converting websites, automated 24/7 WhatsApp systems, and AI workflows that work continuously for your business. My goal is simple: deliver agency-grade AI technology without the corporate overhead or high price tag.
+                    </p>
+                    <!-- Trust Badge -->
+                    <div class="mt-6 inline-flex items-center gap-2 bg-[#1f3147] text-teal-300 text-xs md:text-sm font-semibold px-4 py-2 rounded-full border border-teal-400/30 shadow-glow">
+                        <i class="fas fa-shield-alt text-teal-400"></i>
+                        Dedicated Support &amp; 100% Transparency
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FAQ SECTION ===== -->
+    <section id="faq" class="py-16 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white">Frequently Asked <span class="gradient-text">Questions</span></h2>
+                <p class="text-slate-300 mt-2">Everything you need to know before getting started</p>
+            </div>
+            <div class="space-y-3">
+                <!-- FAQ 1 -->
+                <details class="faq-item">
+                    <summary>How fast will my website and WhatsApp bot be ready?</summary>
+                    <div class="faq-content">
+                        Our standard delivery time is 3 days. Once you provide your business details, we build, test, and launch your automated system within 72 hours.
+                    </div>
+                </details>
+                <!-- FAQ 2 -->
+                <details class="faq-item">
+                    <summary>Is there any risk of my WhatsApp account getting banned?</summary>
+                    <div class="faq-content">
+                        Zero risk. We use Meta's official Cloud API for all WhatsApp automations, keeping your business number 100% safe, compliant, and secure.
+                    </div>
+                </details>
+                <!-- FAQ 3 -->
+                <details class="faq-item">
+                    <summary>Do I need any technical knowledge to manage this?</summary>
+                    <div class="faq-content">
+                        Not at all. We handle the complete setup, domain linking, hosting, and bot configuration for you. You just receive leads and customer messages directly on your phone.
+                    </div>
+                </details>
+                <!-- FAQ 4 -->
+                <details class="faq-item">
+                    <summary>Can I update content on my website later?</summary>
+                    <div class="faq-content">
+                        Yes, absolutely! We provide support and can handle minor content updates for you, or guide you on how to manage your site effortlessly.
+                    </div>
+                </details>
+                <!-- FAQ 5 -->
+                <details class="faq-item">
+                    <summary>What happens after my website is launched?</summary>
+                    <div class="faq-content">
+                        We provide ongoing support, regular backups, and technical assistance to ensure your site and bots run smoothly 24/7 without downtime.
+                    </div>
+                </details>
             </div>
         </div>
     </section>
