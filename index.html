@@ -1123,24 +1123,28 @@ select option {
                 <a href="https://wa.me/919004600946" target="_blank" class="mt-5 inline-flex items-center gap-2 btn-whatsapp text-white font-semibold px-6 py-2.5 rounded-full transition"><i class="fab fa-whatsapp text-xl"></i> Chat on WhatsApp</a>
             </div>
 
-            <!-- right: Inquiry Form (UPDATED with Web3Forms + WhatsApp) -->
+            <!-- right: Inquiry Form (UPDATED with Make.com webhook) -->
             <div>
                 <h3 class="text-2xl font-bold text-white">Send Us a <span class="gradient-text">Message</span></h3>
                 <p class="text-slate-300 text-sm mb-5">We'll get back to you within 2 hours</p>
-                <form id="contactForm" onsubmit="return submitWhatsApp(event)" class="space-y-4">
-                    <!-- Web3Forms Access Key -->
-                    <input type="hidden" name="access_key" value="a5a08b85-2ae5-48d4-947e-57f44078c666" />
+                <form id="contactForm" onsubmit="return submitForm(event)" class="space-y-4">
                     <div><label class="block text-sm text-slate-300 mb-1">Full Name</label><input type="text" id="fullName" name="name" placeholder="Your name" class="w-full rounded-xl px-4 py-3" required /></div>
+                    <div><label class="block text-sm text-slate-300 mb-1">Email Address</label><input type="email" id="email" name="email" placeholder="you@example.com" class="w-full rounded-xl px-4 py-3" required /></div>
                     <div><label class="block text-sm text-slate-300 mb-1">Phone Number</label><input type="tel" id="phoneNumber" name="phone" placeholder="+91 90046 00946" class="w-full rounded-xl px-4 py-3" required /></div>
-                    <div><label class="block text-sm text-slate-300 mb-1">Business Type</label><input type="text" id="businessType" name="business_type" placeholder="e.g. Healthcare, E-commerce" class="w-full rounded-xl px-4 py-3" required /></div>
                     <div><label class="block text-sm text-slate-300 mb-1">Service Interested</label>
                         <select id="serviceInterested" name="service" class="w-full rounded-xl px-4 py-3" required>
                             <option value="">Select a service</option>
                             <option>AI Website</option><option>AI Chatbot</option><option>Video Ads</option><option>Automation</option><option>Banners</option>
                         </select>
                     </div>
+                    <div><label class="block text-sm text-slate-300 mb-1">Business Details / Message</label>
+                        <textarea id="message" name="message" rows="3" placeholder="Tell us about your business..." class="w-full rounded-xl px-4 py-3" required></textarea>
+                    </div>
                     <button type="submit" class="w-full gradient-primary text-white font-semibold py-3 rounded-xl transition shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)]"><i class="fas fa-paper-plane mr-2"></i> Send Message</button>
                 </form>
+                <div id="formSuccess" class="hidden mt-4 text-teal-400 text-center font-medium p-3 rounded-xl bg-[#1f3147] border border-teal-400/30">
+                    ✅ Thank you! We will get back to you shortly.
+                </div>
             </div>
         </div>
     </section>
@@ -1230,51 +1234,46 @@ select option {
             }
         }
 
-        // === WhatsApp Form Submission with Web3Forms Email Backup ===
-        function submitWhatsApp(e) {
+        // === Form Submission to Make.com Webhook (with WhatsApp redirect) ===
+        function submitForm(e) {
             e.preventDefault();
 
-            const name = document.getElementById('fullName').value.trim();
-            const phone = document.getElementById('phoneNumber').value.trim();
-            const business = document.getElementById('businessType').value.trim();
-            const service = document.getElementById('serviceInterested').value;
-
-            if (!name || !phone || !business || !service) {
-                alert('Please fill in all fields before sending.');
-                return false;
-            }
-
-            // Build WhatsApp message
-            const message =
-                "🔹 *New Inquiry from Axiomate AI* 🔹\n\n" +
-                "👤 *Full Name:* " + name + "\n" +
-                "📞 *Phone Number:* " + phone + "\n" +
-                "🏢 *Business Type:* " + business + "\n" +
-                "📌 *Service Interested:* " + service + "\n\n" +
-                "🙏 Thank you for reaching out! We'll get back to you shortly.";
-
-            // 1. Send to Web3Forms in the background (no page refresh)
             const form = document.getElementById('contactForm');
             const formData = new FormData(form);
 
-            fetch('https://api.web3forms.com/submit', {
+            // Optionally, you can also open WhatsApp with a pre-filled message
+            const name = formData.get('name');
+            const phone = formData.get('phone');
+            const service = formData.get('service');
+            const message = formData.get('message');
+            const whatsappMsg = 
+                "🔹 *New Inquiry from Axiomate AI* 🔹\n\n" +
+                "👤 *Name:* " + name + "\n" +
+                "📞 *Phone:* " + phone + "\n" +
+                "📌 *Service:* " + service + "\n" +
+                "💬 *Message:* " + message + "\n\n" +
+                "🙏 Thank you for reaching out! We'll get back to you shortly.";
+
+            // Send to Make.com webhook
+            fetch('https://hook.eu1.make.com/n19gjfdh07otnmyinaofww380xkug3eg', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Web3Forms success:', data);
+            .then(response => {
+                if (response.ok) {
+                    // Show success message
+                    document.getElementById('formSuccess').classList.remove('hidden');
+                    form.reset();
+                    // Optionally open WhatsApp
+                    window.open('https://wa.me/919004600946?text=' + encodeURIComponent(whatsappMsg), '_blank');
+                } else {
+                    alert('Something went wrong. Please try again later.');
+                }
             })
             .catch(error => {
-                console.error('Web3Forms error:', error);
+                console.error('Error:', error);
+                alert('Network error. Please check your connection.');
             });
-
-            // 2. Open WhatsApp in a new tab
-            const url = "https://wa.me/919004600946?text=" + encodeURIComponent(message);
-            window.open(url, '_blank');
-
-            // 3. Optionally reset the form or show a thank-you message
-            form.reset();
 
             return false;
         }
