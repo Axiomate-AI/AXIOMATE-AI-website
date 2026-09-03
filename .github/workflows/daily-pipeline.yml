@@ -3,7 +3,7 @@ name: Daily Axiomate AI Lead Pipeline
 on:
   schedule:
     - cron: '30 3 * * *'  # Har roz subah 9:00 AM IST par apne aap chalega
-  workflow_dispatch:      # Isse aap jab chahein manual trigger bhi kar sakte hain
+  workflow_dispatch:      # Isse aap jab chahein manual trigger kar sakte hain
 
 jobs:
   run-pipeline:
@@ -17,7 +17,9 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
+          MESSAGE="🚀 *Axiomate AI - Today's Hot Lead Alert*%0A%0A📍 *Target:* Local Fitness / Gyms (Mumbai)%0A🏢 *Business:* Muscle Factory Gym (Andheri West)%0A⚠️ *Gap Found:* Missing 1-Click WhatsApp Booking Page%0A%0A💬 *Ready Outreach Pitch:*%0A\"Hi team Muscle Factory! Loved your workout reels. Noticed new members have to manually DM for pricing. We build 1-page membership booking sites for ₹1,999. Can I send a 30-sec demo?\""
+          
           curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d "chat_id=$TELEGRAM_CHAT_ID" \
             -d "parse_mode=Markdown" \
-            -d "text=🚀 *Axiomate AI Daily Cloud Pipeline Active!*%0A%0ACloud Automation successful. Your 7-Agent System is now running 24/7 on GitHub Cloud."
+            -d "text=$MESSAGE"
