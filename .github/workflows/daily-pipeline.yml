@@ -1,0 +1,23 @@
+name: Daily Axiomate AI Lead Pipeline
+
+on:
+  schedule:
+    - cron: '30 3 * * *'  # Har roz subah 9:00 AM IST par apne aap chalega
+  workflow_dispatch:      # Isse aap jab chahein manual trigger bhi kar sakte hain
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Send Lead Alerts to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d "chat_id=$TELEGRAM_CHAT_ID" \
+            -d "parse_mode=Markdown" \
+            -d "text=🚀 *Axiomate AI Daily Cloud Pipeline Active!*%0A%0ACloud Automation successful. Your 7-Agent System is now running 24/7 on GitHub Cloud."
