@@ -7,7 +7,7 @@ import time
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
-# Multi-Region Scanning Across Mumbai, Maharashtra & Major Indian Hubs
+# Multi-Region Scanning Across Mumbai, Maharashtra & Major Indian Cities
 TARGET_LOCATIONS = [
     "Andheri, Mumbai", "Bandra, Mumbai", "Borivali, Mumbai", "Powai, Mumbai",
     "Thane, Maharashtra", "Vashi, Navi Mumbai", "Dadar, Mumbai", "Malad, Mumbai",
@@ -15,7 +15,7 @@ TARGET_LOCATIONS = [
     "Connaught Place, Delhi", "Indiranagar, Bangalore"
 ]
 
-# Multi-Industry Business Categories
+# Multi-Industry Business Categories with Tailored Outreach Pitches
 BUSINESS_CATEGORIES = [
     {"category": "Dental Clinic", "pitch_text": "We build 1-click online patient appointment booking sites for dental practices."},
     {"category": "Skin Clinic", "pitch_text": "We design high-converting consultation booking pages for dermatology clinics."},
@@ -53,9 +53,9 @@ def fetch_dynamic_lead():
                         "pitch": f"\"Hi team {business_name}! Found your business in {location}. {custom_pitch} Can I share a quick 30-sec demo video?\""
                     }
     except Exception as err:
-        print(f"API Fetch Warning: {err}")
+        print(f"API Fetch Notice: {err}")
 
-    # Robust Fallback Generation to guarantee delivery
+    # Fallback Mechanism to prevent any script crashes
     fallback_name = f"Premier {category} ({location.split(',')[0]})"
     return {
         "category": category,
@@ -91,11 +91,11 @@ def send_telegram_alert(lead):
         res = requests.post(api_url, data=payload, timeout=10)
         print(f"Telegram Delivery Status ({lead['category']}): {res.status_code}")
     except Exception as e:
-        print(f"Telegram Delivery Failed: {e}")
+        print(f"Telegram Delivery Error: {e}")
 
 if __name__ == "__main__":
-    # Send 5 dynamic leads across different categories per execution run
+    # Delivers 5 unique multi-niche leads per execution run
     for i in range(5):
         lead_data = fetch_dynamic_lead()
         send_telegram_alert(lead_data)
-        time.sleep(2)  # Short delay to maintain Telegram API rate limits
+        time.sleep(2)  # Delay to respect Telegram API rate limits
