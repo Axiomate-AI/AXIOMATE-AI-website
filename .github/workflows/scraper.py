@@ -11,18 +11,20 @@ def fetch_live_leads():
     headers = {'User-Agent': 'AxiomateAI-LeadBot/1.0'}
     
     try:
-        response = requests.get(url, headers=headers, timeout=10).json()
-        if response and len(response) > 0:
-            item = response[0]
-            name = item.get('display_name', '').split(',')[0]
-            return [{
-                "name": name,
-                "location": "Andheri West, Mumbai",
-                "gap": "Missing Instant WhatsApp Lead Funnel",
-                "pitch": f"\"Hi team {name}! Noticed your profile on Google Maps. We build 1-page membership booking funnels for gyms in Mumbai. Can I share a 30-sec demo?\""
-            }]
+        response = requests.get(url, headers=headers, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            if data and len(data) > 0:
+                item = data[0]
+                name = item.get('display_name', '').split(',')[0]
+                return [{
+                    "name": name,
+                    "location": "Andheri West, Mumbai",
+                    "gap": "Missing Instant WhatsApp Lead Funnel",
+                    "pitch": f"\"Hi team {name}! Noticed your profile on Google Maps. We build 1-page membership booking funnels for gyms in Mumbai. Can I share a 30-sec demo?\""
+                }]
     except Exception as e:
-        pass
+        print(f"Scraper error: {e}")
 
     return [{
         "name": "Gold Fitness Studio",
@@ -32,6 +34,10 @@ def fetch_live_leads():
     }]
 
 def send_telegram_alert(lead):
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        print("Missing Telegram Credentials!")
+        return
+
     msg = (
         f"🚀 *Axiomate AI - Verified Live Lead Alert*\n\n"
         f"📍 *Location:* {lead['location']}\n"
@@ -44,7 +50,8 @@ def send_telegram_alert(lead):
         "parse_mode": "Markdown",
         "text": msg
     }
-    requests.post(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage", data=payload)
+    res = requests.post(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage", data=payload)
+    print(f"Telegram status: {res.status_code}")
 
 if __name__ == "__main__":
     leads = fetch_live_leads()
