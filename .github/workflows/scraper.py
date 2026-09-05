@@ -9,7 +9,7 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 TARGET_LOCATIONS = [
     "Andheri, Mumbai", "Bandra, Mumbai", "Borivali, Mumbai", "Powai, Mumbai",
-    "Thane, Maharashtra", "Vashi, Navi Mumbai", "Dadar, Mumbai", "Malad, Mumbai",
+    "Thane, Maharashtra", "Vashi, Navi Mumbai", "Dadar, Mumbai",
     "Kothrud, Pune", "Wakad, Pune", "Nashik, Maharashtra", "Nagpur, Maharashtra",
     "Connaught Place, Delhi", "Indiranagar, Bangalore"
 ]
@@ -24,15 +24,14 @@ BUSINESS_CATEGORIES = [
     {"category": "Advocate Legal Consultant", "pitch_text": "We design professional consultation booking sites for legal firms and advocates."}
 ]
 
-def fetch_dynamic_lead():
+def fetch_lead_for_niche(niche_obj):
     location = random.choice(TARGET_LOCATIONS)
-    selected_niche = random.choice(BUSINESS_CATEGORIES)
-    category = selected_niche["category"]
-    custom_pitch = selected_niche["pitch_text"]
+    category = niche_obj["category"]
+    custom_pitch = niche_obj["pitch_text"]
     
     search_query = f"{category} in {location}"
     url = f"https://nominatim.openstreetmap.org/search?q={urllib.parse.quote(search_query)}&format=json&addressdetails=1"
-    headers = {'User-Agent': 'AxiomateAI-MultiNicheEngine/4.0'}
+    headers = {'User-Agent': 'AxiomateAI-MultiNicheEngine/5.0'}
     
     try:
         response = requests.get(url, headers=headers, timeout=10)
@@ -46,7 +45,7 @@ def fetch_dynamic_lead():
                         "category": category,
                         "name": business_name,
                         "location": location,
-                        "gap": "Missing Instant 1-Click WhatsApp Booking / Lead Capture Funnel",
+                        "gap": "Missing Instant WhatsApp Lead Capture Funnel",
                         "pitch": f"\"Hi team {business_name}! Found your business in {location}. {custom_pitch} Can I share a quick 30-sec demo video?\""
                     }
     except Exception as err:
@@ -63,7 +62,7 @@ def fetch_dynamic_lead():
 
 def send_telegram_alert(lead):
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print("Error: Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID in GitHub Secrets!")
+        print("Error: Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID")
         return
 
     msg = (
@@ -85,14 +84,15 @@ def send_telegram_alert(lead):
     
     try:
         res = requests.post(api_url, data=payload, timeout=10)
-        print(f"Telegram Delivery Status ({lead['category']}): {res.status_code}")
+        print(f"Sent ({lead['category']}): Status {res.status_code}")
     except Exception as e:
-        print(f"Telegram Error: {e}")
+        print(f"Delivery Error: {e}")
 
 if __name__ == "__main__":
-    # Explicit loop for 5 distinct leads per run
-    for idx in range(1, 6):
-        print(f"Processing Lead #{idx}...")
-        lead_data = fetch_dynamic_lead()
+    # Pick 5 UNIQUE niches per run
+    selected_niches = random.sample(BUSINESS_CATEGORIES, k=5)
+    for idx, niche in enumerate(selected_niches, 1):
+        print(f"Fetching Lead {idx}/5 - Niche: {niche['category']}")
+        lead_data = fetch_lead_for_niche(niche)
         send_telegram_alert(lead_data)
         time.sleep(2)
