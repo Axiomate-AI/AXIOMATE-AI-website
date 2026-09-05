@@ -7,7 +7,6 @@ import time
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
-# Multi-Region Scanning Across Mumbai, Maharashtra & Major Indian Hubs
 TARGET_LOCATIONS = [
     "Andheri, Mumbai", "Bandra, Mumbai", "Borivali, Mumbai", "Powai, Mumbai",
     "Thane, Maharashtra", "Vashi, Navi Mumbai", "Dadar, Mumbai", "Malad, Mumbai",
@@ -15,7 +14,6 @@ TARGET_LOCATIONS = [
     "Connaught Place, Delhi", "Indiranagar, Bangalore"
 ]
 
-# Multi-Industry Business Categories with Custom Pitches
 BUSINESS_CATEGORIES = [
     {"category": "Dental Clinic", "pitch_text": "We build 1-click online patient appointment booking sites for dental practices."},
     {"category": "Skin Clinic", "pitch_text": "We design high-converting consultation booking pages for dermatology clinics."},
@@ -34,16 +32,15 @@ def fetch_dynamic_lead():
     
     search_query = f"{category} in {location}"
     url = f"https://nominatim.openstreetmap.org/search?q={urllib.parse.quote(search_query)}&format=json&addressdetails=1"
-    headers = {'User-Agent': 'AxiomateAI-MultiNicheLeadEngine/3.0'}
+    headers = {'User-Agent': 'AxiomateAI-MultiNicheEngine/4.0'}
     
     try:
-        response = requests.get(url, headers=headers, timeout=12)
+        response = requests.get(url, headers=headers, timeout=10)
         if response.status_code == 200:
             data = response.json()
             if data and len(data) > 0:
                 selected_item = random.choice(data)
                 business_name = selected_item.get('display_name', '').split(',')[0]
-                
                 if business_name:
                     return {
                         "category": category,
@@ -90,11 +87,12 @@ def send_telegram_alert(lead):
         res = requests.post(api_url, data=payload, timeout=10)
         print(f"Telegram Delivery Status ({lead['category']}): {res.status_code}")
     except Exception as e:
-        print(f"Telegram Delivery Error: {e}")
+        print(f"Telegram Error: {e}")
 
 if __name__ == "__main__":
-    # Delivers 5 unique multi-niche leads per execution run
-    for i in range(5):
+    # Explicit loop for 5 distinct leads per run
+    for idx in range(1, 6):
+        print(f"Processing Lead #{idx}...")
         lead_data = fetch_dynamic_lead()
         send_telegram_alert(lead_data)
-        time.sleep(2)  # Delay to respect Telegram API rate limits
+        time.sleep(2)
