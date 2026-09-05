@@ -7,7 +7,7 @@ import time
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
-# Multi-Region Scanning Across Mumbai, Maharashtra & Major Indian Cities
+# Multi-Region Scanning Across Mumbai, Maharashtra & Major Indian Hubs
 TARGET_LOCATIONS = [
     "Andheri, Mumbai", "Bandra, Mumbai", "Borivali, Mumbai", "Powai, Mumbai",
     "Thane, Maharashtra", "Vashi, Navi Mumbai", "Dadar, Mumbai", "Malad, Mumbai",
@@ -15,7 +15,7 @@ TARGET_LOCATIONS = [
     "Connaught Place, Delhi", "Indiranagar, Bangalore"
 ]
 
-# Multi-Industry Business Categories with Tailored Outreach Pitches
+# Multi-Industry Business Categories with Custom Pitches
 BUSINESS_CATEGORIES = [
     {"category": "Dental Clinic", "pitch_text": "We build 1-click online patient appointment booking sites for dental practices."},
     {"category": "Skin Clinic", "pitch_text": "We design high-converting consultation booking pages for dermatology clinics."},
@@ -55,7 +55,6 @@ def fetch_dynamic_lead():
     except Exception as err:
         print(f"API Fetch Notice: {err}")
 
-    # Fallback Mechanism to prevent any script crashes
     fallback_name = f"Premier {category} ({location.split(',')[0]})"
     return {
         "category": category,
