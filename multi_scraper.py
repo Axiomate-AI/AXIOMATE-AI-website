@@ -14,61 +14,91 @@ TARGET_LOCATIONS = [
     "Connaught Place, Delhi", "Indiranagar, Bangalore"
 ]
 
-# FORCED DIVERSE NICHES - NO ONLY CLINICS
 BUSINESS_CATEGORIES = [
-    {"category": "Real Estate Broker", "query": "real estate agency", "pitch_text": "We craft high-converting property listing & site-visit landing pages."},
-    {"category": "Advocate & Legal Firm", "query": "lawyer", "pitch_text": "We design client consultation booking sites for legal professionals."},
-    {"category": "Gym & Fitness Hub", "query": "gym", "pitch_text": "We build membership booking & lead generation funnels for fitness centers."},
-    {"category": "Interior Designer", "query": "interior designer", "pitch_text": "We build portfolio showcase & quote request funnels for interior studios."},
-    {"category": "Salon & Spa", "query": "beauty salon", "pitch_text": "We set up automated WhatsApp appointment booking funnels for salons."},
-    {"category": "Coaching Institute", "query": "coaching", "pitch_text": "We build course inquiry & student lead capture landing pages."},
-    {"category": "Dental Clinic", "query": "dentist", "pitch_text": "We build 1-click patient appointment booking sites for dental practices."},
-    {"category": "Skin & Hair Clinic", "query": "dermatologist", "pitch_text": "We design high-converting consultation booking pages for skin clinics."},
-    {"category": "Car Auto Workshop", "query": "car repair", "pitch_text": "We build instant service booking & inquiry funnels for auto workshops."},
-    {"category": "Restaurant & Cafe", "query": "restaurant", "pitch_text": "We design digital menu & direct WhatsApp table reservation sites."}
+    {"category": "Real Estate Broker", "query": "real estate agency", "service": "high-converting property landing pages"},
+    {"category": "Advocate & Legal Firm", "query": "lawyer", "service": "online legal consultation booking funnels"},
+    {"category": "Gym & Fitness Hub", "query": "gym", "service": "automated membership enrollment sites"},
+    {"category": "Interior Designer", "query": "interior designer", "service": "portfolio showcase & instant quote funnels"},
+    {"category": "Salon & Spa", "query": "beauty salon", "service": "WhatsApp appointment booking funnels"},
+    {"category": "Coaching Institute", "query": "coaching", "service": "student lead capture pages"},
+    {"category": "Dental Clinic", "query": "dentist", "service": "1-click OPD patient booking funnels"},
+    {"category": "Skin & Hair Clinic", "query": "dermatologist", "service": "dermatology consultation funnels"},
+    {"category": "Car Auto Workshop", "query": "car repair", "service": "instant car service booking systems"},
+    {"category": "Restaurant & Cafe", "query": "restaurant", "service": "digital menu & direct table reservation funnels"}
 ]
 
 def fetch_verified_lead(niche_obj):
     location = random.choice(TARGET_LOCATIONS)
     category = niche_obj["category"]
     search_term = niche_obj["query"]
-    custom_pitch = niche_obj["pitch_text"]
+    service_offer = niche_obj["service"]
     
     search_query = f"{search_term} in {location}"
     url = f"https://nominatim.openstreetmap.org/search?q={urllib.parse.quote(search_query)}&format=json&addressdetails=1&extratags=1"
-    headers = {'User-Agent': f'AxiomateEngine-{random.randint(100,999)}/8.0'}
+    headers = {'User-Agent': f'AxiomateProEngine-{random.randint(1000,9999)}/9.0'}
     
     try:
         response = requests.get(url, headers=headers, timeout=12)
         if response.status_code == 200:
             data = response.json()
             
-            # Filter real business names only
             valid_results = []
             for item in data:
                 name = item.get('display_name', '').split(',')[0].strip()
-                # Skip vague generic terms
                 if name and len(name) > 3 and name.lower() not in search_term.lower():
                     valid_results.append((name, item))
             
             if valid_results:
                 selected_name, selected_item = random.choice(valid_results)
                 extratags = selected_item.get('extratags', {})
-                website = extratags.get('website', '')
-                phone = extratags.get('phone', extratags.get('contact:phone', 'Available via Google Maps link'))
                 
-                gap_text = "Verified Gap: No Active Website Linked" if not website else "Verified Gap: Missing WhatsApp Lead Capture Funnel"
+                # Multi-tag Deep Scan for Website Verification
+                website = (
+                    extratags.get('website') or 
+                    extratags.get('url') or 
+                    extratags.get('contact:website') or 
+                    extratags.get('facebook') or ''
+                )
+                
+                # Multi-tag Deep Scan for Contact Phone Number
+                raw_phone = (
+                    extratags.get('phone') or 
+                    extratags.get('contact:phone') or 
+                    extratags.get('mobile') or 
+                    extratags.get('contact:mobile') or ''
+                )
+                
+                phone_display = raw_phone if raw_phone else "Check via Google Maps Profile"
+                
+                # Dynamic Highly-Targeted Outreach Pitches
+                if not website:
+                    gap_text = "Verified Gap: Missing Official Website & Digital Funnel"
+                    pitch_text = f"\"Hi team {selected_name}! Noticed your Google profile in {location} has no active website link. You are losing mobile traffic to competitors. We build {service_offer}. Can I send a 30-sec demo?\""
+                else:
+                    gap_text = "Verified Gap: Missing Automated WhatsApp Lead Conversion Funnel"
+                    pitch_text = f"\"Hi team {selected_name}! Checked your online profile in {location}. You have a web presence, but no automated lead capture. We integrate {service_offer} with instant WhatsApp booking. Can I share a quick demo?\""
+                
                 gmaps_url = f"https://www.google.com/maps/search/{urllib.parse.quote(selected_name + ' ' + location)}"
+                
+                # Direct WhatsApp Outreach URL Setup (Clean phone number if available)
+                clean_phone = ''.join(filter(str.isdigit, raw_phone))
+                if len(clean_phone) >= 10:
+                    wa_number = clean_phone[-10:]
+                    encoded_msg = urllib.parse.quote(pitch_text.replace('"', ''))
+                    wa_link = f"https://wa.me/91{wa_number}?text={encoded_msg}"
+                else:
+                    wa_link = None
                 
                 return {
                     "category": category,
                     "name": selected_name,
                     "location": location,
                     "address": selected_item.get('display_name', location)[:85] + "...",
-                    "phone": phone,
+                    "phone": phone_display,
                     "gmaps_url": gmaps_url,
                     "gap": gap_text,
-                    "pitch": f"\"Hi team {selected_name}! Found your profile in {location}. {custom_pitch} Can I share a quick 30-sec demo video?\""
+                    "pitch": pitch_text,
+                    "wa_link": wa_link
                 }
     except Exception as e:
         print(f"Fetch Notice ({category}): {e}")
@@ -76,8 +106,10 @@ def fetch_verified_lead(niche_obj):
     return None
 
 def send_telegram_alert(lead):
+    wa_button_text = f"\n📲 *Direct Outreach:* [Click to Chat on WhatsApp]({lead['wa_link']})\n" if lead['wa_link'] else ""
+    
     msg = (
-        f"🚀 *Axiomate AI - Multi-Niche Live Lead Alert*\n\n"
+        f"🚀 *Axiomate AI - High-Accuracy Lead Alert*\n\n"
         f"🏷️ *Category:* {lead['category']}\n"
         f"🏢 *Business:* {lead['name']}\n"
         f"📍 *Location:* {lead['location']}\n"
@@ -85,8 +117,9 @@ def send_telegram_alert(lead):
         f"📞 *Contact:* {lead['phone']}\n"
         f"🔗 *Google Maps Profile:* [Click Here to View Map & Call]({lead['gmaps_url']})\n\n"
         f"⚠️ *{lead['gap']}*\n\n"
-        f"💬 *Outreach Pitch:*\n"
-        f"{lead['pitch']}"
+        f"💬 *Enhanced Outreach Pitch:*\n"
+        f"{lead['pitch']}\n"
+        f"{wa_button_text}"
     )
     
     payload = {
@@ -106,11 +139,9 @@ if __name__ == "__main__":
     successful_leads = 0
     attempts = 0
     max_attempts = 80
-    
-    # Ensures strictly rotating different categories one after another
     category_index = 0
     
-    print("Starting Multi-Niche Rotation Engine...")
+    print("Starting High-Accuracy Multi-Niche Engine...")
     
     while successful_leads < TOTAL_LEADS_NEEDED and attempts < max_attempts:
         attempts += 1
@@ -122,8 +153,8 @@ if __name__ == "__main__":
             successful_leads += 1
             print(f"[{successful_leads}/{TOTAL_LEADS_NEEDED}] SUCCESS: {lead['category']} - {lead['name']}")
             send_telegram_alert(lead)
-            time.sleep(3) # Safe delay for Telegram Rate Limits
+            time.sleep(3)
         else:
-            time.sleep(1) # Quick retry interval for skipped queries
+            time.sleep(1)
 
     print(f"Finished execution. Total Sent: {successful_leads}")
