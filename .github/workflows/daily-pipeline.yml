@@ -39,3 +39,11 @@ jobs:
           git add Axiomate_Leads.csv
           git commit -m "Auto-update fresh leads with IST timestamp [skip ci]" || echo "No changes to commit"
           git push
+          
+- name: Commit and Push Updated CSV and History to GitHub
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add Axiomate_Leads.csv leads_history.json
+          git commit -m "Auto-update fresh unique leads with history tracking [skip ci]" || echo "No changes to commit"
+          git push
