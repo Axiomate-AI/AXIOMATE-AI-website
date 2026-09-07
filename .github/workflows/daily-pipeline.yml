@@ -1,13 +1,12 @@
-name: Daily Axiomate Leads Automation Pipeline
+name: Daily Multi-Category Scraper Pipeline
 
 on:
   schedule:
-    # 08:55 AM IST = 03:25 AM UTC (08:55 - 5:30 = 03:25 UTC)
-    - cron: '25 3 * * *'
-  workflow_dispatch: # Allows manual run button directly from GitHub Actions tab
+    - cron: '30 0 * * *'  # Daily at 06:00 AM IST
+  workflow_dispatch:      # Enables manual trigger button
 
 jobs:
-  run-scraper-and-sync:
+  scrape_and_update:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +31,7 @@ jobs:
         run: |
           python multi_scraper.py
 
-     - name: Commit and Push Updated CSV and History to GitHub
+      - name: Commit and Push Updated CSV and History to GitHub
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
