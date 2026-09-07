@@ -2,17 +2,18 @@ name: Axiomate AI Live Production Pipeline
 
 on:
   schedule:
-    - cron: '30 3 * * *'  # 9:00 AM IST Daily
-  workflow_dispatch:      # Manual Trigger
+    # Trigger at 8:55 AM IST (03:25 AM UTC) every day
+    - cron: '25 3 * * *'
+  workflow_dispatch:
 
 jobs:
   run-live-scraper:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Python Environment
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -20,10 +21,11 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests gspread oauth2client
 
-      - name: Execute Live Scraper & Send Telegram Leads
+      - name: Run Multi-Niche Engine
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GOOGLE_SHEET_CREDS: ${{ secrets.GOOGLE_SHEET_CREDS }}
         run: python multi_scraper.py
