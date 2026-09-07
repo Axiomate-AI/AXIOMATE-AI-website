@@ -5,7 +5,7 @@ import random
 import urllib.parse
 import time
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
@@ -32,6 +32,11 @@ BUSINESS_CATEGORIES = [
 
 CSV_FILE = "Axiomate_Leads.csv"
 
+def get_ist_time_str():
+    """Returns current timestamp formatted strictly in IST (UTC+5:30)"""
+    ist_time = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
+    return ist_time.strftime("%Y-%m-%d %H:%M:%S")
+
 def init_csv():
     """Create CSV file with headers if it does not exist"""
     if not os.path.exists(CSV_FILE):
@@ -40,13 +45,13 @@ def init_csv():
             writer.writerow(["Timestamp", "Category", "Business Name", "Location", "Contact Number", "Google Maps URL", "Pitch Text"])
 
 def save_to_csv(lead):
-    """Direct local file saving - 0% loss guarantee"""
+    """Direct local CSV saving with IST Timestamp"""
     try:
         init_csv()
         with open(CSV_FILE, mode='a', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow([
-                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                get_ist_time_str(),
                 lead['category'],
                 lead['name'],
                 lead['location'],
