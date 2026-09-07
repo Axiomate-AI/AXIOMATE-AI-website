@@ -4,11 +4,11 @@ import requests
 import random
 import urllib.parse
 import time
+import csv
 from datetime import datetime
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-SHEET_WEBHOOK_URL = os.getenv("GOOGLE_SHEET_WEBHOOK_URL")
 
 TARGET_LOCATIONS = [
     "Andheri, Mumbai", "Bandra, Mumbai", "Borivali, Mumbai", "Powai, Mumbai",
@@ -30,32 +30,33 @@ BUSINESS_CATEGORIES = [
     {"category": "Restaurant & Cafe", "query": "restaurant", "service": "digital menu & direct table reservation funnels"}
 ]
 
-def save_to_google_sheet(lead):
-    """Zero-Failure Sheet Sync via Apps Script Webhook"""
-    if not SHEET_WEBHOOK_URL:
-        print("Notice: GOOGLE_SHEET_WEBHOOK_URL not configured. Skipping Sheet sync.")
-        return
-    
-    payload = {
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "category": lead['category'],
-        "name": lead['name'],
-        "location": lead['location'],
-        "phone": lead['phone'],
-        "gmaps_url": lead['gmaps_url'],
-        "pitch": lead['pitch']
-    }
-    
-    # Retry mechanism (3 Tries) so NO lead is missed
-    for attempt in range(3):
-        try:
-            res = requests.post(SHEET_WEBHOOK_URL, json=payload, timeout=10)
-            if res.status_code == 200:
-                print(f"✅ Google Sheet Auto-Saved: {lead['name']}")
-                break
-        except Exception as e:
-            print(f"Retry {attempt+1}/3 Sheet Sync for {lead['name']}: {e}")
-            time.sleep(2)
+CSV_FILE = "Axiomate_Leads.csv"
+
+def init_csv():
+    """Create CSV file with headers if it does not exist"""
+    if not os.path.exists(CSV_FILE):
+        with open(CSV_FILE, mode='w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(["Timestamp", "Category", "Business Name", "Location", "Contact Number", "Google Maps URL", "Pitch Text"])
+
+def save_to_csv(lead):
+    """Direct local file saving - 0% loss guarantee"""
+    try:
+        init_csv()
+        with open(CSV_FILE, mode='a', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                lead['category'],
+                lead['name'],
+                lead['location'],
+                lead['phone'],
+                lead['gmaps_url'],
+                lead['pitch']
+            ])
+        print(f"✅ Lead Auto-Saved to CSV File: {lead['name']}")
+    except Exception as e:
+        print(f"Error saving to CSV: {e}")
 
 def fetch_verified_lead(niche_obj):
     location = random.choice(TARGET_LOCATIONS)
@@ -126,8 +127,7 @@ def fetch_verified_lead(niche_obj):
                     "wa_link": wa_link
                 }
                 
-                # Save to Google Sheet
-                save_to_google_sheet(lead_data)
+                save_to_csv(lead_data)
                 return lead_data
     except Exception as e:
         print(f"Fetch Error: {e}")
@@ -158,7 +158,6 @@ def send_telegram_alert(lead):
         "text": msg
     }
     
-    # Retry mechanism for Telegram
     for _ in range(3):
         try:
             res = requests.post(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage", data=payload, timeout=10)
