@@ -20,12 +20,13 @@ HISTORY_FILE = "leads_history.json"
 CATEGORIES = [
     "Dental Clinic",
     "Skin & Hair Clinic",
-    "Restaurant & Cafe",
     "Gym & Fitness Hub",
-    "Salon & Spa",
-    "Car Auto Workshop"
+    "Real Estate Agency",
+    "Interior Designer",
+    "Digital Marketing Agency",
+    "Auto Modification Studio",
+    "Coaching Institute"
 ]
-
 CITIES = [
     "Mumbai",
     "Thane",
