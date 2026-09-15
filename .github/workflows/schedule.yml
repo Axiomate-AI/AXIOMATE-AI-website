@@ -2,27 +2,29 @@ name: Scheduled Message Workflow
 
 on:
   schedule:
-    # Hourly or daily trigger (Cron syntax in UTC)
-    - cron: '0 * * * *'  # Har ghante chalega check karne ke liye
-  workflow_dispatch:     # Manual run karne ke liye
+    # Runs every hour
+    - cron: '0 * * * *'
+  workflow_dispatch: # Manual trigger
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
-          pip install pytz requests
+          python -m pip install --upgrade pip
+          pip install pytz requests pandas
 
       - name: Run Python Script
         env:
-          MY_SECRET_KEY: ${{ secrets.YOUR_SECRET_NAME }} # Aapka GitHub Secret
+          GREEN_API_ID_INSTANCE: ${{ secrets.GREEN_API_ID_INSTANCE }}
+          GREEN_API_TOKEN_INSTANCE: ${{ secrets.GREEN_API_TOKEN_INSTANCE }}
         run: python script.py
