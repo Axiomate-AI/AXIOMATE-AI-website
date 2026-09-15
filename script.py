@@ -53,7 +53,7 @@ MESSAGE_TEMPLATES = [
 ]
 
 # ----------------------------------------------------
-# 3. HELPER FUNCTIONS (HISTORY & SENDING)
+# 3. HELPER FUNCTIONS
 # ----------------------------------------------------
 def load_history():
     if os.path.exists(HISTORY_FILE):
@@ -94,7 +94,7 @@ def send_whatsapp_message(phone_number, text_message):
 
 
 # ----------------------------------------------------
-# 4. MAIN EXECUTION ENGINE
+# 4. MAIN EXECUTION ENGINE (ALIGNED WITH GOOGLE SHEET)
 # ----------------------------------------------------
 def send_messages(limit):
     if not os.path.exists(CSV_FILE):
@@ -111,11 +111,13 @@ def send_messages(limit):
             print(f"Reached today's maximum limit of {limit} messages.")
             break
 
-        # Adjust columns based on CSV
-        phone = str(row.get("Phone", "")).strip()
-        name = str(row.get("Name", "there")).strip()
-        business_name = str(row.get("Business", name)).strip()
-        city = str(row.get("City", "your area")).strip()
+        # Exact Google Sheet Column Matching
+        phone = str(row.get("Contact Number", "")).strip()
+        business_name = str(row.get("Business Name", "your business")).strip()
+        city = str(row.get("Location", "your city")).strip()
+
+        # Name fallback to Business Name if personal name isn't separate
+        name = business_name
 
         if not phone or phone == "nan":
             continue
@@ -147,5 +149,5 @@ def send_messages(limit):
                 time.sleep(delay_sec)
 
 
-# Execute the campaign
+# Execute campaign
 send_messages(max_messages)
