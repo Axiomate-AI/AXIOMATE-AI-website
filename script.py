@@ -36,7 +36,7 @@ else:
 print(f"Today's limit allowed: {max_messages} messages.")
 
 # ----------------------------------------------------
-# 2. GREEN-API CREDENTIALS & TEMPLATES
+# 2. GREEN-API CREDENTIALS & NATURAL TEMPLATES
 # ----------------------------------------------------
 ID_INSTANCE = os.environ.get("GREEN_API_ID_INSTANCE")
 API_TOKEN = os.environ.get("GREEN_API_TOKEN_INSTANCE")
@@ -45,12 +45,13 @@ GREEN_API_URL = f"https://7107.api.greenapi.com/waInstance{ID_INSTANCE}/sendMess
 CSV_FILE = "Axiomate_Leads.csv"
 HISTORY_FILE = "leads_history.json"
 
-# Natural Human-Like Multi-Service Templates
+# Highly Natural & Human-Like Templates
 MESSAGE_TEMPLATES = [
-    "Hey {name}, saw your listing for {business_name} in {city}.\n\nWe recently helped a few local teams automate their daily ops—like auto-replying to WhatsApp leads, setting up 24/7 AI voice call handlers, and syncing CRM workflows so no inquiry gets missed.\n\nYou can check out some of our live demos here: https://axiomate.ai\n\nOpen to a quick chat this week?",
-    "Hi {name}, quick question—how is your team currently handling after-hours inquiries and lead follow-ups at {business_name}?\n\nAt Axiomate AI, we build custom end-to-end automations (from WhatsApp AI bots & smart calling agents to full workflow pipelines).\n\nTake a look at what we've built: https://axiomate.ai\n\nLet me know if you'd like to see a custom workflow for {city}!",
-    "Hello team {business_name},\n\nCame across your page while looking at top businesses in {city}. We specialize in hands-off business automation—handling everything from incoming calls to database syncs and instant lead responses.\n\nDropping our link here in case you're exploring ways to scale operations: https://axiomate.ai\n\nBest,\nOwais | Axiomate AI",
+    "Hey, saw your listing for {business_name} in {city}.\n\nWe recently helped a few local businesses automate their daily operations—like auto-replying to WhatsApp leads, setting up 24/7 AI voice call handlers, and syncing CRM workflows so no inquiry gets missed.\n\nYou can check out some of our live demos here: https://axiomate.ai\n\nOpen to a quick chat this week?",
+    "Hi team {business_name}, quick question—how are you currently handling after-hours inquiries and lead follow-ups?\n\nAt Axiomate AI, we build custom end-to-end automations (from WhatsApp AI bots & smart calling agents to full workflow pipelines).\n\nTake a look at what we've built: https://axiomate.ai\n\nLet me know if you'd like to see a quick demo for your team in {city}!",
+    "Hello team {business_name},\n\nCame across your page while looking at businesses in {city}. We specialize in hands-off operations—handling everything from incoming calls to database syncs and instant lead responses.\n\nDropping our link here in case you're exploring ways to scale: https://axiomate.ai\n\nBest,\nOwais | Axiomate AI",
 ]
+
 
 # ----------------------------------------------------
 # 3. HELPER FUNCTIONS
@@ -68,6 +69,22 @@ def load_history():
 def save_history(history_list):
     with open(HISTORY_FILE, "w") as f:
         json.dump(history_list, f, indent=4)
+
+
+def extract_clean_city(raw_location):
+    """Extracts clean city name like 'Nagpur' from full address strings."""
+    if not raw_location or str(raw_location).lower() == "nan":
+        return "your city"
+
+    parts = [p.strip() for p in str(raw_location).split(",") if p.strip()]
+
+    # If format is "Shop 82, Main Road, Nagpur, Maharashtra"
+    if len(parts) >= 3:
+        return parts[-2]
+    elif len(parts) == 2:
+        return parts[0]
+    else:
+        return parts[0] if parts else "your city"
 
 
 def send_whatsapp_message(phone_number, text_message):
@@ -94,7 +111,7 @@ def send_whatsapp_message(phone_number, text_message):
 
 
 # ----------------------------------------------------
-# 4. MAIN EXECUTION ENGINE (ALIGNED WITH GOOGLE SHEET)
+# 4. MAIN EXECUTION ENGINE
 # ----------------------------------------------------
 def send_messages(limit):
     if not os.path.exists(CSV_FILE):
@@ -111,13 +128,10 @@ def send_messages(limit):
             print(f"Reached today's maximum limit of {limit} messages.")
             break
 
-        # Exact Google Sheet Column Matching
+        # Extract Raw Values
         phone = str(row.get("Contact Number", "")).strip()
         business_name = str(row.get("Business Name", "your business")).strip()
-        city = str(row.get("Location", "your city")).strip()
-
-        # Name fallback to Business Name if personal name isn't separate
-        name = business_name
+        raw_location = str(row.get("Location", "")).strip()
 
         if not phone or phone == "nan":
             continue
@@ -126,10 +140,13 @@ def send_messages(limit):
         if phone in history:
             continue
 
-        # Choose random template for human variability
+        # Clean City Name
+        city = extract_clean_city(raw_location)
+
+        # Select Random Template
         template = random.choice(MESSAGE_TEMPLATES)
         formatted_msg = template.format(
-            name=name, business_name=business_name, city=city
+            business_name=business_name, city=city
         )
 
         print(f"Sending message {sent_count + 1} of {limit} to {phone}...")
@@ -140,14 +157,14 @@ def send_messages(limit):
             save_history(history)
             sent_count += 1
 
-            # Smart Human Delay: Random gap between 6 to 12 minutes (360 to 720 seconds)
+            # Smart Human Delay (6 to 12 Minutes)
             if sent_count < limit:
                 delay_sec = random.randint(360, 720)
                 print(
-                    f"Waiting for {delay_sec // 60} minutes before sending next message to mimic human behavior..."
+                    f"Waiting for {delay_sec // 60} minutes before sending next message..."
                 )
                 time.sleep(delay_sec)
 
 
-# Execute campaign
+# Execute Campaign
 send_messages(max_messages)
