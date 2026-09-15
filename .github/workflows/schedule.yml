@@ -1,0 +1,28 @@
+name: Scheduled Message Workflow
+
+on:
+  schedule:
+    # Hourly or daily trigger (Cron syntax in UTC)
+    - cron: '0 * * * *'  # Har ghante chalega check karne ke liye
+  workflow_dispatch:     # Manual run karne ke liye
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install pytz requests
+
+      - name: Run Python Script
+        env:
+          MY_SECRET_KEY: ${{ secrets.YOUR_SECRET_NAME }} # Aapka GitHub Secret
+        run: python script.py
