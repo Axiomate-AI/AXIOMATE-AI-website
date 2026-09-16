@@ -8,7 +8,7 @@ import pytz
 import requests
 
 # ----------------------------------------------------
-# 1. TIME & DAY SAFETY RULES (NO HOLIDAY BLOCKS)
+# 1. TIME & DAY SAFETY RULES
 # ----------------------------------------------------
 tz = pytz.timezone("Asia/Kolkata")
 now = datetime.now(tz)
@@ -21,15 +21,13 @@ if weekday == 6:
     print("Today is Sunday (OFF). No messages sent.")
     exit(0)
 
-# Saturday: Max 10 messages, till 4:00 PM (16:00)
+# Saturday: Max 10 messages, till 4:00 PM
 if weekday == 5:
     if current_hour >= 16:
         print("Saturday after 4:00 PM IST. No messages sent.")
         exit(0)
     else:
         max_messages = 10
-
-# Monday to Friday: Max 15 messages
 else:
     max_messages = 15
 
@@ -52,17 +50,13 @@ MESSAGE_TEMPLATES = [
 ]
 
 
-# ----------------------------------------------------
-# 3. HELPER FUNCTIONS
-# ----------------------------------------------------
 def load_history():
     if os.path.exists(HISTORY_FILE):
         try:
             with open(HISTORY_FILE, "r") as f:
                 data = json.load(f)
                 return set(data) if isinstance(data, list) else set()
-        except Exception as e:
-            print(f"Warning: Could not read history file ({e}). Starting fresh.")
+        except Exception:
             return set()
     return set()
 
@@ -107,44 +101,32 @@ def send_whatsapp_message(phone_number, text_message):
     payload = {
         "chatId": chat_id,
         "message": text_message,
-        "linkPreview": False,  # Keeps text clean without ugly website card
+        "linkPreview": False,
     }
     headers = {"Content-Type": "application/json"}
 
     try:
         res = requests.post(GREEN_API_URL, json=payload, headers=headers)
         if res.status_code == 200:
-            print(f"✅ Message successfully sent to {clean_number}")
+            print(f"✅ Successfully sent to {clean_number}")
             return True
         else:
-            print(
-                f"❌ Failed sending to {clean_number} (Status {res.status_code}): {res.text}"
-            )
+            print(f"❌ Failed to send to {clean_number}: {res.text}")
             return False
     except Exception as e:
-        print(f"⚠️ Exception occurred while sending message: {e}")
+        print(f"⚠️ Exception sending message: {e}")
         return False
 
 
-# ----------------------------------------------------
-# 4. MAIN EXECUTION ENGINE
-# ----------------------------------------------------
 def send_messages(limit):
     if not os.path.exists(CSV_FILE):
-        print(f"Error: {CSV_FILE} file not found. Execution stopped.")
+        print(f"Error: {CSV_FILE} file not found.")
         return
 
     df = pd.read_csv(CSV_FILE)
     history = load_history()
 
-    print(f"Total leads loaded from CSV: {len(df)}")
-    print(f"Total previously contacted entries in history: {len(history)}")
-
-    # Detect Columns Safely
-    phone_col = None
-    name_col = None
-    loc_col = None
-
+    phone_col, name_col, loc_col = None, None, None
     for col in df.columns:
         c_lower = col.lower().strip()
         if not phone_col and any(
@@ -179,15 +161,14 @@ def send_messages(limit):
         if not clean_number or len(clean_number) < 10:
             continue
 
-        # STRICT DUPLICATE GUARD:
-        # Check against clean phone number AND business name
+        # STRICT DUPLICATE GUARD
         if (
             clean_number in history
             or raw_phone in history
             or (business_name != "your business" and business_name in history)
         ):
             print(
-                f"Skipping Row {index + 1}: [{business_name} | {clean_number}] -> Already contacted earlier!"
+                f"Skipping Row {index + 1}: [{business_name} | {clean_number}] - Already contacted!"
             )
             continue
 
@@ -198,7 +179,7 @@ def send_messages(limit):
         )
 
         print(
-            f"Sending message {sent_count + 1}/{limit} to: {business_name} ({clean_number})..."
+            f"Sending message {sent_count + 1}/{limit} to new contact: {business_name} ({clean_number})..."
         )
         success = send_whatsapp_message(clean_number, formatted_msg)
 
@@ -212,13 +193,11 @@ def send_messages(limit):
             sent_count += 1
 
             if sent_count < limit:
-                delay_sec = random.randint(360, 720)  # 6 to 12 minutes
+                delay_sec = random.randint(360, 720)
                 print(
-                    f"Waiting for {delay_sec // 60} minutes before sending next message..."
+                    f"Waiting for {delay_sec // 60} minutes before next message..."
                 )
                 time.sleep(delay_sec)
-
-    print(f"Job completed. Sent {sent_count} messages in this run.")
 
 
 send_messages(max_messages)
