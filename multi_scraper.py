@@ -1,188 +1,157 @@
-import csv
 import json
 import os
 import random
-import re
 import time
-import urllib.parse
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
+import pandas as pd
+import pytz
 import requests
 
-# ---------------------------------------------------------------------------
-# CONFIGURATION & ENVIRONMENT VARIABLES
-# ---------------------------------------------------------------------------
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
-TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
+# ----------------------------------------------------
+# TIME & DAY SAFETY RULES
+# ----------------------------------------------------
+tz = pytz.timezone("Asia/Kolkata")
+now = datetime.now(tz)
 
-OUTPUT_CSV_FILE = "Axiomate_Leads.csv"
+weekday = now.weekday()  # 0: Mon ... 5: Sat, 6: Sun
+current_hour = now.hour
+
+if weekday == 6:
+    print("Today is Sunday (OFF). Exiting.")
+    exit(0)
+
+if weekday == 5 and current_hour >= 16:
+    print("Saturday after 4:00 PM IST. Exiting.")
+    exit(0)
+
+max_messages = 10 if weekday == 5 else 15
+print(f"Today's limit: {max_messages} messages.")
+
+# ----------------------------------------------------
+# CREDENTIALS & API SETUP
+# ----------------------------------------------------
+ID_INSTANCE = os.environ.get("GREEN_API_ID_INSTANCE")
+API_TOKEN = os.environ.get("GREEN_API_TOKEN_INSTANCE")
+
+if not ID_INSTANCE or not API_TOKEN:
+    print("❌ ERROR: GREEN_API_ID_INSTANCE or GREEN_API_TOKEN_INSTANCE Secret is missing!")
+    exit(1)
+
+GREEN_API_URL = f"https://7107.api.greenapi.com/waInstance{ID_INSTANCE}/sendMessage/{API_TOKEN}"
+CSV_FILE = "Axiomate_Leads.csv"
 HISTORY_FILE = "leads_history.json"
 
-CATEGORIES = [
-    "Dental Clinic",
-    "Skin & Hair Clinic",
-    "Gym & Fitness Hub",
-    "Real Estate Agency",
-    "Interior Designer",
-    "Digital Marketing Agency",
-    "Auto Modification Studio",
-    "Coaching Institute"
-]
-CITIES = [
-    "Mumbai",
-    "Thane",
-    "Navi Mumbai",
-    "Pune",
-    "Nagpur",
-    "Delhi",
-    "Bangalore"
+MESSAGE_TEMPLATES = [
+    "Hey team {business_name},\n\nSaw your business profile in {city}. Quick question—how are you currently handling after-hours lead follow-ups?\n\nAt Axiomate AI, we build custom WhatsApp AI bots and smart voice handlers so local businesses never miss an inquiry.\n\nYou can see live demos here: https://axiomate.ai\n\nWould you be open to a quick 5-min chat this week?",
+    "Hi there,\n\nCame across {business_name} while looking up top services in {city}.\n\nWe recently helped a few teams automate their daily ops—auto-replying to WhatsApp leads 24/7, booking calls, and syncing CRM workflows automatically.\n\nHeres our site if you would like to check it out: https://axiomate.ai\n\nLet me know if you would like to see how it works for your team!",
+    "Hello team {business_name},\n\nReaching out from Axiomate AI. We build tailored automation pipelines (WhatsApp AI agents, automated calls, and lead tracking) for businesses in {city}.\n\nDropping our demo link here in case you are exploring ways to scale: https://axiomate.ai\n\nBest,\nOwais | Axiomate AI",
 ]
 
-PITCH_TEMPLATES = {
-    "Dental Clinic": "Hello! We help dental clinics get 20+ new patient bookings every month using automated WhatsApp appointment funnels. Would you like to see a quick demo?",
-    "Skin & Hair Clinic": "Hi! We build automated consultation booking systems for dermatology & hair clinics to increase repeat client retention. Let's connect for a 2-min overview!",
-    "Restaurant & Cafe": "Hey! Upgrade your dining experience with custom Digital QR Menus & WhatsApp automated feedback/loyalty systems. Interested in boosting repeat walk-ins?",
-    "Gym & Fitness Hub": "Hello! Boost your gym membership renewals and trial lead conversions with custom automation tools. Can I share a quick case study with you?",
-    "Salon & Spa": "Hi! Streamline your salon appointments and end-of-day staff booking tracking effortlessly via WhatsApp automation. Would you like a free setup demo?",
-    "Car Auto Workshop": "Hello! Help car owners track service schedules & book auto repair slots directly via automated messaging. Let us know if you'd like to see how it works!"
-}
 
-DEFAULT_PITCH = "Hello! Axiomate AI provides end-to-end AI workflow & client conversion automations tailored for your business. Let's discuss how we can grow your revenue!"
-
-# ---------------------------------------------------------------------------
-# HISTORY & DUPLICATE TRACKING FUNCTIONS
-# ---------------------------------------------------------------------------
 def load_history():
     if os.path.exists(HISTORY_FILE):
         try:
-            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-                return set(json.load(f))
-        except Exception as e:
-            print(f"Error loading history file: {e}")
+            with open(HISTORY_FILE, "r") as f:
+                data = json.load(f)
+                return set(data) if isinstance(data, list) else set()
+        except Exception:
             return set()
     return set()
 
+
 def save_history(history_set):
-    try:
-        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-            json.dump(list(history_set), f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"Error saving history file: {e}")
+    with open(HISTORY_FILE, "w") as f:
+        json.dump(list(history_set), f, indent=4)
 
-def get_ist_timestamp():
-    ist_offset = timezone(timedelta(hours=5, minutes=30))
-    return datetime.now(ist_offset).strftime("%Y-%m-%d %H:%M:%S")
 
-def format_phone_number(raw_phone):
-    if not raw_phone:
-        return ""
-    digits = re.sub(r"\D", "", str(raw_phone))
-    if len(digits) == 10:
-        return "91" + digits
-    elif len(digits) == 12 and digits.startswith("91"):
-        return digits
-    return digits
+def extract_city(raw_loc):
+    if not raw_loc or pd.isna(raw_loc):
+        return "your city"
+    parts = [p.strip() for p in str(raw_loc).split(",") if p.strip()]
+    for p in reversed(parts):
+        if not p.isdigit() and p.lower() not in ["india", "maharashtra"]:
+            return p
+    return parts[0] if parts else "your city"
 
-def generate_whatsapp_link(phone_number, pitch_text):
-    clean_phone = format_phone_number(phone_number)
-    if not clean_phone:
-        return ""
-    encoded_pitch = urllib.parse.quote(pitch_text)
-    return f"https://wa.me/{clean_phone}?text={encoded_pitch}"
 
-def send_telegram_alert(lead_data):
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        return
+def send_whatsapp_message(phone, msg):
+    clean_num = "".join(filter(str.isdigit, str(phone)))
+    if not clean_num.startswith("91") and len(clean_num) == 10:
+        clean_num = "91" + clean_num
 
-    message = (
-        f"🚀 *NEW UNIQUE LEAD DISCOVERED* 🚀\n\n"
-        f"📅 *Timestamp (IST):* {lead_data['Timestamp']}\n"
-        f"🏷️ *Category:* {lead_data['Category']}\n"
-        f"🏢 *Business Name:* {lead_data['Business Name']}\n"
-        f"📍 *Location:* {lead_data['Location']}\n"
-        f"📞 *Contact Number:* {lead_data['Contact Number']}\n\n"
-        f"💬 *Pitch:* {lead_data['Pitch Text']}\n\n"
-        f"🔗 [Direct Outreach: Click to Chat on WhatsApp]({lead_data['WhatsApp Link']})\n"
-        f"🗺️ [View on Google Maps]({lead_data['Google Maps URL']})"
-    )
-
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
-        "chat_id": TELEGRAM_CHAT_ID,
-        "text": message,
-        "parse_mode": "Markdown",
-        "disable_web_page_preview": False
+        "chatId": f"{clean_num}@c.us",
+        "message": msg,
+        "linkPreview": False,
     }
+    headers = {"Content-Type": "application/json"}
 
     try:
-        requests.post(url, json=payload, timeout=10)
+        res = requests.post(GREEN_API_URL, json=payload, headers=headers)
+        if res.status_code == 200:
+            print(f"✅ Sent to {clean_num}")
+            return True
+        else:
+            print(f"❌ Failed for {clean_num}: Status {res.status_code}")
+            return False
     except Exception as e:
-        print(f"[Telegram Exception]: {e}")
+        print(f"⚠️ Exception: {e}")
+        return False
 
-# ---------------------------------------------------------------------------
-# SCRAPING ENGINE WITH DUPLICATE FILTER
-# ---------------------------------------------------------------------------
-def fetch_google_maps_leads(target_count=20):
-    history_set = load_history()
-    leads = []
-    
-    sample_prefixes = ["Apex", "Divine", "Elegance", "Royal", "Aura", "Precision", "Glamour", "Urban", "Fit", "Speedy", "Care", "Metro"]
-    sample_suffixes = ["Center", "Studio", "Lounge", "Clinic", "Workshop", "Hub", "Care", "Pvt Ltd"]
-
-    attempts = 0
-    print(f"Scraper Engine started. Existing leads in history: {len(history_set)}")
-
-    while len(leads) < target_count and attempts < 300:
-        attempts += 1
-        cat = random.choice(CATEGORIES)
-        city = random.choice(CITIES)
-        
-        b_name = f"{random.choice(sample_prefixes)} {cat.split()[0]} {random.choice(sample_suffixes)}"
-        
-        # Unique Identifier Check (Prevents Duplicates)
-        unique_key = f"{b_name.lower().strip()}_{city.lower().strip()}"
-        
-        if unique_key in history_set:
-            continue  # Skip if lead was already sent previously
-            
-        phone = f"+91 98{random.randint(10000000, 99999999)}"
-        address = f"Shop {random.randint(1, 150)}, Main Road, {city}, Maharashtra"
-        maps_url = f"https://maps.google.com/?q={urllib.parse.quote(b_name + ' ' + city)}"
-        pitch = PITCH_TEMPLATES.get(cat, DEFAULT_PITCH)
-        wa_link = generate_whatsapp_link(phone, pitch)
-        
-        lead_item = {
-            "Timestamp": get_ist_timestamp(),
-            "Category": cat,
-            "Business Name": b_name,
-            "Location": address,
-            "Contact Number": phone,
-            "Google Maps URL": maps_url,
-            "Pitch Text": pitch,
-            "WhatsApp Link": wa_link
-        }
-        
-        history_set.add(unique_key)
-        leads.append(lead_item)
-        send_telegram_alert(lead_item)
-        time.sleep(0.1)
-
-    save_history(history_set)
-    return leads
 
 def main():
-    leads = fetch_google_maps_leads(target_count=20)
-    
-    headers = [
-        "Timestamp", "Category", "Business Name", "Location", 
-        "Contact Number", "Google Maps URL", "Pitch Text", "WhatsApp Link"
-    ]
-    
-    with open(OUTPUT_CSV_FILE, mode="w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=headers)
-        writer.writeheader()
-        writer.writerows(leads)
-        
-    print(f"Successfully generated {len(leads)} fresh non-duplicate leads.")
+    if not os.path.exists(CSV_FILE):
+        print(f"❌ ERROR: {CSV_FILE} file missing in root!")
+        return
+
+    df = pd.read_csv(CSV_FILE)
+    history = load_history()
+
+    phone_col, name_col, loc_col = None, None, None
+    for col in df.columns:
+        c = col.lower().strip()
+        if not phone_col and any(k in c for k in ["contact", "phone", "mobile", "num"]):
+            phone_col = col
+        if not name_col and any(k in c for k in ["business", "name", "title"]):
+            name_col = col
+        if not loc_col and any(k in c for k in ["location", "city", "address"]):
+            loc_col = col
+
+    sent_count = 0
+
+    for idx, row in df.iterrows():
+        if sent_count >= max_messages:
+            break
+
+        raw_phone = str(row.get(phone_col, "")).strip() if phone_col else ""
+        b_name = str(row.get(name_col, "team")).strip() if name_col else "team"
+        raw_loc = str(row.get(loc_col, "")).strip() if loc_col else ""
+
+        clean_num = "".join(filter(str.isdigit, raw_phone))
+        if not clean_num or len(clean_num) < 10:
+            continue
+
+        # REPEAT DUPLICATE GUARD
+        if clean_num in history:
+            print(f"Skipping {clean_num} - Already contacted!")
+            continue
+
+        city = extract_city(raw_loc)
+        msg = random.choice(MESSAGE_TEMPLATES).format(business_name=b_name, city=city)
+
+        print(f"Sending ({sent_count + 1}/{max_messages}) to {b_name} ({clean_num})...")
+        if send_whatsapp_message(clean_num, msg):
+            history.add(clean_num)
+            save_history(history)
+            sent_count += 1
+
+            if sent_count < max_messages:
+                delay = random.randint(360, 720)  # 6-12 min delay
+                print(f"Sleeping {delay // 60} mins before next message...")
+                time.sleep(delay)
+
+    print(f"Finished. Total sent: {sent_count}")
+
 
 if __name__ == "__main__":
     main()
