@@ -14,7 +14,7 @@ tz = pytz.timezone("Asia/Kolkata")
 now = datetime.now(tz)
 
 weekday = now.weekday()  # 0: Mon, 1: Tue, ..., 5: Sat, 6: Sun
-current_hour = now.hour  # 24-hour format (e.g., 16 = 4:00 PM)
+current_hour = now.hour  # 24-hour format
 
 # Sunday: Complete OFF
 if weekday == 6:
@@ -28,15 +28,13 @@ if weekday == 5:
         exit(0)
     else:
         max_messages = 10
-
-# Monday to Friday: Max 15 messages
 else:
     max_messages = 15
 
-print(f"Today's limit allowed: {max_messages} messages.")
+print(f"Today's allowed limit: {max_messages} messages.")
 
 # ----------------------------------------------------
-# 2. GREEN-API CREDENTIALS & NATURAL TEMPLATES
+# 2. GREEN-API CREDENTIALS & TEMPLATES
 # ----------------------------------------------------
 ID_INSTANCE = os.environ.get("GREEN_API_ID_INSTANCE")
 API_TOKEN = os.environ.get("GREEN_API_TOKEN_INSTANCE")
@@ -61,7 +59,8 @@ def load_history():
             try:
                 data = json.load(f)
                 return set(data) if isinstance(data, list) else set()
-            except Exception:
+            except Exception as e:
+                print(f"History load error: {e}")
                 return set()
     return set()
 
@@ -72,15 +71,28 @@ def save_history(history_set):
 
 
 def extract_clean_city(raw_location):
-    if not raw_location or str(raw_location).lower() == "nan":
+    if (
+        not raw_location
+        or pd.isna(raw_location)
+        or str(raw_location).strip().lower() == "nan"
+    ):
         return "your area"
-    parts = [p.strip() for p in str(raw_location).split(",") if p.strip()]
-    if len(parts) >= 3:
-        return parts[-2]
-    elif len(parts) == 2:
-        return parts[0]
-    else:
-        return parts[0] if parts else "your area"
+
+    loc_str = str(raw_location).strip()
+    parts = [p.strip() for p in loc_str.split(",") if p.strip()]
+
+    if not parts:
+        return "your area"
+
+    for part in reversed(parts):
+        if (
+            not part.isdigit()
+            and part.lower() not in ["india", "maharashtra"]
+            and len(part) > 2
+        ):
+            return part
+
+    return parts[0]
 
 
 def send_whatsapp_message(phone_number, text_message):
@@ -93,7 +105,7 @@ def send_whatsapp_message(phone_number, text_message):
     payload = {
         "chatId": chat_id,
         "message": text_message,
-        "linkPreview": False,
+        "linkPreview": False,  # Clean text without ugly card preview
     }
     headers = {"Content-Type": "application/json"}
 
@@ -121,6 +133,9 @@ def send_messages(limit):
     df = pd.read_csv(CSV_FILE)
     history = load_history()
 
+    print(f"Total leads in CSV: {len(df)}")
+    print(f"Total already contacted leads in history: {len(history)}")
+
     sent_count = 0
 
     for index, row in df.iterrows():
@@ -128,18 +143,48 @@ def send_messages(limit):
             print(f"Reached today's maximum limit of {limit} messages.")
             break
 
-        phone = str(row.get("Contact Number", "")).strip()
-        business_name = str(row.get("Business Name", "your business")).strip()
-        raw_location = str(row.get("Location", "")).strip()
+        # Dynamic Column Finding
+        phone_col = next(
+            (
+                c
+                for c in df.columns
+                if "contact" in c.lower() or "phone" in c.lower()
+            ),
+            None,
+        )
+        name_col = next(
+            (
+                c
+                for c in df.columns
+                if "business" in c.lower() or "name" in c.lower()
+            ),
+            None,
+        )
+        loc_col = next(
+            (
+                c
+                for c in df.columns
+                if "location" in c.lower() or "city" in c.lower()
+            ),
+            None,
+        )
+
+        phone = str(row.get(phone_col, "")).strip() if phone_col else ""
+        business_name = (
+            str(row.get(name_col, "your business")).strip()
+            if name_col
+            else "your business"
+        )
+        raw_location = str(row.get(loc_col, "")).strip() if loc_col else ""
 
         clean_number = "".join(filter(str.isdigit, phone))
-        if not clean_number or clean_number == "nan":
+        if not clean_number or len(clean_number) < 10:
             continue
 
-        # Check duplicate using Phone Number or Business Name
+        # STRICT DUPLICATE GUARD: Skip if Number OR Business Name exists in History
         if clean_number in history or business_name in history:
             print(
-                f"Skipping {business_name} ({clean_number}) - Already contacted!"
+                f"Skipping Row {index + 1}: {business_name} ({clean_number}) -> Already Contacted Previously!"
             )
             continue
 
@@ -150,7 +195,7 @@ def send_messages(limit):
         )
 
         print(
-            f"Sending message {sent_count + 1} of {limit} to {business_name} ({clean_number})..."
+            f"Sending message {sent_count + 1} of {limit} to new contact: {business_name} ({clean_number})..."
         )
         success = send_whatsapp_message(clean_number, formatted_msg)
 
