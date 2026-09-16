@@ -1,15 +1,15 @@
-name: Scheduled WhatsApp Sender Workflow
+name: WA Scheduled Sender Workflow
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Har ghante chalega
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  run-script:
+  run-wa-script:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -30,7 +30,7 @@ jobs:
           GREEN_API_ID_INSTANCE: ${{ secrets.GREEN_API_ID_INSTANCE }}
           GREEN_API_TOKEN_INSTANCE: ${{ secrets.GREEN_API_TOKEN_INSTANCE }}
         run: |
-          python script.py
+          python wa_sender_script.py
 
       - name: Auto-Save Leads History to Repo
         run: |
