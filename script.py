@@ -45,7 +45,6 @@ GREEN_API_URL = f"https://7107.api.greenapi.com/waInstance{ID_INSTANCE}/sendMess
 CSV_FILE = "Axiomate_Leads.csv"
 HISTORY_FILE = "leads_history.json"
 
-# Dynamic, Clean & Highly Converting Templates
 MESSAGE_TEMPLATES = [
     "Hey team {business_name},\n\nSaw your business profile in {city}. Quick question—how are you currently handling after-hours lead follow-ups?\n\nAt Axiomate AI, we build custom WhatsApp AI bots and smart voice handlers so local businesses never miss an inquiry.\n\nYou can see live demos here: https://axiomate.ai\n\nWould you be open to a quick 5-min chat this week?",
     "Hi there,\n\nCame across {business_name} while looking up top services in {city}.\n\nWe recently helped a few teams automate their daily ops—auto-replying to WhatsApp leads 24/7, booking calls, and syncing CRM workflows automatically.\n\nHere is our site if you'd like to check it out: https://axiomate.ai\n\nLet me know if you'd like to see how it works for your team!",
@@ -60,24 +59,22 @@ def load_history():
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE, "r") as f:
             try:
-                return json.load(f)
+                data = json.load(f)
+                return set(data) if isinstance(data, list) else set()
             except Exception:
-                return []
-    return []
+                return set()
+    return set()
 
 
-def save_history(history_list):
+def save_history(history_set):
     with open(HISTORY_FILE, "w") as f:
-        json.dump(history_list, f, indent=4)
+        json.dump(list(history_set), f, indent=4)
 
 
 def extract_clean_city(raw_location):
-    """Extracts clean city name like 'Nagpur' from full address strings."""
     if not raw_location or str(raw_location).lower() == "nan":
         return "your area"
-
     parts = [p.strip() for p in str(raw_location).split(",") if p.strip()]
-
     if len(parts) >= 3:
         return parts[-2]
     elif len(parts) == 2:
@@ -93,7 +90,6 @@ def send_whatsapp_message(phone_number, text_message):
 
     chat_id = f"{clean_number}@c.us"
 
-    # Set linkPreview: False to remove ugly bot link boxes
     payload = {
         "chatId": chat_id,
         "message": text_message,
@@ -132,36 +128,38 @@ def send_messages(limit):
             print(f"Reached today's maximum limit of {limit} messages.")
             break
 
-        # Extract Raw Values
         phone = str(row.get("Contact Number", "")).strip()
         business_name = str(row.get("Business Name", "your business")).strip()
         raw_location = str(row.get("Location", "")).strip()
 
-        if not phone or phone == "nan":
+        clean_number = "".join(filter(str.isdigit, phone))
+        if not clean_number or clean_number == "nan":
             continue
 
-        # Skip if already contacted
-        if phone in history:
+        # Check duplicate using Phone Number or Business Name
+        if clean_number in history or business_name in history:
+            print(
+                f"Skipping {business_name} ({clean_number}) - Already contacted!"
+            )
             continue
 
-        # Clean City Name
         city = extract_clean_city(raw_location)
-
-        # Select Random Template
         template = random.choice(MESSAGE_TEMPLATES)
         formatted_msg = template.format(
             business_name=business_name, city=city
         )
 
-        print(f"Sending message {sent_count + 1} of {limit} to {phone}...")
-        success = send_whatsapp_message(phone, formatted_msg)
+        print(
+            f"Sending message {sent_count + 1} of {limit} to {business_name} ({clean_number})..."
+        )
+        success = send_whatsapp_message(clean_number, formatted_msg)
 
         if success:
-            history.append(phone)
+            history.add(clean_number)
+            history.add(business_name)
             save_history(history)
             sent_count += 1
 
-            # Smart Human Delay (6 to 12 Minutes)
             if sent_count < limit:
                 delay_sec = random.randint(360, 720)
                 print(
@@ -170,5 +168,4 @@ def send_messages(limit):
                 time.sleep(delay_sec)
 
 
-# Execute Campaign
 send_messages(max_messages)
