@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # GitHub repo me commit ki permission dene ke liye
+  contents: write
 
 jobs:
   run-script:
