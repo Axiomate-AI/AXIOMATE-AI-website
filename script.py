@@ -8,7 +8,7 @@ import pytz
 import requests
 
 # ----------------------------------------------------
-# 1. TIME & DAY SAFETY RULES
+# 1. TIME & DAY SAFETY RULES (NO HOLIDAY BLOCKS)
 # ----------------------------------------------------
 tz = pytz.timezone("Asia/Kolkata")
 now = datetime.now(tz)
@@ -18,16 +18,18 @@ current_hour = now.hour  # 24-hour format
 
 # Sunday: Complete OFF
 if weekday == 6:
-    print("Sunday is OFF. No messages sent.")
+    print("Today is Sunday (OFF). No messages sent.")
     exit(0)
 
 # Saturday: Max 10 messages, till 4:00 PM (16:00)
 if weekday == 5:
     if current_hour >= 16:
-        print("Saturday after 4:00 PM. No messages sent.")
+        print("Saturday after 4:00 PM IST. No messages sent.")
         exit(0)
     else:
         max_messages = 10
+
+# Monday to Friday: Max 15 messages
 else:
     max_messages = 15
 
@@ -55,13 +57,13 @@ MESSAGE_TEMPLATES = [
 # ----------------------------------------------------
 def load_history():
     if os.path.exists(HISTORY_FILE):
-        with open(HISTORY_FILE, "r") as f:
-            try:
+        try:
+            with open(HISTORY_FILE, "r") as f:
                 data = json.load(f)
                 return set(data) if isinstance(data, list) else set()
-            except Exception as e:
-                print(f"History load error: {e}")
-                return set()
+        except Exception as e:
+            print(f"Warning: Could not read history file ({e}). Starting fresh.")
+            return set()
     return set()
 
 
@@ -74,7 +76,7 @@ def extract_clean_city(raw_location):
     if (
         not raw_location
         or pd.isna(raw_location)
-        or str(raw_location).strip().lower() == "nan"
+        or str(raw_location).strip().lower() in ["nan", "none", ""]
     ):
         return "your area"
 
@@ -105,20 +107,22 @@ def send_whatsapp_message(phone_number, text_message):
     payload = {
         "chatId": chat_id,
         "message": text_message,
-        "linkPreview": False,  # Clean text without ugly card preview
+        "linkPreview": False,  # Keeps text clean without ugly website card
     }
     headers = {"Content-Type": "application/json"}
 
     try:
         res = requests.post(GREEN_API_URL, json=payload, headers=headers)
         if res.status_code == 200:
-            print(f"✅ Successfully sent to {clean_number}")
+            print(f"✅ Message successfully sent to {clean_number}")
             return True
         else:
-            print(f"❌ Failed to send to {clean_number}: {res.text}")
+            print(
+                f"❌ Failed sending to {clean_number} (Status {res.status_code}): {res.text}"
+            )
             return False
     except Exception as e:
-        print(f"⚠️ Exception sending message: {e}")
+        print(f"⚠️ Exception occurred while sending message: {e}")
         return False
 
 
@@ -127,14 +131,34 @@ def send_whatsapp_message(phone_number, text_message):
 # ----------------------------------------------------
 def send_messages(limit):
     if not os.path.exists(CSV_FILE):
-        print(f"File {CSV_FILE} not found. Skipping execution.")
+        print(f"Error: {CSV_FILE} file not found. Execution stopped.")
         return
 
     df = pd.read_csv(CSV_FILE)
     history = load_history()
 
-    print(f"Total leads in CSV: {len(df)}")
-    print(f"Total already contacted leads in history: {len(history)}")
+    print(f"Total leads loaded from CSV: {len(df)}")
+    print(f"Total previously contacted entries in history: {len(history)}")
+
+    # Detect Columns Safely
+    phone_col = None
+    name_col = None
+    loc_col = None
+
+    for col in df.columns:
+        c_lower = col.lower().strip()
+        if not phone_col and any(
+            k in c_lower for k in ["contact", "phone", "mobile", "number"]
+        ):
+            phone_col = col
+        if not name_col and any(
+            k in c_lower for k in ["business", "name", "title"]
+        ):
+            name_col = col
+        if not loc_col and any(
+            k in c_lower for k in ["location", "city", "address"]
+        ):
+            loc_col = col
 
     sent_count = 0
 
@@ -143,33 +167,7 @@ def send_messages(limit):
             print(f"Reached today's maximum limit of {limit} messages.")
             break
 
-        # Dynamic Column Finding
-        phone_col = next(
-            (
-                c
-                for c in df.columns
-                if "contact" in c.lower() or "phone" in c.lower()
-            ),
-            None,
-        )
-        name_col = next(
-            (
-                c
-                for c in df.columns
-                if "business" in c.lower() or "name" in c.lower()
-            ),
-            None,
-        )
-        loc_col = next(
-            (
-                c
-                for c in df.columns
-                if "location" in c.lower() or "city" in c.lower()
-            ),
-            None,
-        )
-
-        phone = str(row.get(phone_col, "")).strip() if phone_col else ""
+        raw_phone = str(row.get(phone_col, "")).strip() if phone_col else ""
         business_name = (
             str(row.get(name_col, "your business")).strip()
             if name_col
@@ -177,14 +175,19 @@ def send_messages(limit):
         )
         raw_location = str(row.get(loc_col, "")).strip() if loc_col else ""
 
-        clean_number = "".join(filter(str.isdigit, phone))
+        clean_number = "".join(filter(str.isdigit, raw_phone))
         if not clean_number or len(clean_number) < 10:
             continue
 
-        # STRICT DUPLICATE GUARD: Skip if Number OR Business Name exists in History
-        if clean_number in history or business_name in history:
+        # STRICT DUPLICATE GUARD:
+        # Check against clean phone number AND business name
+        if (
+            clean_number in history
+            or raw_phone in history
+            or (business_name != "your business" and business_name in history)
+        ):
             print(
-                f"Skipping Row {index + 1}: {business_name} ({clean_number}) -> Already Contacted Previously!"
+                f"Skipping Row {index + 1}: [{business_name} | {clean_number}] -> Already contacted earlier!"
             )
             continue
 
@@ -195,22 +198,27 @@ def send_messages(limit):
         )
 
         print(
-            f"Sending message {sent_count + 1} of {limit} to new contact: {business_name} ({clean_number})..."
+            f"Sending message {sent_count + 1}/{limit} to: {business_name} ({clean_number})..."
         )
         success = send_whatsapp_message(clean_number, formatted_msg)
 
         if success:
             history.add(clean_number)
-            history.add(business_name)
+            history.add(raw_phone)
+            if business_name != "your business":
+                history.add(business_name)
+
             save_history(history)
             sent_count += 1
 
             if sent_count < limit:
-                delay_sec = random.randint(360, 720)
+                delay_sec = random.randint(360, 720)  # 6 to 12 minutes
                 print(
                     f"Waiting for {delay_sec // 60} minutes before sending next message..."
                 )
                 time.sleep(delay_sec)
+
+    print(f"Job completed. Sent {sent_count} messages in this run.")
 
 
 send_messages(max_messages)
