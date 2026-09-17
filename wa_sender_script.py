@@ -56,7 +56,7 @@ def send_whatsapp(clean_num, msg):
     headers = {"Content-Type": "application/json"}
     try:
         res = requests.post(url, json=payload, headers=headers, timeout=20)
-        print(f"API Dispatch [{clean_num}]: Code {res.status_code} | {res.text}")
+        print(f"API Dispatch [{clean_num}]: Status {res.status_code} | {res.text}")
         return res.status_code == 200
     except Exception as e:
         print(f"API Error [{clean_num}]: {e}")
@@ -67,37 +67,34 @@ def main():
     print("================ WHATSAPP ENGINE START ================")
 
     if not ID_INSTANCE or not API_TOKEN:
-        print("❌ CRITICAL: GREEN_API Secrets missing!")
+        print("❌ CRITICAL ERROR: GREEN_API Secrets are missing in GitHub Repository Settings!")
+        print(f"ID_INSTANCE Present: {bool(ID_INSTANCE)} | API_TOKEN Present: {bool(API_TOKEN)}")
         return
 
     if not os.path.exists(CSV_FILE):
-        print(f"❌ CRITICAL: File {CSV_FILE} missing!")
+        print(f"❌ CRITICAL ERROR: File '{CSV_FILE}' does not exist in root repository!")
         return
 
     df = pd.read_csv(CSV_FILE)
     history = load_history()
-    print(
-        f"📊 CSV Rows Loaded: {len(df)} | History Count Loaded: {len(history)}"
-    )
+    print(f"📊 CSV Rows Loaded: {len(df)} | History Count Loaded: {len(history)}")
 
     phone_col = None
     for col in df.columns:
-        if any(
-            k in col.lower() for k in ["contact", "phone", "mobile", "number"]
-        ):
+        if any(k in col.lower() for k in ["contact", "phone", "mobile", "number"]):
             phone_col = col
             break
 
     if not phone_col:
-        print(f"❌ CRITICAL: Phone column missing. Columns: {list(df.columns)}")
+        print(f"❌ CRITICAL ERROR: Could not identify phone column. Columns found: {list(df.columns)}")
         return
 
-    print(f"🔍 Selected Column: '{phone_col}'")
+    print(f"🔍 Using Phone Column: '{phone_col}'")
     sent_count = 0
 
     for idx, row in df.iterrows():
         if sent_count >= MAX_MESSAGES:
-            print(f"🎯 Quota of {MAX_MESSAGES} reached.")
+            print(f"🎯 Target quota of {MAX_MESSAGES} messages reached.")
             break
 
         raw_phone = row.get(phone_col)
@@ -108,28 +105,16 @@ def main():
             continue
 
         if clean_num in history:
-            print(f"⏭️ Row {idx + 1}: Skipping {clean_num} (In History)")
+            print(f"⏭️ Row {idx + 1}: Skipping {clean_num} (Already in history)")
             continue
 
-        biz_name = (
-            str(row.get("Business Name", "Team")).strip()
-            if "Business Name" in df.columns
-            else "Team"
-        )
-        location = (
-            str(row.get("Location", "your city")).strip()
-            if "Location" in df.columns
-            else "your city"
-        )
+        biz_name = str(row.get("Business Name", "Team")).strip() if "Business Name" in df.columns else "Team"
+        location = str(row.get("Location", "your city")).strip() if "Location" in df.columns else "your city"
         city = location.split(",")[-1].strip() if "," in location else location
 
-        msg = random.choice(MESSAGE_TEMPLATES).format(
-            business_name=biz_name, city=city
-        )
+        msg = random.choice(MESSAGE_TEMPLATES).format(business_name=biz_name, city=city)
 
-        print(
-            f"🚀 Processing [{sent_count + 1}/{MAX_MESSAGES}] -> {biz_name} ({clean_num})..."
-        )
+        print(f"🚀 Dispatching [{sent_count + 1}/{MAX_MESSAGES}] -> {biz_name} ({clean_num})...")
 
         if send_whatsapp(clean_num, msg):
             history.add(clean_num)
@@ -138,10 +123,10 @@ def main():
 
             if sent_count < MAX_MESSAGES:
                 delay = random.randint(120, 240)
-                print(f"⏳ Sleeping {delay}s before next send...")
+                print(f"⏳ Sleeping {delay} seconds before next dispatch...")
                 time.sleep(delay)
 
-    print(f"================ FINISHED | Total Sent: {sent_count} ================")
+    print(f"================ DISPATCH COMPLETED | Total Sent: {sent_count} ================")
 
 
 if __name__ == "__main__":
