@@ -12,15 +12,19 @@ now = datetime.now(tz)
 weekday = now.weekday()
 current_hour = now.hour
 
+print(f"--- SENDER START ---")
+print(f"Current IST Time: {now.strftime('%Y-%m-%d %H:%M:%S')}")
+print(f"Current Day: {weekday} (6 = Sunday), Hour: {current_hour}")
+
 if weekday == 6:
-    print("Sunday execution blocked. System OFF.")
+    print("Sunday execution blocked. Exiting.")
     exit(0)
 
-if current_hour < 9 or current_hour >= 19:
-    print(f"Outside working window (Current IST Hour: {current_hour}). System OFF.")
+if current_hour < 9 or current_hour >= 20:
+    print(f"Outside working window (9 AM - 8 PM IST). Current IST Hour: {current_hour}. Exiting.")
     exit(0)
 
-max_messages = 3  # Green API Developer Free Tier daily limit
+max_messages = 3  # Green API Developer Plan daily limit
 
 ID_INSTANCE = os.environ.get("GREEN_API_ID_INSTANCE")
 API_TOKEN = os.environ.get("GREEN_API_TOKEN_INSTANCE")
@@ -43,8 +47,10 @@ def load_history():
     if os.path.exists(HISTORY_FILE):
         try:
             with open(HISTORY_FILE, "r") as f:
-                return set(json.load(f))
-        except Exception:
+                data = json.load(f)
+                return set(data)
+        except Exception as e:
+            print(f"Error reading history file: {e}")
             return set()
     return set()
 
@@ -78,7 +84,7 @@ def send_whatsapp_message(phone, msg):
 
     try:
         res = requests.post(GREEN_API_URL, json=payload, headers=headers, timeout=15)
-        print(f"Response ({clean_num}): Status {res.status_code} | {res.text}")
+        print(f"API Call ({clean_num}): Status Code {res.status_code} | {res.text}")
         return res.status_code == 200
     except Exception as e:
         print(f"Error sending to {clean_num}: {e}")
@@ -87,29 +93,39 @@ def send_whatsapp_message(phone, msg):
 
 def main():
     if not os.path.exists(CSV_FILE):
-        print(f"❌ ERROR: {CSV_FILE} missing in repository root!")
+        print(f"❌ ERROR: {CSV_FILE} file missing in root!")
         return
 
     df = pd.read_csv(CSV_FILE)
-    history = load_history()
+    print(f"Successfully loaded {len(df)} rows from {CSV_FILE}.")
 
-    phone_col, name_col, loc_col = None, None, None
-    for col in df.columns:
-        c = col.lower().strip()
-        if not phone_col and any(k in c for k in ["contact", "phone", "mobile", "num"]):
-            phone_col = col
-        if not name_col and any(k in c for k in ["business", "name", "title"]):
-            name_col = col
-        if not loc_col and any(k in c for k in ["location", "city", "address"]):
-            loc_col = col
+    history = load_history()
+    print(f"Currently loaded {len(history)} sent items from history.")
+
+    # Explicit column fallback matching
+    phone_col = "Contact Number" if "Contact Number" in df.columns else None
+    name_col = "Business Name" if "Business Name" in df.columns else None
+    loc_col = "Location" if "Location" in df.columns else None
+
+    if not phone_col:
+        for col in df.columns:
+            if any(k in col.lower() for k in ["contact", "phone", "mobile", "num"]):
+                phone_col = col
+                break
+
+    if not phone_col:
+        print("❌ CRITICAL ERROR: Could not identify Phone/Contact column in CSV!")
+        print(f"Columns present: {list(df.columns)}")
+        return
 
     sent_count = 0
 
     for idx, row in df.iterrows():
         if sent_count >= max_messages:
+            print(f"Reached daily target quota of {max_messages} messages.")
             break
 
-        raw_phone = str(row.get(phone_col, "")).strip() if phone_col else ""
+        raw_phone = str(row.get(phone_col, "")).strip()
         b_name = str(row.get(name_col, "team")).strip() if name_col else "team"
         raw_loc = str(row.get(loc_col, "")).strip() if loc_col else ""
 
@@ -118,24 +134,24 @@ def main():
             continue
 
         if clean_num in history:
-            print(f"Skipping {clean_num} - Already present in history!")
+            print(f"Skip {clean_num} -> Already present in leads_history.json")
             continue
 
         city = extract_city(raw_loc)
         msg = random.choice(MESSAGE_TEMPLATES).format(business_name=b_name, city=city)
 
-        print(f"Dispatching ({sent_count + 1}/{max_messages}) to {b_name} ({clean_num})...")
+        print(f"Dispatching [{sent_count + 1}/{max_messages}] -> {b_name} ({clean_num})...")
         if send_whatsapp_message(clean_num, msg):
             history.add(clean_num)
             save_history(history)
             sent_count += 1
 
             if sent_count < max_messages:
-                delay = random.randint(180, 360)  # Human simulation delay (3 to 6 mins)
-                print(f"Waiting {delay}s before next send...")
+                delay = random.randint(180, 300)  # Human simulation delay (3 to 5 minutes)
+                print(f"Waiting {delay} seconds before sending next message...")
                 time.sleep(delay)
 
-    print(f"Execution complete. Messages sent in this run: {sent_count}")
+    print(f"--- SENDER FINISHED --- Total Sent: {sent_count}")
 
 
 if __name__ == "__main__":
