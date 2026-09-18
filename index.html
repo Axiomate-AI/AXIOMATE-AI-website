@@ -472,6 +472,66 @@
             transform: scale(1.08);
             opacity: 0.85;
         }
+
+        /* ===== MULTI-CURRENCY SWITCHER STYLES ===== */
+        .currency-switcher {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(17, 28, 46, 0.85);
+            border: 1px solid rgba(0, 200, 255, 0.25);
+            border-radius: 9999px;
+            padding: 3px;
+            gap: 2px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .currency-switcher:hover {
+            border-color: rgba(0, 242, 254, 0.5);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
+        }
+        .currency-btn {
+            padding: 5px 12px;
+            border-radius: 9999px;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            line-height: 1;
+            font-family: inherit;
+        }
+        .currency-btn:hover:not(.active) {
+            color: #ffffff;
+            background: rgba(0, 242, 254, 0.08);
+        }
+        .currency-btn.active {
+            color: #0b1120;
+            background: linear-gradient(135deg, #00f2fe, #00c8ff);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.6), 0 0 20px rgba(0, 242, 254, 0.3);
+            text-shadow: none;
+        }
+        @media (max-width: 640px) {
+            .currency-switcher {
+                padding: 2px;
+            }
+            .currency-btn {
+                padding: 4px 9px;
+                font-size: 11px;
+            }
+        }
+        @media (max-width: 380px) {
+            .currency-btn {
+                padding: 4px 7px;
+                font-size: 10.5px;
+                letter-spacing: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -501,8 +561,14 @@
                 <a href="#contact" class="nav-link">Contact Us</a>
             </div>
 
-            <div class="flex items-center gap-3">
-                <a href="#contact" class="gradient-primary text-white font-semibold px-5 py-2 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.25)] transition">Book Free Demo</a>
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- ===== CURRENCY SWITCHER (NEW) ===== -->
+                <div class="currency-switcher" id="currencySwitcher" role="group" aria-label="Currency selector">
+                    <button type="button" class="currency-btn active" data-currency="INR" aria-label="Switch to Indian Rupee">₹<span class="hidden sm:inline"> INR</span></button>
+                    <button type="button" class="currency-btn" data-currency="USD" aria-label="Switch to US Dollar">$<span class="hidden sm:inline"> USD</span></button>
+                </div>
+
+                <a href="#contact" class="gradient-primary text-white font-semibold px-4 sm:px-5 py-2 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.25)] transition">Book Free Demo</a>
                 <div class="md:hidden text-gray-300 text-xl"><i class="fas fa-bars"></i></div>
             </div>
         </div>
@@ -617,7 +683,7 @@
                         <i class="fas fa-globe text-2xl text-teal-400"></i>
                         <h3 class="text-white font-bold text-base">Single Page AI Website</h3>
                     </div>
-                    <div class="price-tag text-2xl my-1">₹1,999</div>
+                    <div class="price-tag text-2xl my-1" data-inr="₹1,999" data-usd="$79">₹1,999</div>
                     <p class="text-slate-300 text-xs">Single page AI website with visual basic layout, fast loading &amp; mobile responsive.</p>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
                         <a href="single-demo.html" target="_blank" class="text-teal-400 hover:text-teal-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Live Demo / Sample</a>
@@ -645,17 +711,17 @@
                     <div class="space-y-1.5 mt-1">
                         <div class="sub-pack flex items-center justify-between">
                             <span class="text-slate-300 text-xs">🥉 Starter Pack</span>
-                            <span class="text-teal-300 font-semibold text-sm">₹1,599</span>
+                            <span class="text-teal-300 font-semibold text-sm" data-inr="₹1,599" data-usd="$49">₹1,599</span>
                             <span class="text-slate-400 text-[10px]">(3 Videos)</span>
                         </div>
                         <div class="sub-pack popular flex items-center justify-between border-teal-400/30">
                             <span class="text-slate-300 text-xs">🥈 Growth Pack <span class="text-teal-400 text-[10px] font-bold ml-1">⭐ Most Popular</span></span>
-                            <span class="text-teal-300 font-semibold text-sm">₹2,799</span>
+                            <span class="text-teal-300 font-semibold text-sm" data-inr="₹2,799" data-usd="$89">₹2,799</span>
                             <span class="text-slate-400 text-[10px]">(6 Videos)</span>
                         </div>
                         <div class="sub-pack flex items-center justify-between">
                             <span class="text-slate-300 text-xs">🥇 Pro Pack</span>
-                            <span class="text-teal-300 font-semibold text-sm">₹4,999</span>
+                            <span class="text-teal-300 font-semibold text-sm" data-inr="₹4,999" data-usd="$179">₹4,999</span>
                             <span class="text-slate-400 text-[10px]">(12 Videos)</span>
                         </div>
                     </div>
@@ -682,18 +748,18 @@
                     <div class="space-y-1.5 mt-1">
                         <div class="whatsapp-option recommended flex items-center justify-between">
                             <span class="text-slate-300 text-xs">Option 1 <span class="text-teal-400 text-[10px] font-bold ml-1">⭐ Recommended</span></span>
-                            <span class="text-teal-300 font-semibold text-sm">₹499<small class="text-slate-400 text-[10px] font-normal">/mo</small></span>
-                            <span class="text-slate-400 text-[10px]">+ ₹2,999 setup</span>
+                            <span class="text-teal-300 font-semibold text-sm"><span data-inr="₹499" data-usd="$9">₹499</span><small class="text-slate-400 text-[10px] font-normal">/mo</small></span>
+                            <span class="text-slate-400 text-[10px]" data-inr="+ ₹2,999 setup" data-usd="+ $149 setup">+ ₹2,999 setup</span>
                         </div>
                         <div class="whatsapp-option flex items-center justify-between">
                             <span class="text-slate-300 text-xs">Option 2 (All-in-One)</span>
-                            <span class="text-teal-300 font-semibold text-sm">₹3,498</span>
+                            <span class="text-teal-300 font-semibold text-sm" data-inr="₹3,498" data-usd="$129">₹3,498</span>
                             <span class="text-slate-400 text-[10px]">1st month</span>
                         </div>
                         <div class="whatsapp-option flex items-center justify-between">
                             <span class="text-slate-300 text-xs">Option 3 (Pro Plan)</span>
-                            <span class="text-teal-300 font-semibold text-sm">₹1,499<small class="text-slate-400 text-[10px] font-normal">/mo</small></span>
-                            <span class="text-slate-400 text-[10px]">+ ₹5,999 setup</span>
+                            <span class="text-teal-300 font-semibold text-sm"><span data-inr="₹1,499" data-usd="$49">₹1,499</span><small class="text-slate-400 text-[10px] font-normal">/mo</small></span>
+                            <span class="text-slate-400 text-[10px]" data-inr="+ ₹5,999 setup" data-usd="+ $299 setup">+ ₹5,999 setup</span>
                         </div>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
@@ -716,7 +782,7 @@
                         <i class="fas fa-store text-2xl text-blue-400"></i>
                         <h3 class="text-white font-bold text-base">E-Commerce Catalog &amp; Website</h3>
                     </div>
-                    <div class="price-tag text-2xl my-1">₹3,499 One-Time Setup</div>
+                    <div class="price-tag text-2xl my-1" data-inr="₹3,499 One-Time Setup" data-usd="$139 One-Time Setup">₹3,499 One-Time Setup</div>
                     <p class="text-slate-300 text-xs">Product Catalog Listing, Add to Cart, Order via WhatsApp &amp; more.</p>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
                         <a href="ecom-demo.html" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Live Demo / Sample</a>
@@ -752,7 +818,7 @@
                         <i class="fas fa-map-marked-alt text-2xl text-yellow-400"></i>
                         <h3 class="text-white font-bold text-base">Google Business Profile</h3>
                     </div>
-                    <div class="price-tag text-2xl my-1">₹399</div>
+                    <div class="price-tag text-2xl my-1" data-inr="₹399" data-usd="$15">₹399</div>
                     <p class="text-slate-300 text-xs">Google Map Pin Location setup &amp; Business Profile Optimization.</p>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
                         <a href="google-gallery.html" target="_blank" class="text-yellow-400 hover:text-yellow-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Sample Map Listing</a>
@@ -774,7 +840,7 @@
                         <i class="fas fa-images text-2xl text-purple-400"></i>
                         <h3 class="text-white font-bold text-base">Promo Banner Ads</h3>
                     </div>
-                    <div class="price-tag text-2xl my-1">₹999</div>
+                    <div class="price-tag text-2xl my-1" data-inr="₹999" data-usd="$39">₹999</div>
                     <p class="text-slate-300 text-xs">Pack of 5 High-Converting Social Media Banners.</p>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
                         <a href="promo-gallery.html" target="_blank" class="text-purple-400 hover:text-purple-300 text-xs font-medium transition flex items-center gap-1"><i class="fas fa-external-link-alt text-[10px]"></i> View Sample Banners</a>
@@ -805,7 +871,7 @@
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col relative">
                     <span class="inline-block bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">Ideal For New Businesses</span>
                     <h3 class="text-xl font-bold text-white">Essential Bundle</h3>
-                    <div class="price-tag text-3xl my-2">₹5,999</div>
+                    <div class="price-tag text-3xl my-2" data-inr="₹5,999" data-usd="$299">₹5,999</div>
                     <p class="text-slate-300 text-sm">One-Time · Save ₹1,800+ vs Pay-Per-Service</p>
                     <ul class="text-slate-300 text-sm space-y-2 mt-4 flex-grow">
                         <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> Single Page AI Business Website</li>
@@ -823,7 +889,7 @@
                 <div class="card-bg p-6 rounded-2xl neon-border border-[#00c8ff] transition flex flex-col relative">
                     <span class="absolute -top-3 right-4 gradient-primary text-white text-xs font-bold px-4 py-1 rounded-full">⭐ MOST POPULAR - COMPLETE SUITE</span>
                     <h3 class="text-xl font-bold text-white">Dominator Bundle</h3>
-                    <div class="price-tag text-3xl my-2">₹11,999</div>
+                    <div class="price-tag text-3xl my-2" data-inr="₹11,999" data-usd="$499">₹11,999</div>
                     <p class="text-slate-300 text-sm">One-Time · Save ₹3,500+ (All-In-One Business Automation)</p>
                     <ul class="text-slate-300 text-sm space-y-2 mt-4 flex-grow">
                         <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> E-Commerce Catalog Website (100 Products + WhatsApp Checkout)</li>
@@ -852,7 +918,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
-                <!-- Card 1: AI Voice Agent (UPDATED PRICES) -->
+                <!-- Card 1: AI Voice Agent -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">High Margin</span>
@@ -860,8 +926,8 @@
                     <h3 class="text-xl font-bold text-white">AI Voice Agent (24/7 Smart Call Handler)</h3>
                     <p class="text-slate-300 text-sm mt-1">Never miss a client call again. AI answers calls &amp; books appointments automatically.</p>
                     <div class="mt-3 space-y-1 text-sm">
-                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Setup:</span> ₹4,999 (One-Time)</p>
-                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Monthly:</span> ₹3,499/month</p>
+                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Setup:</span> <span data-inr="₹4,999" data-usd="$399">₹4,999</span> (One-Time)</p>
+                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Monthly:</span> <span data-inr="₹3,499" data-usd="$99">₹3,499</span>/month</p>
                     </div>
                     <ul class="mt-3 text-slate-300 text-sm space-y-1.5 flex-grow">
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> 24/7 Inbound Call Answering (Human-like Voice)</li>
@@ -874,7 +940,7 @@
                     </a>
                 </div>
 
-                <!-- Card 2: Smart CRM & WhatsApp Lead Nurturing (UPDATED PRICES) -->
+                <!-- Card 2: Smart CRM & WhatsApp Lead Nurturing -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">Lead Recovery</span>
@@ -882,8 +948,8 @@
                     <h3 class="text-xl font-bold text-white">Smart CRM &amp; WhatsApp Lead Nurturing</h3>
                     <p class="text-slate-300 text-sm mt-1">Convert raw leads into paying clients with zero manual effort.</p>
                     <div class="mt-3 space-y-1 text-sm">
-                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Setup:</span> ₹2,999 (One-Time)</p>
-                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Monthly:</span> ₹2,499/month</p>
+                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Setup:</span> <span data-inr="₹2,999" data-usd="$199">₹2,999</span> (One-Time)</p>
+                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Monthly:</span> <span data-inr="₹2,499" data-usd="$79">₹2,499</span>/month</p>
                     </div>
                     <ul class="mt-3 text-slate-300 text-sm space-y-1.5 flex-grow">
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> Instant WhatsApp Auto-reply on New Leads</li>
@@ -896,7 +962,7 @@
                     </a>
                 </div>
 
-                <!-- Card 3: AI Social Media & Auto-Posting Automation (UPDATED PRICES) -->
+                <!-- Card 3: AI Social Media & Auto-Posting Automation -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">Monthly Retainer</span>
@@ -904,8 +970,8 @@
                     <h3 class="text-xl font-bold text-white">AI Social Media &amp; Auto-Posting Automation</h3>
                     <p class="text-slate-300 text-sm mt-1">Fully automated content creation and posting on autopilot.</p>
                     <div class="mt-3 space-y-1 text-sm">
-                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Setup:</span> ₹1,999 (One-Time)</p>
-                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Monthly:</span> ₹2,199/month</p>
+                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Setup:</span> <span data-inr="₹1,999" data-usd="$149">₹1,999</span> (One-Time)</p>
+                        <p class="text-slate-200"><span class="text-teal-400 font-semibold">Monthly:</span> <span data-inr="₹2,199" data-usd="$59">₹2,199</span>/month</p>
                     </div>
                     <ul class="mt-3 text-slate-300 text-sm space-y-1.5 flex-grow">
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> 12 AI-Generated Premium Posts/Graphics per month</li>
@@ -920,7 +986,7 @@
 
             </div>
 
-            <!-- Special Combo Card (UPDATED PRICES AND SAVINGS) -->
+            <!-- Special Combo Card -->
             <div class="mt-10 max-w-3xl mx-auto">
                 <div class="card-bg p-6 rounded-2xl neon-border border-[#00c8ff] relative">
                     <span class="absolute -top-3 right-4 gradient-primary text-white text-xs font-bold px-4 py-1 rounded-full">🔥 Special Launch Offer (Save ₹2,000)</span>
@@ -929,16 +995,16 @@
                     <div class="mt-3 space-y-1 text-sm">
                         <p class="text-slate-200">
                             <span class="text-teal-400 font-semibold">Setup:</span>
-                            <s style="color:#888;">₹9,997</s>
-                            <b style="color:#00ffcc;">₹7,999 One-Time Setup</b>
+                            <s style="color:#888;" data-inr="₹9,997" data-usd="$899">₹9,997</s>
+                            <b style="color:#00ffcc;" data-inr="₹7,999 One-Time Setup" data-usd="$599 One-Time Setup">₹7,999 One-Time Setup</b>
                         </p>
                         <p class="text-slate-200">
                             <span class="text-teal-400 font-semibold">Monthly:</span>
-                            <s style="color:#888;">₹8,197</s>
-                            <b style="color:#00ffcc;">₹6,499/month</b>
+                            <s style="color:#888;" data-inr="₹8,197" data-usd="$299">₹8,197</s>
+                            <b style="color:#00ffcc;" data-inr="₹6,499/month" data-usd="$199/month">₹6,499/month</b>
                         </p>
                     </div>
-                    <p class="text-slate-300 text-sm mt-2"><i class="fas fa-bullseye text-teal-400 mr-1"></i> Best For: Businesses, Clinics, Real Estate, and Local Services</p>
+                    <p class="text-slate-300 text-sm mt-2"><i class="fas fa-bullseye text-teal-400 mr-1"></i> Best For: Small Businesses, Clinics, Real Estate, and Local Services</p>
                     <a href="https://wa.me/919004600946?text=Hi%21%20I%20want%20to%20claim%20the%20Axiomate%20All-in-One%20AI%20Growth%20Suite%20Launch%20Offer." target="_blank" class="mt-4 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-3 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
                         <i class="fab fa-whatsapp mr-2"></i> Claim Launch Bundle Offer
                     </a>
@@ -1020,10 +1086,10 @@
         </div>
     </section>
 
-    <!-- ===== CONTACT SECTION (with Founder integrated as compact Trust & Support sidebar) ===== -->
+    <!-- ===== CONTACT SECTION ===== -->
     <section id="contact" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
         <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <!-- LEFT: Trust & Support Card (includes Founder details — restructured per Option C) -->
+            <!-- LEFT: Trust & Support Card -->
             <div class="card-bg p-6 rounded-2xl neon-border flex flex-col">
                 <!-- Founder Compact Block -->
                 <div class="flex items-start gap-4 mb-5">
@@ -1097,7 +1163,7 @@
                 </a>
                 <span class="text-slate-300">© 2026 Axiomate AI. All Rights Reserved.</span>
             </div>
-            <!-- Social Icons: Instagram + LinkedIn only, no WhatsApp, with spacing -->
+            <!-- Social Icons -->
             <div class="flex gap-5 text-slate-300 mr-4 md:mr-20 footer-socials">
                 <a href="https://www.instagram.com/axiomate_ai/" target="_blank" rel="noopener noreferrer" style="color: #E4405F;">
                     <i class="fab fa-instagram text-3xl"></i>
@@ -1128,9 +1194,11 @@
         </div>
     </div>
 
-    <!-- ===== TOGGLE + MODAL + FORM JAVASCRIPT ===== -->
+    <!-- ===== TOGGLE + MODAL + FORM + CURRENCY JAVASCRIPT ===== -->
     <script>
-        // Toggle details
+        // ============================================
+        // TOGGLE DETAILS
+        // ============================================
         function toggleDetails(btn) {
             const card = btn.closest('.card-bg');
             const details = card.querySelector('.toggle-details');
@@ -1147,7 +1215,9 @@
             }
         }
 
-        // Video modal functions
+        // ============================================
+        // VIDEO MODAL
+        // ============================================
         function openVideoModal(videoSrc) {
             var modal = document.getElementById('videoModal');
             var player = document.getElementById('sampleVideoPlayer');
@@ -1171,7 +1241,9 @@
             }
         }
 
-        // Form submission to Make.com webhook + WhatsApp redirect
+        // ============================================
+        // FORM SUBMISSION (Make.com + WhatsApp)
+        // ============================================
         function submitForm(e) {
             e.preventDefault();
 
@@ -1210,6 +1282,147 @@
 
             return false;
         }
+
+        // ============================================
+        // MULTI-CURRENCY SWITCHER LOGIC
+        // ============================================
+        (function() {
+            const STORAGE_KEY = 'axiomate_currency';
+            const DEFAULT_CURRENCY = 'INR';
+            const SUPPORTED = ['INR', 'USD'];
+
+            // --- Apply currency to all price elements with data-inr / data-usd ---
+            function applyCurrency(currency) {
+                const elements = document.querySelectorAll('[data-inr][data-usd]');
+                elements.forEach(el => {
+                    const value = currency === 'INR' ?
+                        el.getAttribute('data-inr') :
+                        el.getAttribute('data-usd');
+                    if (value !== null) {
+                        el.textContent = value;
+                    }
+                });
+
+                // Update toggle button active state
+                document.querySelectorAll('.currency-btn').forEach(btn => {
+                    if (btn.dataset.currency === currency) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+
+                // Store current state on html element for debugging / analytics
+                document.documentElement.setAttribute('data-currency', currency);
+            }
+
+            // --- Determine currency from URL param ---
+            function getUrlCurrency() {
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    const c = (params.get('currency') || '').toUpperCase();
+                    return SUPPORTED.includes(c) ? c : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            // --- Determine currency from localStorage ---
+            function getStoredCurrency() {
+                try {
+                    const c = (localStorage.getItem(STORAGE_KEY) || '').toUpperCase();
+                    return SUPPORTED.includes(c) ? c : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            // --- IP-based auto detection ---
+            async function detectCurrencyByIP() {
+                try {
+                    // Primary: ipapi.co (free, no key required, 1000/day limit)
+                    const res = await fetch('https://ipapi.co/json/', { cache: 'no-store' });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.country_code) {
+                            return data.country_code === 'IN' ? 'INR' : 'USD';
+                        }
+                    }
+                } catch (err) {
+                    console.warn('[Currency] ipapi.co failed, trying fallback…', err);
+                }
+
+                try {
+                    // Fallback: ip-api.com (free, no key required, 45 req/min)
+                    const res2 = await fetch('http://ip-api.com/json/?fields=countryCode', { cache: 'no-store' });
+                    if (res2.ok) {
+                        const data2 = await res2.json();
+                        if (data2 && data2.countryCode) {
+                            return data2.countryCode === 'IN' ? 'INR' : 'USD';
+                        }
+                    }
+                } catch (err2) {
+                    console.warn('[Currency] ip-api.com fallback also failed.', err2);
+                }
+
+                // Ultimate fallback
+                return DEFAULT_CURRENCY;
+            }
+
+            // --- Persist + apply ---
+            function setCurrency(currency, persist) {
+                if (!SUPPORTED.includes(currency)) return;
+                if (persist !== false) {
+                    try { localStorage.setItem(STORAGE_KEY, currency); } catch (e) {}
+                }
+                applyCurrency(currency);
+            }
+
+            // --- Bind manual toggle buttons ---
+            function bindToggleButtons() {
+                document.querySelectorAll('.currency-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const cur = this.dataset.currency;
+                        if (SUPPORTED.includes(cur)) {
+                            setCurrency(cur, true);
+                        }
+                    });
+                });
+            }
+
+            // --- Initialization ---
+            async function initCurrency() {
+                // 1) Always apply default first to prevent FOUC
+                applyCurrency(DEFAULT_CURRENCY);
+
+                // 2) Bind buttons immediately
+                bindToggleButtons();
+
+                // 3) Resolve currency by priority: URL > localStorage > IP
+                const urlCurrency = getUrlCurrency();
+                if (urlCurrency) {
+                    setCurrency(urlCurrency, true);
+                    return;
+                }
+
+                const storedCurrency = getStoredCurrency();
+                if (storedCurrency) {
+                    setCurrency(storedCurrency, false);
+                    return;
+                }
+
+                // 4) IP auto-detection (async)
+                const detected = await detectCurrencyByIP();
+                setCurrency(detected, true);
+            }
+
+            // Run when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initCurrency);
+            } else {
+                initCurrency();
+            }
+        })();
     </script>
 
 </body>
