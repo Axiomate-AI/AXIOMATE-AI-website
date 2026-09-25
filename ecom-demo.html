@@ -1,542 +1,1437 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÉLAN | Luxury Curated Essentials</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXIOMATE | EDITORIAL — The New Luxury Catalog</title>
+<meta name="description" content="AXIOMATE | EDITORIAL — A curated catalog of tech, apparel, accessories, footwear, travel & lifestyle objects. Designed in Mumbai. Showcase storefront by Axiomate AI.">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Montserrat:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        serif: ['Playfair Display', 'Georgia', 'serif'],
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                    colors: {
-                        gold: {
-                            DEFAULT: '#C5A059',
-                            light: '#D4B87A',
-                            dark: '#B08D3E',
-                        },
-                        cream: '#FAF8F5',
-                        charcoal: '#111111',
-                    },
-                    animation: {
-                        'pulse-dot': 'pulseDot 2s infinite ease-in-out',
-                        'fade-in': 'fadeIn 0.4s ease-out',
-                        'slide-in-right': 'slideInRight 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                    },
-                    keyframes: {
-                        pulseDot: {
-                            '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-                            '50%': { opacity: '0.5', transform: 'scale(1.3)' },
-                        },
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideInRight: {
-                            '0%': { transform: 'translateX(100%)' },
-                            '100%': { transform: 'translateX(0)' },
-                        },
-                    },
-                }
-            }
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display:  ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          accent:   ['Cinzel', 'Georgia', 'serif'],
+          body:     ['Outfit', 'ui-sans-serif', 'system-ui', 'sans-serif']
+        },
+        colors: {
+          cream:  '#F7F4EF',
+          cream2: '#F1EDE5',
+          paper:  '#FFFFFF',
+          ink:    '#161513',
+          ink2:   '#3A3733',
+          gold:   '#B8935A',
+          gold2:  '#D4B27A',
+          line:   '#E7E1D4',
+          muted:  '#8A8578'
+        },
+        boxShadow: {
+          soft:   '0 4px 22px rgba(22,21,19,0.05)',
+          lift:   '0 22px 45px -22px rgba(22,21,19,0.22)',
+          drawer: '-28px 0 60px -26px rgba(22,21,19,0.28)'
         }
-    </script>
+      }
+    }
+  }
+</script>
 
-    <!-- FontAwesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-        body {
-            background-color: #FAF8F5;
-            color: #111111;
-        }
+<style>
+  /* ══════════════════════════════════════════════
+     THEME TOKENS
+  ══════════════════════════════════════════════ */
+  :root {
+    --cream: #F7F4EF;
+    --paper: #FFFFFF;
+    --ink:   #161513;
+    --gold:  #B8935A;
+    --line:  #E7E1D4;
+  }
 
-        /* Cart & Modal scrollbar */
-        .lux-scroll::-webkit-scrollbar {
-            width: 4px;
-        }
-        .lux-scroll::-webkit-scrollbar-track {
-            background: #F3F0EB;
-            border-radius: 8px;
-        }
-        .lux-scroll::-webkit-scrollbar-thumb {
-            background: #D6CEBF;
-            border-radius: 8px;
-        }
-        .lux-scroll::-webkit-scrollbar-thumb:hover {
-            background: #B8AD99;
-        }
+  html { scroll-behavior: smooth; }
 
-        /* Product card hover */
-        .product-card {
-            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.08), 0 4px 18px rgba(0, 0, 0, 0.04);
-            border-color: #C5A059;
-        }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
 
-        /* Gold accent underline */
-        .gold-underline {
-            background: linear-gradient(to right, #C5A059, #D4B87A);
-            height: 2px;
-            width: 60px;
-            margin: 0 auto;
-            border-radius: 1px;
-        }
+  ::selection { background: #B8935A; color: #FFFFFF; }
 
-        /* Filter pill active */
-        .filter-pill.active {
-            background-color: #C5A059;
-            color: white;
-            border-color: #C5A059;
-            box-shadow: 0 4px 14px rgba(197, 160, 89, 0.3);
-        }
+  /* ══════════════════════════════════════════════
+     FLUID RESPONSIVE TYPOGRAPHY (clamp)
+  ══════════════════════════════════════════════ */
+  .t-hero {
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+  }
+  .t-h2 {
+    font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+  }
+  .t-h3 {
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    line-height: 1.25;
+  }
+  .t-card-title {
+    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+  }
+  .t-price {
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    letter-spacing: 0.005em;
+  }
+  .t-body {
+    font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+    line-height: 1.7;
+  }
+  .t-desc {
+    font-size: clamp(0.78rem, 1vw, 0.9rem);
+    line-height: 1.65;
+  }
+  .t-eyebrow {
+    font-size: clamp(0.62rem, 0.85vw, 0.76rem);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .t-label {
+    font-size: clamp(0.6rem, 0.8vw, 0.72rem);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  .t-btn {
+    font-size: clamp(0.68rem, 0.9vw, 0.78rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .t-meta {
+    font-size: clamp(0.7rem, 0.95vw, 0.85rem);
+    line-height: 1.6;
+  }
 
-        /* Cart drawer */
-        .cart-drawer {
-            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .cart-drawer.open {
-            transform: translateX(0);
-        }
-        .cart-drawer.closed {
-            transform: translateX(100%);
-        }
+  /* ══════════════════════════════════════════════
+     SCROLLBARS
+  ══════════════════════════════════════════════ */
+  ::-webkit-scrollbar { width: 7px; height: 7px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D8D2C3; border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: #B8B2A3; }
+  .thin-scroll::-webkit-scrollbar { width: 4px; }
+  .thin-scroll::-webkit-scrollbar-thumb { background: #D8D2C3; }
 
-        /* Overlay */
-        .overlay {
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-        .overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+  /* ══════════════════════════════════════════════
+     MARQUEE
+  ══════════════════════════════════════════════ */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 38s linear infinite;
+  }
 
-        /* Checkout modal */
-        .modal-container {
-            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .modal-container.hidden {
-            opacity: 0;
-            transform: scale(0.92) translateY(30px);
-            pointer-events: none;
-        }
-        .modal-container.visible {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            pointer-events: auto;
-        }
-    </style>
+  /* ══════════════════════════════════════════════
+     PRODUCT CARD HOVER IMAGE SWAP
+  ══════════════════════════════════════════════ */
+  .p-card {
+    transition: transform .55s cubic-bezier(.22,.61,.36,1),
+                box-shadow .55s cubic-bezier(.22,.61,.36,1);
+    will-change: transform;
+  }
+  .p-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 26px 50px -26px rgba(22,21,19,0.22);
+  }
+  .p-media {
+    position: relative;
+    overflow: hidden;
+    background: #F1EDE5;
+    aspect-ratio: 4 / 5;
+  }
+  .p-img-a,
+  .p-img-b {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity .85s cubic-bezier(.22,.61,.36,1),
+                transform 1.4s cubic-bezier(.19,1,.22,1);
+  }
+  .p-img-b { opacity: 0; }
+  .p-card:hover .p-img-a { opacity: 0; transform: scale(1.06); }
+  .p-card:hover .p-img-b { opacity: 1; transform: scale(1.06); }
+
+  /* ══════════════════════════════════════════════
+     FILTER PILLS
+  ══════════════════════════════════════════════ */
+  .pill {
+    transition: background-color .3s ease, color .3s ease,
+                border-color .3s ease, transform .18s ease;
+  }
+  .pill.is-active {
+    background: var(--ink);
+    color: #FFFFFF;
+    border-color: var(--ink);
+  }
+  .pill:active { transform: scale(.96); }
+
+  /* ══════════════════════════════════════════════
+     CART DRAWER
+  ══════════════════════════════════════════════ */
+  #cartDrawer { transition: transform .6s cubic-bezier(.22,.61,.36,1); }
+  #cartDrawer.is-closed { transform: translateX(103%); }
+  #cartDrawer.is-open   { transform: translateX(0); }
+
+  #overlay { transition: opacity .4s ease, visibility .4s ease; }
+  #overlay.is-hidden { opacity: 0; visibility: hidden; }
+  #overlay.is-shown  { opacity: 1; visibility: visible; }
+
+  /* ══════════════════════════════════════════════
+     BADGE BUMP
+  ══════════════════════════════════════════════ */
+  @keyframes bump {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  .bump { animation: bump .45s cubic-bezier(.34,1.56,.64,1); }
+
+  /* ══════════════════════════════════════════════
+     LIVE DOT
+  ══════════════════════════════════════════════ */
+  @keyframes pulseDot {
+    0%, 100% { opacity: 1;   transform: scale(1); }
+    50%      { opacity: .3;  transform: scale(1.6); }
+  }
+  .live-dot {
+    position: relative;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #22C55E;
+  }
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: #22C55E;
+    animation: pulseDot 2.1s ease-in-out infinite;
+  }
+
+  /* ══════════════════════════════════════════════
+     NAV UNDERLINE
+  ══════════════════════════════════════════════ */
+  .nav-a { position: relative; }
+  .nav-a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    height: 1px;
+    width: 0;
+    background: var(--gold);
+    transition: width .42s cubic-bezier(.22,.61,.36,1);
+  }
+  .nav-a:hover::after { width: 100%; }
+
+  /* ══════════════════════════════════════════════
+     BUTTON PRESS
+  ══════════════════════════════════════════════ */
+  .btn-press {
+    transition: transform .14s ease, background-color .3s ease,
+                color .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .btn-press:active { transform: scale(.97); }
+
+  /* ══════════════════════════════════════════════
+     QUANTITY STEPPERS
+  ══════════════════════════════════════════════ */
+  .qty { transition: background-color .2s ease, color .2s ease; }
+  .qty:active { transform: scale(.9); }
+
+  /* ══════════════════════════════════════════════
+     TOAST
+  ══════════════════════════════════════════════ */
+  #toast { transition: opacity .4s ease, transform .4s cubic-bezier(.22,.61,.36,1); }
+  #toast.is-hidden { opacity: 0; transform: translate(-50%, 20px); pointer-events: none; }
+  #toast.is-shown  { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ══════════════════════════════════════════════
+     FADE-UP ENTRANCE
+  ══════════════════════════════════════════════ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp .65s cubic-bezier(.22,.61,.36,1) both; }
+
+  /* ══════════════════════════════════════════════
+     CUSTOM SELECT
+  ══════════════════════════════════════════════ */
+  select.lux-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none;
+  }
+
+  /* ══════════════════════════════════════════════
+     PAYMENT CARD
+  ══════════════════════════════════════════════ */
+  .pay-card { transition: border-color .3s ease, background-color .3s ease; }
+  .pay-card:has(input:checked) {
+    border-color: var(--gold);
+    background: rgba(184,147,90,0.05);
+  }
+
+  /* ══════════════════════════════════════════════
+     REDUCED MOTION
+  ══════════════════════════════════════════════ */
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition-duration: .01ms !important; }
+  }
+</style>
 </head>
-<body class="font-sans antialiased selection:bg-gold/20 selection:text-charcoal">
 
-    <!-- ============ LIVE DEMO BADGE ============ -->
-    <div class="fixed top-4 right-4 z-[100] bg-white/80 backdrop-blur-md border border-amber-200/50 shadow-lg text-slate-800 text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full flex items-center gap-2 animate-fade-in">
-        <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+<body class="font-body bg-cream text-ink antialiased">
+
+<!-- ══════════════════════════════════════════════
+     ANNOUNCEMENT MARQUEE
+══════════════════════════════════════════════ -->
+<div class="bg-ink text-cream border-b border-ink/20 py-2.5 overflow-hidden">
+  <div class="marquee-track">
+    <div class="flex items-center gap-10 pr-10 whitespace-nowrap">
+      <span class="t-label font-display font-semibold">Free Express Shipping Across India</span>
+      <span class="text-gold text-[8px]">◆</span>
+      <span class="t-label font-display font-semibold">100% Authentic Guarantee</span>
+      <span class="text-gold text-[8px]">◆</span>
+      <span class="t-label font-display font-semibold">Concierge on WhatsApp · 24/7</span>
+      <span class="text-gold text-[8px]">◆</span>
+      <span class="t-label font-display font-semibold">Designed in Mumbai</span>
+      <span class="text-gold text-[8px]">◆</span>
+    </div>
+    <div class="flex items-center gap-10 pr-10 whitespace-nowrap" aria-hidden="true">
+      <span class="t-label font-display font-semibold">Free Express Shipping Across India</span>
+      <span class="text-gold text-[8px]">◆</span>
+      <span class="t-label font-display font-semibold">100% Authentic Guarantee</span>
+      <span class="text-gold text-[8px]">◆</span>
+      <span class="t-label font-display font-semibold">Concierge on WhatsApp · 24/7</span>
+      <span class="text-gold text-[8px]">◆</span>
+      <span class="t-label font-display font-semibold">Designed in Mumbai</span>
+      <span class="text-gold text-[8px]">◆</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════ -->
+<header class="sticky top-0 z-50 bg-cream/92 backdrop-blur-xl border-b border-line">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-7 lg:px-10">
+    <div class="flex items-center justify-between gap-5 h-[70px] sm:h-[74px]">
+
+      <!-- Brand -->
+      <a href="#top" class="flex items-center gap-2.5 shrink-0 group">
+        <span class="w-1.5 h-1.5 bg-gold rounded-full group-hover:scale-150 transition-transform duration-500"></span>
+        <span class="font-display font-bold text-[13px] sm:text-[14.5px] tracking-[0.14em] uppercase text-ink">
+          Axiomate
+          <span class="text-ink/25 font-normal mx-1">|</span>
+          <span class="font-accent font-medium text-gold">Editorial</span>
         </span>
-        <span class="text-[10px] tracking-[0.15em] text-slate-700">LIVE DEMO CATALOG</span>
+      </a>
+
+      <!-- Nav -->
+      <nav class="hidden lg:flex items-center gap-9 ml-6">
+        <a href="#catalog" class="nav-a font-display font-semibold t-label text-ink/60 hover:text-ink transition-colors">Collection</a>
+        <a href="#catalog" class="nav-a font-display font-semibold t-label text-ink/60 hover:text-ink transition-colors">Categories</a>
+        <a href="#atelier" class="nav-a font-display font-semibold t-label text-ink/60 hover:text-ink transition-colors">Atelier</a>
+      </nav>
+
+      <!-- Right cluster -->
+      <div class="flex items-center gap-2.5 sm:gap-3.5 ml-auto">
+
+        <!-- Search -->
+        <div class="relative hidden md:block">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] text-ink/35 pointer-events-none"></i>
+          <input id="searchInput" type="text" oninput="onSearch()" placeholder="Search"
+                 class="w-[140px] lg:w-[190px] pl-9 pr-3 py-2.5 bg-paper border border-line rounded-full text-[12.5px] text-ink placeholder-ink/35 focus:outline-none focus:border-gold focus:w-[180px] lg:focus:w-[230px] transition-all duration-300">
+        </div>
+
+        <!-- Live demo pill -->
+        <div class="hidden sm:flex items-center gap-2 bg-paper border border-line rounded-full pl-3 pr-3.5 py-1.5 shadow-soft shrink-0">
+          <span class="live-dot"></span>
+          <span class="font-display font-semibold text-[9px] tracking-[0.2em] uppercase text-ink/55 whitespace-nowrap">Live Demo</span>
+        </div>
+
+        <!-- Cart -->
+        <button onclick="openCart()" aria-label="Open shopping bag"
+                class="btn-press relative w-11 h-11 rounded-full bg-paper border border-line hover:border-gold flex items-center justify-center cursor-pointer shadow-soft shrink-0">
+          <i class="fa-solid fa-bag-shopping text-[14.5px] text-ink/80"></i>
+          <span id="cartBadge"
+                class="hidden absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-gold text-white font-display font-bold text-[10px] rounded-full items-center justify-center shadow-sm">0</span>
+        </button>
+
+        <!-- Mobile search toggle -->
+        <button onclick="toggleMobileSearch()" aria-label="Search"
+                class="md:hidden w-11 h-11 rounded-full bg-paper border border-line flex items-center justify-center cursor-pointer shrink-0">
+          <i class="fa-solid fa-magnifying-glass text-[13px] text-ink/80"></i>
+        </button>
+      </div>
     </div>
 
-    <!-- ============ STICKY HEADER ============ -->
-    <header class="sticky top-0 z-50 bg-cream/90 backdrop-blur-lg border-b border-[#E8E3DB] shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 md:h-18">
-                <!-- Logo -->
-                <a href="#" class="font-serif text-2xl md:text-3xl font-bold tracking-wide text-charcoal select-none" onclick="scrollToTop()">
-                    ÉLAN
-                </a>
+    <!-- Mobile search -->
+    <div id="mobileSearchWrap" class="hidden md:hidden pb-4">
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-[11px] text-ink/35 pointer-events-none"></i>
+        <input id="searchMobile" type="text" oninput="onSearch(true)" placeholder="Search the collection"
+               class="w-full pl-10 pr-4 py-2.5 bg-paper border border-line rounded-full text-[12.5px] placeholder-ink/35 focus:outline-none focus:border-gold transition-colors">
+      </div>
+    </div>
+  </div>
+</header>
 
-                <!-- Cart Icon -->
-                <button onclick="openCart()" id="cartTriggerBtn" class="relative flex items-center justify-center w-11 h-11 rounded-full bg-white border border-gray-200 hover:border-gold shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group">
-                    <i class="fa-solid fa-bag-shopping text-lg text-gray-700 group-hover:text-gold transition-colors"></i>
-                    <span id="cartBadge" class="absolute -top-1.5 -right-1.5 bg-gold text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-md shadow-gold/30 transition-all duration-300" style="display: none;">0</span>
-                </button>
-            </div>
-        </div>
-    </header>
+<!-- ══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<section id="top" class="relative overflow-hidden border-b border-line">
+  <div class="absolute -top-20 right-[-6%] w-[420px] h-[420px] rounded-full bg-gold/10 blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] left-[-8%] w-[380px] h-[380px] rounded-full bg-gold/8 blur-[130px] pointer-events-none"></div>
 
-    <!-- ============ HERO SECTION ============ -->
-    <section class="relative pt-16 pb-10 md:pt-24 md:pb-16 px-4 sm:px-6 lg:px-8 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-charcoal tracking-tight leading-tight mb-4">
-                Curated Elegance
-            </h1>
-            <div class="gold-underline mb-6"></div>
-            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8 font-light tracking-wide">
-                Discover a hand-selected collection of luxury essentials, delivered with discretion.
-            </p>
-            <button onclick="document.getElementById('product-section').scrollIntoView({behavior:'smooth'})" 
-            class="inline-flex items-center gap-2 px-8 py-3.5 bg-gold hover:bg-gold-light text-white font-semibold rounded-full shadow-xl shadow-gold/20 hover:shadow-gold/30 transition-all duration-300 text-sm tracking-wider uppercase cursor-pointer">
-                Explore Collection <i class="fa-solid fa-arrow-right text-xs ml-1"></i>
-            </button>
-        </div>
-    </section>
+  <div class="relative max-w-[1400px] mx-auto px-5 sm:px-7 lg:px-10 pt-16 pb-14 sm:pt-24 sm:pb-20 lg:pt-28 lg:pb-24">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
-    <!-- ============ PRODUCT SECTION ============ -->
-    <section id="product-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <!-- Search & Filters -->
-        <div class="flex flex-col sm:flex-row items-center justify-between mb-10 gap-4">
-            <div class="relative w-full sm:w-80">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search essentials..."
-                class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-full text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all text-sm shadow-sm">
-            </div>
-            <div class="flex flex-wrap gap-2">
-                <button onclick="filterByCategory('All')" id="filterAll" class="filter-pill active px-4 py-1.5 rounded-full text-xs font-medium border border-gray-300 bg-white text-gray-600 hover:border-gold transition-all cursor-pointer tracking-wide">All</button>
-                <button onclick="filterByCategory('Fashion')" id="filterFashion" class="filter-pill px-4 py-1.5 rounded-full text-xs font-medium border border-gray-300 bg-white text-gray-600 hover:border-gold transition-all cursor-pointer tracking-wide">Fashion</button>
-                <button onclick="filterByCategory('Electronics')" id="filterElectronics" class="filter-pill px-4 py-1.5 rounded-full text-xs font-medium border border-gray-300 bg-white text-gray-600 hover:border-gold transition-all cursor-pointer tracking-wide">Electronics</button>
-                <button onclick="filterByCategory('Lifestyle')" id="filterLifestyle" class="filter-pill px-4 py-1.5 rounded-full text-xs font-medium border border-gray-300 bg-white text-gray-600 hover:border-gold transition-all cursor-pointer tracking-wide">Lifestyle</button>
-            </div>
+      <!-- Copy -->
+      <div class="lg:col-span-7">
+        <p class="font-accent font-medium t-eyebrow text-gold mb-6 flex items-center gap-3.5">
+          <span class="w-8 h-px bg-gold"></span>
+          Autumn · Winter 2026 — Volume 01
+        </p>
+
+        <h1 class="font-display font-bold t-hero uppercase text-ink mb-6">
+          The New<br>
+          <span class="font-accent font-medium italic normal-case text-gold" style="letter-spacing:.01em">Editorial</span>
+          Catalog.
+        </h1>
+
+        <p class="t-body font-light text-ink/60 max-w-xl mb-9">
+          A curated selection of tech, apparel, accessories, footwear, travel &amp; lifestyle objects — chosen for material honesty, quiet design, and everyday longevity.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a href="#catalog"
+             class="btn-press inline-flex items-center gap-3 bg-ink hover:bg-gold text-cream t-btn font-display font-bold px-8 py-4 rounded-full shadow-soft cursor-pointer">
+            Explore Catalog
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+          <a href="#atelier"
+             class="font-display font-semibold t-label text-ink/55 hover:text-gold border-b border-ink/15 hover:border-gold pb-1 transition-colors">
+            Our Story
+          </a>
         </div>
 
-        <!-- Product Grid -->
-        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-            <!-- JS rendered -->
+        <div class="flex flex-wrap items-center gap-x-10 gap-y-5 mt-12 pt-8 border-t border-line">
+          <div>
+            <p class="font-display font-bold t-h3 text-ink leading-none mb-1.5">08</p>
+            <p class="font-display font-semibold t-label text-ink/40">Objects</p>
+          </div>
+          <div>
+            <p class="font-display font-bold t-h3 text-ink leading-none mb-1.5">48h</p>
+            <p class="font-display font-semibold t-label text-ink/40">Delivery</p>
+          </div>
+          <div>
+            <p class="font-display font-bold t-h3 text-ink leading-none mb-1.5">100%</p>
+            <p class="font-display font-semibold t-label text-ink/40">Authentic</p>
+          </div>
         </div>
-        <div id="noResults" class="text-center py-20 hidden">
-            <i class="fa-regular fa-face-sad-tear text-5xl text-gray-300 mb-4"></i>
-            <p class="text-gray-500 font-light text-lg">No pieces found matching your taste.</p>
-            <button onclick="resetFilters()" class="mt-4 text-gold hover:text-gold-dark underline underline-offset-4 font-medium cursor-pointer">Clear all filters</button>
-        </div>
-    </section>
+      </div>
 
-    <!-- ============ CART DRAWER OVERLAY ============ -->
-    <div id="cartOverlay" class="overlay hidden fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm" onclick="closeCart()"></div>
+      <!-- Editorial imagery -->
+      <div class="lg:col-span-5">
+        <div class="grid grid-cols-2 gap-4 sm:gap-5">
+          <div class="rounded-2xl overflow-hidden bg-cream2 aspect-[3/4] shadow-soft">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=700&q=80"
+                 alt="Editorial — tailored silhouette"
+                 class="w-full h-full object-cover" loading="lazy">
+          </div>
+          <div class="rounded-2xl overflow-hidden bg-cream2 aspect-[3/4] shadow-soft mt-8 sm:mt-10">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80"
+                 alt="Editorial — objects still life"
+                 class="w-full h-full object-cover" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- ============ CART DRAWER ============ -->
-    <div id="cartDrawer" class="cart-drawer closed fixed top-0 right-0 h-full w-full max-w-md bg-white z-[70] shadow-2xl flex flex-col border-l border-gray-100">
-        <!-- Header -->
-        <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-white/95">
-            <h2 class="font-serif text-xl font-bold text-charcoal tracking-wide">Your Cart</h2>
-            <button onclick="closeCart()" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer text-gray-500">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
+<!-- ══════════════════════════════════════════════
+     STICKY FILTER BAR
+══════════════════════════════════════════════ -->
+<div class="sticky top-[70px] sm:top-[74px] z-40 bg-cream/94 backdrop-blur-xl border-b border-line">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-7 lg:px-10 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 sm:gap-3 overflow-x-auto w-full sm:w-auto thin-scroll pb-1 sm:pb-0">
+      <button data-cat="All"          class="pill is-active shrink-0 font-display font-semibold t-label border border-line bg-paper text-ink/70 px-4 py-2 rounded-full cursor-pointer hover:border-ink/30">All</button>
+      <button data-cat="Apparel"      class="pill shrink-0 font-display font-semibold t-label border border-line bg-paper text-ink/70 px-4 py-2 rounded-full cursor-pointer hover:border-ink/30">Apparel</button>
+      <button data-cat="Accessories"  class="pill shrink-0 font-display font-semibold t-label border border-line bg-paper text-ink/70 px-4 py-2 rounded-full cursor-pointer hover:border-ink/30">Accessories</button>
+      <button data-cat="Tech & Audio" class="pill shrink-0 font-display font-semibold t-label border border-line bg-paper text-ink/70 px-4 py-2 rounded-full cursor-pointer hover:border-ink/30">Tech &amp; Audio</button>
+      <button data-cat="Footwear"     class="pill shrink-0 font-display font-semibold t-label border border-line bg-paper text-ink/70 px-4 py-2 rounded-full cursor-pointer hover:border-ink/30">Footwear</button>
+      <button data-cat="Lifestyle"    class="pill shrink-0 font-display font-semibold t-label border border-line bg-paper text-ink/70 px-4 py-2 rounded-full cursor-pointer hover:border-ink/30">Lifestyle</button>
+      <button data-cat="Travel"       class="pill shrink-0 font-display font-semibold t-label border border-line bg-paper text-ink/70 px-4 py-2 rounded-full cursor-pointer hover:border-ink/30">Travel</button>
+    </div>
+    <p id="countLabel" class="font-display font-semibold t-label text-ink/40 whitespace-nowrap">08 Objects</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     CATALOG
+══════════════════════════════════════════════ -->
+<main id="catalog" class="max-w-[1400px] mx-auto px-5 sm:px-7 lg:px-10 pt-14 sm:pt-16 lg:pt-20 pb-20 sm:pb-24">
+
+  <!-- Section head -->
+  <div class="mb-10 sm:mb-14 max-w-3xl">
+    <p class="font-accent font-medium t-eyebrow text-gold mb-5 flex items-center gap-3.5">
+      <span class="w-8 h-px bg-gold"></span>
+      The Collection
+    </p>
+    <h2 class="font-display font-bold t-h2 uppercase text-ink mb-4">
+      Eight objects,<br>
+      <span class="font-accent font-medium italic normal-case text-gold" style="letter-spacing:.01em">selected with intent.</span>
+    </h2>
+    <p class="t-body font-light text-ink/50 max-w-xl">
+      Each piece is chosen for craft, provenance, and how it lives in daily use — not for trend.
+    </p>
+  </div>
+
+  <!-- Product grid: 1 / 2 / 4 columns -->
+  <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 lg:gap-6"></div>
+
+  <!-- Empty state -->
+  <div id="emptyState" class="hidden text-center py-24">
+    <i class="fa-regular fa-gem text-[40px] text-ink/15 mb-5 block"></i>
+    <p class="font-display font-bold t-h3 uppercase text-ink/70 mb-2">Nothing here</p>
+    <p class="t-desc font-light text-ink/40 mb-6">No objects match the current filter.</p>
+    <button onclick="resetFilters()"
+            class="btn-press font-display font-bold t-label text-gold border-b border-gold/40 pb-1.5 hover:border-gold cursor-pointer">
+      Reset Filters
+    </button>
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════════════
+     ATELIER / BRAND STORY
+══════════════════════════════════════════════ -->
+<section id="atelier" class="border-t border-line bg-cream2">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-7 lg:px-10 py-16 sm:py-20 lg:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+
+      <div class="lg:col-span-5">
+        <p class="font-accent font-medium t-eyebrow text-gold mb-5 flex items-center gap-3.5">
+          <span class="w-8 h-px bg-gold"></span>
+          The Atelier
+        </p>
+        <h2 class="font-display font-bold t-h2 uppercase text-ink mb-6">
+          Fewer pieces.<br>
+          <span class="font-accent font-medium italic normal-case text-gold" style="letter-spacing:.01em">Better made.</span>
+        </h2>
+        <p class="t-body font-light text-ink/55 mb-5">
+          Every object in this catalog is vetted against twelve quality checkpoints — from material provenance and finish consistency to the integrity of the smallest hardware.
+        </p>
+        <p class="t-desc font-light text-ink/45 mb-9">
+          Based in Mumbai. Partnered with tanneries in Tuscany, mills in Biella, and family-run ateliers across India.
+        </p>
+
+        <div class="grid grid-cols-3 gap-6 max-w-md">
+          <div>
+            <p class="font-display font-bold t-h3 text-ink leading-none mb-2">12</p>
+            <p class="font-display font-semibold t-label text-ink/40 leading-snug">Quality<br>Checks</p>
+          </div>
+          <div>
+            <p class="font-display font-bold t-h3 text-ink leading-none mb-2">48h</p>
+            <p class="font-display font-semibold t-label text-ink/40 leading-snug">Atelier<br>Turnaround</p>
+          </div>
+          <div>
+            <p class="font-display font-bold t-h3 text-ink leading-none mb-2">100%</p>
+            <p class="font-display font-semibold t-label text-ink/40 leading-snug">Authentic<br>Materials</p>
+          </div>
         </div>
-        <!-- Cart Items -->
-        <div id="cartItemsContainer" class="flex-1 overflow-y-auto lux-scroll px-6 py-5 space-y-4">
-            <div id="emptyCartMsg" class="text-center py-16">
-                <i class="fa-regular fa-bag-shopping text-5xl text-gray-300 mb-4 block"></i>
-                <p class="text-gray-500 font-light">Your cart is empty</p>
-                <p class="text-gray-400 text-sm mt-1">Add luxury pieces to begin</p>
-            </div>
+      </div>
+
+      <div class="lg:col-span-7">
+        <div class="grid grid-cols-2 gap-4 sm:gap-5">
+          <div class="rounded-2xl overflow-hidden bg-cream aspect-[4/5] shadow-soft">
+            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=80"
+                 alt="Atelier — craftsmanship detail"
+                 class="w-full h-full object-cover" loading="lazy">
+          </div>
+          <div class="rounded-2xl overflow-hidden bg-cream aspect-[4/5] shadow-soft mt-8 sm:mt-10">
+            <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=900&q=80"
+                 alt="Atelier — material detail"
+                 class="w-full h-full object-cover" loading="lazy">
+          </div>
         </div>
-        <!-- Footer -->
-        <div class="border-t border-gray-100 px-6 py-5 bg-white">
-            <div class="flex justify-between mb-2 text-sm text-gray-500">
-                <span>Subtotal</span>
-                <span id="cartSubtotal" class="font-semibold text-charcoal text-base">₹0</span>
-            </div>
-            <p class="text-xs text-gray-400 mb-4">Shipping calculated at checkout</p>
-            <button onclick="openCheckout()" id="checkoutBtn" disabled
-            class="w-full py-3.5 bg-gold hover:bg-gold-light text-white font-semibold rounded-full shadow-lg shadow-gold/20 hover:shadow-gold/30 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none">
-                <i class="fa-brands fa-whatsapp"></i> Checkout via WhatsApp
-            </button>
-        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     TRUST STRIP
+══════════════════════════════════════════════ -->
+<section class="border-t border-line bg-cream">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-7 lg:px-10 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-3 gap-9 md:gap-6">
+
+    <div class="flex items-start gap-4 md:border-r md:border-line md:pr-8">
+      <span class="shrink-0 w-11 h-11 rounded-full bg-paper border border-line flex items-center justify-center shadow-soft">
+        <i class="fa-solid fa-truck-fast text-gold text-[14px]"></i>
+      </span>
+      <div>
+        <p class="font-display font-bold t-label text-ink mb-2">Express Insured Shipping</p>
+        <p class="t-desc font-light text-ink/50">Fully insured 48-hour delivery across India.</p>
+      </div>
     </div>
 
-    <!-- ============ CHECKOUT MODAL OVERLAY ============ -->
-    <div id="checkoutOverlay" class="overlay hidden fixed inset-0 bg-black/50 z-[80] backdrop-blur-sm flex items-center justify-center p-4" onclick="closeCheckout()"></div>
-
-    <!-- ============ CHECKOUT MODAL ============ -->
-    <div id="checkoutModal" class="modal-container hidden fixed inset-0 z-[90] flex items-center justify-center p-4 pointer-events-none">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto lux-scroll border border-gray-100" onclick="event.stopPropagation()">
-            <button onclick="closeCheckout()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors cursor-pointer text-gray-500">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h2 class="font-serif text-2xl font-bold text-charcoal mb-6">Delivery Details</h2>
-
-            <form id="checkoutForm" onsubmit="handleCheckoutSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">Full Name *</label>
-                    <input type="text" id="customerName" required placeholder="Enter your name"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-charcoal placeholder-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">Delivery Address *</label>
-                    <textarea id="customerAddress" required rows="2" placeholder="Street, landmark, city..."
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-charcoal placeholder-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all text-sm resize-none"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">Payment Method *</label>
-                    <div class="flex gap-3">
-                        <label class="flex items-center gap-2 cursor-pointer bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1 hover:border-gold transition-all has-[:checked]:border-gold has-[:checked]:bg-gold/5 has-[:checked]:ring-2 has-[:checked]:ring-gold/20">
-                            <input type="radio" name="paymentMethod" value="COD" checked class="accent-gold w-4 h-4">
-                            <span class="text-gray-700 font-medium text-sm">Cash on Delivery</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1 hover:border-gold transition-all has-[:checked]:border-gold has-[:checked]:bg-gold/5 has-[:checked]:ring-2 has-[:checked]:ring-gold/20">
-                            <input type="radio" name="paymentMethod" value="UPI" class="accent-gold w-4 h-4">
-                            <span class="text-gray-700 font-medium text-sm">UPI / Online</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Order Summary -->
-                <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Order Summary</h3>
-                    <div id="checkoutOrderSummary" class="text-sm text-gray-600 space-y-1 max-h-32 overflow-y-auto lux-scroll"></div>
-                    <div class="border-t border-gray-200 mt-3 pt-3 flex justify-between font-semibold">
-                        <span class="text-gray-700">Grand Total</span>
-                        <span id="checkoutGrandTotal" class="text-gold text-lg">₹0</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full py-3.5 bg-gold hover:bg-gold-light text-white font-semibold rounded-full shadow-lg shadow-gold/20 hover:shadow-gold/30 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Send to WhatsApp
-                </button>
-            </form>
-        </div>
+    <div class="flex items-start gap-4 md:border-r md:border-line md:pr-8">
+      <span class="shrink-0 w-11 h-11 rounded-full bg-paper border border-line flex items-center justify-center shadow-soft">
+        <i class="fa-solid fa-shield-halved text-gold text-[14px]"></i>
+      </span>
+      <div>
+        <p class="font-display font-bold t-label text-ink mb-2">Secure UPI &amp; COD</p>
+        <p class="t-desc font-light text-ink/50">Verified UPI direct, or cash on delivery.</p>
+      </div>
     </div>
 
-    <!-- ============ FOOTER ============ -->
-    <footer class="bg-white border-t border-gray-100 py-12 px-4 sm:px-6 lg:px-8 mt-10">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-            <div>
-                <h3 class="font-serif text-xl font-bold text-charcoal mb-3">ÉLAN</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Curating refined essentials for the modern connoisseur. Based in Mumbai, delivering luxury with care.</p>
-            </div>
-            <div>
-                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Contact</h3>
-                <ul class="space-y-2.5 text-sm text-gray-600">
-                    <li class="flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-phone text-gold w-4"></i>
-                        <a href="tel:+919004600946" class="hover:text-gold transition-colors">+91 9004600946</a>
-                    </li>
-                    <li class="flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-brands fa-whatsapp text-gold w-4"></i>
-                        <a href="https://api.whatsapp.com/send?phone=919004600946" target="_blank" class="hover:text-gold transition-colors">WhatsApp</a>
-                    </li>
-                    <li class="flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-regular fa-envelope text-gold w-4"></i>
-                        <a href="mailto:owaisworkai@gmail.com" class="hover:text-gold transition-colors break-all">owaisworkai@gmail.com</a>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Visit Us</h3>
-                <ul class="space-y-2.5 text-sm text-gray-600">
-                    <li class="flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-location-dot text-gold w-4"></i>
-                        <span>Mumbai, Maharashtra</span>
-                    </li>
-                    <li class="flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-map-pin text-gray-400 w-4"></i>
-                        <span>400102</span>
-                    </li>
-                </ul>
-            </div>
+    <div class="flex items-start gap-4">
+      <span class="shrink-0 w-11 h-11 rounded-full bg-paper border border-line flex items-center justify-center shadow-soft">
+        <i class="fa-brands fa-whatsapp text-gold text-[16px]"></i>
+      </span>
+      <div>
+        <p class="font-display font-bold t-label text-ink mb-2">24/7 Concierge</p>
+        <p class="t-desc font-light text-ink/50">A private stylist on WhatsApp for sizing &amp; orders.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer class="bg-paper border-t border-line">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-7 lg:px-10 py-14 sm:py-16 lg:py-20">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+
+      <!-- Brand bio -->
+      <div class="md:col-span-5">
+        <div class="flex items-center gap-2.5 mb-5">
+          <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
+          <span class="font-display font-bold text-[13.5px] tracking-[0.14em] uppercase text-ink">
+            Axiomate <span class="text-ink/25 font-normal mx-1">|</span>
+            <span class="font-accent font-medium text-gold">Editorial</span>
+          </span>
         </div>
-        <div class="border-t border-gray-100 mt-10 pt-6 text-center text-xs text-gray-400">
-            <p>&copy; 2026 ÉLAN. All rights reserved. Crafted with precision.</p>
+        <p class="t-desc font-light text-ink/55 leading-[1.9] max-w-sm mb-3">
+          A quiet luxury catalog built in Mumbai — a considered selection of apparel, accessories and objects chosen for material, craft and longevity.
+        </p>
+        <p class="t-desc font-light text-ink/40 italic max-w-sm mb-7">
+          Axiomate AI — Elevating brands with high-converting, ultra-luxury digital storefronts.
+        </p>
+        <div class="flex items-center gap-3">
+          <a href="https://www.instagram.com/axiomate_ai" target="_blank" rel="noopener" aria-label="Instagram"
+             class="w-10 h-10 rounded-full border border-line hover:border-gold flex items-center justify-center text-ink/45 hover:text-gold transition-colors">
+            <i class="fa-brands fa-instagram text-[13px]"></i>
+          </a>
+          <a href="https://api.whatsapp.com/send?phone=919004600946" target="_blank" rel="noopener" aria-label="WhatsApp"
+             class="w-10 h-10 rounded-full border border-line hover:border-gold flex items-center justify-center text-ink/45 hover:text-gold transition-colors">
+            <i class="fa-brands fa-whatsapp text-[14px]"></i>
+          </a>
+          <a href="mailto:axiomate.ai@gmail.com" aria-label="Email"
+             class="w-10 h-10 rounded-full border border-line hover:border-gold flex items-center justify-center text-ink/45 hover:text-gold transition-colors">
+            <i class="fa-regular fa-envelope text-[13px]"></i>
+          </a>
         </div>
-    </footer>
+      </div>
 
-    <!-- ============ JAVASCRIPT ============ -->
-    <script>
-        (function() {
-            // Luxury Product Data
-            const products = [
-                { id: 1, name: "Men's Handtailored Cotton Shirt", category: "Fashion", price: 1299, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop", hasVariants: true, variantLabel: "Size", variants: ["S", "M", "L", "XL"] },
-                { id: 2, name: "High-Fidelity ANC Headphones", category: "Electronics", price: 2499, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=500&fit=crop", hasVariants: true, variantLabel: "Color", variants: ["Matte Black", "Cream White"] },
-                { id: 3, name: "Ceremonial Match Green Tea (500g)", category: "Lifestyle", price: 499, image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=500&fit=crop", hasVariants: false, variantLabel: "", variants: [] },
-                { id: 4, name: "Italian Calfskin Leather Wallet", category: "Fashion", price: 899, image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&h=500&fit=crop", hasVariants: true, variantLabel: "Color", variants: ["Chestnut", "Black"] },
-                { id: 5, name: "Smart Executive Watch", category: "Electronics", price: 3199, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=500&fit=crop", hasVariants: true, variantLabel: "Finish", variants: ["Rose Gold", "Onyx Black"] },
-                { id: 6, name: "Handcrafted Ceramic Mug Set (Set of 4)", category: "Lifestyle", price: 649, image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&h=500&fit=crop", hasVariants: false, variantLabel: "", variants: [] }
-            ];
+      <!-- Client care -->
+      <div class="md:col-span-4">
+        <h3 class="font-display font-bold t-label text-ink/40 mb-6">Client Care</h3>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3.5">
+            <i class="fa-solid fa-phone text-gold text-[11px] mt-1.5 w-4 text-center"></i>
+            <a href="tel:+919004600946" class="t-meta font-light text-ink/65 hover:text-gold transition-colors">+91 90046 00946</a>
+          </li>
+          <li class="flex items-start gap-3.5">
+            <i class="fa-brands fa-whatsapp text-gold text-[13px] mt-1 w-4 text-center"></i>
+            <a href="https://api.whatsapp.com/send?phone=919004600946" target="_blank" rel="noopener" class="t-meta font-light text-ink/65 hover:text-gold transition-colors">WhatsApp Concierge</a>
+          </li>
+          <li class="flex items-start gap-3.5">
+            <i class="fa-regular fa-envelope text-gold text-[11px] mt-1.5 w-4 text-center"></i>
+            <a href="mailto:axiomate.ai@gmail.com" class="t-meta font-light text-ink/65 hover:text-gold transition-colors break-all">axiomate.ai@gmail.com</a>
+          </li>
+          <li class="flex items-start gap-3.5">
+            <i class="fa-brands fa-instagram text-gold text-[13px] mt-1 w-4 text-center"></i>
+            <a href="https://www.instagram.com/axiomate_ai" target="_blank" rel="noopener" class="t-meta font-light text-ink/65 hover:text-gold transition-colors break-all">@axiomate_ai</a>
+          </li>
+        </ul>
+      </div>
 
-            let cart = [];
-            let activeCategory = 'All';
-            let searchQuery = '';
+      <!-- Atelier -->
+      <div class="md:col-span-3">
+        <h3 class="font-display font-bold t-label text-ink/40 mb-6">Atelier</h3>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3.5">
+            <i class="fa-solid fa-location-dot text-gold text-[11px] mt-1.5 w-4 text-center"></i>
+            <span class="t-meta font-light text-ink/65 leading-[1.85]">Mumbai, Maharashtra<br>India — 400102</span>
+          </li>
+          <li class="flex items-start gap-3.5">
+            <i class="fa-regular fa-clock text-gold text-[11px] mt-1.5 w-4 text-center"></i>
+            <span class="t-meta font-light text-ink/65 leading-[1.85]">Mon – Sat<br>10:00 – 19:00 IST</span>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-            const productGrid = document.getElementById('productGrid');
-            const noResults = document.getElementById('noResults');
-            const cartDrawer = document.getElementById('cartDrawer');
-            const cartOverlay = document.getElementById('cartOverlay');
-            const cartItemsContainer = document.getElementById('cartItemsContainer');
-            const cartSubtotal = document.getElementById('cartSubtotal');
-            const cartBadge = document.getElementById('cartBadge');
-            const checkoutBtn = document.getElementById('checkoutBtn');
-            const checkoutOverlay = document.getElementById('checkoutOverlay');
-            const checkoutModal = document.getElementById('checkoutModal');
-            const checkoutOrderSummary = document.getElementById('checkoutOrderSummary');
-            const checkoutGrandTotal = document.getElementById('checkoutGrandTotal');
-            const searchInput = document.getElementById('searchInput');
+    <div class="border-t border-line mt-12 sm:mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="font-display font-semibold t-label text-ink/35">© 2026 Axiomate Editorial · All Rights Reserved</p>
+      <p class="font-display font-semibold t-label text-ink/35">Designed in Mumbai · Demo Catalog</p>
+    </div>
+  </div>
+</footer>
 
-            function getFilteredProducts() {
-                return products.filter(p => {
-                    const catMatch = activeCategory === 'All' || p.category === activeCategory;
-                    const searchMatch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
-                    return catMatch && searchMatch;
-                });
-            }
+<!-- ══════════════════════════════════════════════
+     OVERLAY
+══════════════════════════════════════════════ -->
+<div id="overlay" class="is-hidden fixed inset-0 bg-ink/45 backdrop-blur-[3px] z-[80]" onclick="closeCart()"></div>
 
-            function renderProducts() {
-                const filtered = getFilteredProducts();
-                productGrid.innerHTML = '';
-                if (filtered.length === 0) {
-                    noResults.classList.remove('hidden');
-                } else {
-                    noResults.classList.add('hidden');
-                    filtered.forEach(product => {
-                        const card = document.createElement('div');
-                        card.className = 'product-card bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col group shadow-sm';
-                        card.innerHTML = `
-                            <div class="relative h-56 sm:h-64 bg-gray-50 overflow-hidden">
-                                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=500&fit=crop';">
-                                <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-medium px-2.5 py-1 rounded-full text-gray-500 shadow-sm">
-                                    ${product.category}
-                                </div>
-                            </div>
-                            <div class="p-5 flex flex-col flex-1">
-                                <h3 class="font-serif font-semibold text-lg text-charcoal leading-tight mb-1 flex-1">${product.name}</h3>
-                                <p class="text-gold font-bold text-xl mb-4">₹${product.price.toLocaleString('en-IN')}</p>
-                                ${product.hasVariants ? `
-                                <div class="mb-4">
-                                    <label class="text-xs text-gray-400 font-medium mb-1.5 block">${product.variantLabel}</label>
-                                    <select class="variant-select w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all cursor-pointer" data-product-id="${product.id}">
-                                        ${product.variants.map(v => `<option value="${v}">${v}</option>`).join('')}
-                                    </select>
-                                </div>` : ''}
-                                <button onclick="addToCartDirect(${product.id}, ${product.hasVariants})" class="w-full mt-auto py-2.5 bg-white border border-gray-200 hover:border-gold hover:bg-gold/5 text-charcoal font-medium rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 text-sm shadow-sm hover:shadow-md">
-                                    <i class="fa-solid fa-plus text-xs"></i> Add to Cart
-                                </button>
-                            </div>
-                        `;
-                        productGrid.appendChild(card);
-                    });
-                }
-            }
+<!-- ══════════════════════════════════════════════
+     CART DRAWER
+══════════════════════════════════════════════ -->
+<aside id="cartDrawer"
+       class="is-closed fixed top-0 right-0 h-full w-full sm:w-[460px] bg-paper z-[90] shadow-drawer flex flex-col border-l border-line"
+       role="dialog" aria-modal="true" aria-label="Shopping bag">
 
-            window.addToCartDirect = function(productId, hasVariants) {
-                const product = products.find(p => p.id === productId);
-                if (!product) return;
-                let variant = null;
-                if (hasVariants) {
-                    const selectEl = document.querySelector(`.variant-select[data-product-id="${productId}"]`);
-                    variant = selectEl ? selectEl.value : product.variants[0];
-                }
-                const existing = cart.find(item => item.productId === productId && item.variant === variant);
-                if (existing) {
-                    existing.quantity += 1;
-                } else {
-                    cart.push({
-                        productId, variant, quantity: 1,
-                        name: product.name, price: product.price, image: product.image,
-                        variantLabel: product.variantLabel
-                    });
-                }
-                updateCartUI();
-                const cartBtn = document.getElementById('cartTriggerBtn');
-                cartBtn.classList.add('ring-2', 'ring-gold', 'ring-offset-2');
-                setTimeout(() => cartBtn.classList.remove('ring-2', 'ring-gold', 'ring-offset-2'), 500);
-            };
+  <!-- Header -->
+  <div class="flex items-center justify-between px-6 sm:px-7 h-[70px] sm:h-[74px] border-b border-line bg-paper shrink-0">
+    <div class="flex items-baseline gap-3">
+      <h2 class="font-display font-bold t-h3 uppercase text-ink">Your Bag</h2>
+      <span id="drawerCount" class="font-display font-semibold t-label text-ink/40">0 items</span>
+    </div>
+    <button onclick="closeCart()" aria-label="Close bag"
+            class="btn-press w-9 h-9 rounded-full border border-line hover:border-ink/30 flex items-center justify-center cursor-pointer">
+      <i class="fa-solid fa-xmark text-[14px] text-ink/60"></i>
+    </button>
+  </div>
 
-            function updateCartUI() {
-                const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
-                const subtotal = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
-                cartBadge.style.display = totalItems > 0 ? 'flex' : 'none';
-                cartBadge.textContent = totalItems;
-                cartSubtotal.textContent = '₹' + subtotal.toLocaleString('en-IN');
-                checkoutBtn.disabled = totalItems === 0;
-                renderCartItems();
-            }
+  <!-- Body -->
+  <div class="flex-1 overflow-y-auto thin-scroll">
 
-            function renderCartItems() {
-                cartItemsContainer.innerHTML = '';
-                if (cart.length === 0) {
-                    cartItemsContainer.innerHTML = `<div id="emptyCartMsg" class="text-center py-16">
-                        <i class="fa-regular fa-bag-shopping text-5xl text-gray-300 mb-4 block"></i>
-                        <p class="text-gray-500 font-light">Your cart is empty</p>
-                        <p class="text-gray-400 text-sm mt-1">Add luxury pieces to begin</p>
-                    </div>`;
-                    return;
-                }
-                cart.forEach((item, idx) => {
-                    const div = document.createElement('div');
-                    div.className = 'flex gap-4 bg-gray-50 rounded-xl p-3 border border-gray-100';
-                    div.innerHTML = `
-                        <div class="w-16 h-16 rounded-lg overflow-hidden bg-white flex-shrink-0">
-                            <img src="${item.image}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=100&h=100';">
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-charcoal truncate">${item.name}</p>
-                            ${item.variant ? `<p class="text-xs text-gold">${item.variantLabel}: ${item.variant}</p>` : ''}
-                            <p class="text-sm font-semibold text-gold">₹${item.price.toLocaleString()}</p>
-                        </div>
-                        <div class="flex flex-col items-end justify-between">
-                            <button onclick="removeCartItem(${idx})" class="text-gray-400 hover:text-red-400 text-xs"><i class="fa-regular fa-trash-can"></i></button>
-                            <div class="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-2 py-0.5">
-                                <button onclick="updateQty(${idx}, -1)" class="w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xs font-bold text-charcoal">−</button>
-                                <span class="text-sm font-semibold w-6 text-center">${item.quantity}</span>
-                                <button onclick="updateQty(${idx}, 1)" class="w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xs font-bold text-charcoal">+</button>
-                            </div>
-                        </div>`;
-                    cartItemsContainer.appendChild(div);
-                });
-            }
+    <!-- Empty -->
+    <div id="cartEmpty" class="px-7 py-20 text-center">
+      <i class="fa-regular fa-bag-shopping text-[36px] text-ink/15 mb-5 block"></i>
+      <p class="font-display font-bold t-h3 uppercase text-ink/70 mb-2">Your bag is empty</p>
+      <p class="t-desc font-light text-ink/40 mb-7">Add a piece from the collection<br>to begin your order.</p>
+      <button onclick="closeCart()"
+              class="btn-press font-display font-bold t-label text-gold border-b border-gold/40 pb-1.5 hover:border-gold cursor-pointer">
+        Continue Browsing
+      </button>
+    </div>
 
-            window.updateQty = (i, d) => { if (cart[i]) { cart[i].quantity += d; if (cart[i].quantity <= 0) cart.splice(i,1); updateCartUI(); } };
-            window.removeCartItem = (i) => { cart.splice(i,1); updateCartUI(); };
+    <!-- Filled -->
+    <div id="cartFilled" class="hidden">
+      <div id="cartItems" class="px-6 sm:px-7 py-6 space-y-5"></div>
 
-            window.openCart = () => { cartDrawer.classList.replace('closed','open'); cartOverlay.classList.replace('hidden','visible'); document.body.style.overflow='hidden'; };
-            window.closeCart = () => { cartDrawer.classList.replace('open','closed'); cartOverlay.classList.replace('visible','hidden'); document.body.style.overflow=''; };
+      <div class="px-6 sm:px-7 pb-7">
+        <div class="border-t border-line pt-6">
+          <h3 class="font-display font-bold t-label text-ink/40 mb-5">Delivery Details</h3>
 
-            window.openCheckout = () => {
-                if (!cart.length) return;
-                let html = ''; let total=0;
-                cart.forEach(item => { const itotal = item.price*item.quantity; total+=itotal;
-                    html += `<div class="flex justify-between text-sm"><span>${item.name}${item.variant?' ('+item.variantLabel+': '+item.variant+')':''} ×${item.quantity}</span><span>₹${itotal.toLocaleString()}</span></div>`; });
-                checkoutOrderSummary.innerHTML = html || '<p class="text-gray-400">No items</p>';
-                checkoutGrandTotal.textContent = '₹'+total.toLocaleString();
-                checkoutOverlay.classList.replace('hidden','visible'); checkoutModal.classList.replace('hidden','visible'); document.body.style.overflow='hidden';
-            };
-            window.closeCheckout = () => {
-                checkoutOverlay.classList.replace('visible','hidden'); checkoutModal.classList.replace('visible','hidden'); document.body.style.overflow='';
-                document.getElementById('checkoutForm').reset();
-            };
+          <div class="space-y-4">
+            <div>
+              <label for="custName" class="block font-display font-semibold t-label text-ink/50 mb-2">Full Name *</label>
+              <input id="custName" type="text" autocomplete="name" placeholder="e.g. Aarav Mehta"
+                     class="w-full px-4 py-3 bg-cream border border-line rounded-xl t-meta text-ink placeholder-ink/30 focus:outline-none focus:border-gold focus:bg-paper transition-colors">
+            </div>
+            <div>
+              <label for="custPhone" class="block font-display font-semibold t-label text-ink/50 mb-2">Phone Number *</label>
+              <input id="custPhone" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel" placeholder="10-digit mobile number"
+                     class="w-full px-4 py-3 bg-cream border border-line rounded-xl t-meta text-ink placeholder-ink/30 focus:outline-none focus:border-gold focus:bg-paper transition-colors">
+            </div>
+            <div>
+              <label for="custAddress" class="block font-display font-semibold t-label text-ink/50 mb-2">Delivery Address *</label>
+              <textarea id="custAddress" rows="3" autocomplete="street-address" placeholder="Flat / House, Street, Landmark, Pincode"
+                        class="w-full px-4 py-3 bg-cream border border-line rounded-xl t-meta text-ink placeholder-ink/30 focus:outline-none focus:border-gold focus:bg-paper transition-colors resize-none leading-relaxed"></textarea>
+            </div>
+            <div>
+              <label class="block font-display font-semibold t-label text-ink/50 mb-2">Payment Method</label>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="pay-card cursor-pointer border border-line bg-cream rounded-xl px-4 py-3.5 flex items-center gap-2.5">
+                  <input type="radio" name="payMethod" value="Cash on Delivery" checked class="accent-[#B8935A] w-3.5 h-3.5">
+                  <span class="t-meta font-medium text-ink/75">Cash on Delivery</span>
+                </label>
+                <label class="pay-card cursor-pointer border border-line bg-cream rounded-xl px-4 py-3.5 flex items-center gap-2.5">
+                  <input type="radio" name="payMethod" value="UPI / Online Transfer" class="accent-[#B8935A] w-3.5 h-3.5">
+                  <span class="t-meta font-medium text-ink/75">UPI / Online</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            window.handleCheckoutSubmit = (e) => {
-                e.preventDefault();
-                const name = document.getElementById('customerName').value.trim();
-                const addr = document.getElementById('customerAddress').value.trim();
-                const pay = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'COD';
-                if (!name || !addr) return alert('Please fill all fields.');
-                const total = cart.reduce((s,i)=>s+(i.price*i.quantity),0);
-                let itemsText = '';
-                cart.forEach(i => itemsText += `• ${i.name}${i.variant?' ('+i.variantLabel+': '+i.variant+')':''} ×${i.quantity} — ₹${(i.price*i.quantity).toLocaleString()}\n`);
-                const msg = `🛍️ *NEW ÉLAN ORDER!*\n\n👤 Name: ${name}\n📍 Address: ${addr}\n💳 Payment: ${pay}\n\n📦 Items:\n${itemsText}\n💰 Total: ₹${total.toLocaleString()}\n\n📅 Via ÉLAN Catalog`;
-                window.open(`https://api.whatsapp.com/send?phone=919004600946&text=${encodeURIComponent(msg)}`, '_blank');
-                cart = []; updateCartUI(); closeCheckout(); closeCart(); document.getElementById('checkoutForm').reset();
-            };
+  <!-- Footer -->
+  <div id="cartFooter" class="hidden shrink-0 border-t border-line bg-paper px-6 sm:px-7 py-6">
+    <div class="space-y-3 mb-5">
+      <div class="flex justify-between t-meta font-light">
+        <span class="text-ink/50">Subtotal</span>
+        <span id="sumSubtotal" class="text-ink font-medium">₹0</span>
+      </div>
+      <div class="flex justify-between t-meta font-light">
+        <span class="text-ink/50">Shipping</span>
+        <span class="text-green-700 font-medium">Complimentary</span>
+      </div>
+      <div class="flex justify-between items-baseline pt-3.5 border-t border-line">
+        <span class="font-display font-bold t-label text-ink/55">Total</span>
+        <span id="sumTotal" class="font-display font-bold t-price text-ink">₹0</span>
+      </div>
+    </div>
 
-            window.filterByCategory = (cat) => { activeCategory=cat; document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active')); document.getElementById('filter'+cat)?.classList.add('active'); renderProducts(); };
-            window.handleSearch = () => { searchQuery = searchInput.value.trim(); renderProducts(); };
-            window.resetFilters = () => { activeCategory='All'; searchQuery=''; searchInput.value=''; document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active')); document.getElementById('filterAll').classList.add('active'); renderProducts(); };
-            window.scrollToTop = () => window.scrollTo({top:0,behavior:'smooth'});
+    <button onclick="orderViaWhatsApp()"
+            class="btn-press w-full py-4 bg-ink hover:bg-gold text-cream t-btn font-display font-bold rounded-full flex items-center justify-center gap-3 cursor-pointer shadow-soft">
+      <i class="fa-brands fa-whatsapp text-[15px]"></i>
+      Order via WhatsApp
+    </button>
 
-            document.addEventListener('keydown', e => { if (e.key==='Escape') { if(!checkoutModal.classList.contains('hidden')) closeCheckout(); else if(!cartOverlay.classList.contains('hidden')) closeCart(); } });
-            renderProducts();
-            updateCartUI();
-        })();
-    </script>
+    <p class="t-desc font-light text-ink/35 text-center mt-3.5">
+      You will be redirected to WhatsApp to confirm your order.
+    </p>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════
+     TOAST
+══════════════════════════════════════════════ -->
+<div id="toast" class="is-hidden fixed bottom-7 left-1/2 -translate-x-1/2 z-[100] bg-ink text-cream t-btn font-display font-bold px-6 py-3.5 rounded-full shadow-lift flex items-center gap-3 whitespace-nowrap">
+  <i class="fa-solid fa-check text-[10px] text-gold2"></i>
+  <span id="toastText">Added to your bag</span>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ══════════════════════════════════════════════
+     PRODUCT CATALOG — 8 accurate items
+     Title / description / category / primary image / hover image
+     all strictly match the same product.
+  ══════════════════════════════════════════════ */
+  var PRODUCTS = [
+    {
+      id: 'p1',
+      name: 'Acoustic Studio Wireless Headphones',
+      description: 'Matte black noise-canceling headphones crafted with memory foam leather ear cushions.',
+      category: 'Tech & Audio',
+      price: 7499,
+      primary:   'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700',
+      secondary: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=700',
+      variantLabel: 'Finish',
+      variants: ['Matte Black', 'Graphite Grey']
+    },
+    {
+      id: 'p2',
+      name: 'All-White Minimalist Italian Leather Sneakers',
+      description: 'Hand-finished nappa leather sneakers with rubber cupsole and organic cotton laces.',
+      category: 'Footwear',
+      price: 5299,
+      primary:   'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=700',
+      secondary: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700',
+      variantLabel: 'Size (UK)',
+      variants: ['6', '7', '8', '9', '10', '11']
+    },
+    {
+      id: 'p3',
+      name: 'Gold-Framed Aviator Sunglasses',
+      description: 'Ultra-lightweight titanium gold frames paired with UV400 gradient optical lenses.',
+      category: 'Accessories',
+      price: 3899,
+      primary:   'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=700',
+      secondary: 'https://images.unsplash.com/photo-1508296695146-257a814070b4?w=700',
+      variantLabel: 'Lens',
+      variants: ['Gradient Brown', 'Smoke Grey']
+    },
+    {
+      id: 'p4',
+      name: 'Emerald Green Silk Evening Slip Dress',
+      description: 'Pure mulberry silk gown featuring a subtle cowl neckline and bias-cut silhouette.',
+      category: 'Apparel',
+      price: 6899,
+      primary:   'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=700',
+      secondary: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=700',
+      variantLabel: 'Size',
+      variants: ['XS', 'S', 'M', 'L']
+    },
+    {
+      id: 'p5',
+      name: 'Handcrafted Ceramic Coffee Dripper & Mug',
+      description: 'Artisanal matte-glazed stoneware ceramic coffee set designed for minimalist interiors.',
+      category: 'Lifestyle',
+      price: 1899,
+      primary:   'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=700',
+      secondary: 'https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=700',
+      variantLabel: 'Glaze',
+      variants: ['Sand', 'Charcoal']
+    },
+    {
+      id: 'p6',
+      name: 'Vintage Cognac Leather Biker Jacket',
+      description: 'Genuine full-grain leather motorcycle jacket with brushed nickel zippers and quilted lining.',
+      category: 'Apparel',
+      price: 9999,
+      primary:   'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=700',
+      secondary: 'https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?w=700',
+      variantLabel: 'Size',
+      variants: ['S', 'M', 'L', 'XL']
+    },
+    {
+      id: 'p7',
+      name: 'Matte Charcoal Hard-Shell Cabin Luggage',
+      description: 'Polycarbonate impact-resistant rolling suitcase with TSA combination lock and Japanese spinner wheels.',
+      category: 'Travel',
+      price: 8499,
+      primary:   'https://images.unsplash.com/photo-1565026057447-b8899f2905a7?w=700',
+      secondary: 'https://images.unsplash.com/photo-1581553680321-4fffae59febd?w=700',
+      variantLabel: 'Size',
+      variants: ['Cabin 20"', 'Medium 24"', 'Large 28"']
+    },
+    {
+      id: 'p8',
+      name: 'Minimalist 18K Gold Plated Chain Necklace',
+      description: 'Hypoallergenic stainless steel core plated in rich 18K yellow gold with lobster clasp.',
+      category: 'Accessories',
+      price: 2499,
+      primary:   'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700',
+      secondary: 'https://images.unsplash.com/photo-1611591475155-4282fc289e2b?w=700',
+      variantLabel: 'Length',
+      variants: ['40 cm', '45 cm', '50 cm']
+    }
+  ];
+
+  var FALLBACK = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80';
+
+  /* ══════════════════════════════════════════════
+     STATE
+  ══════════════════════════════════════════════ */
+  var cart = [];
+  var activeCategory = 'All';
+  var query = '';
+
+  /* ══════════════════════════════════════════════
+     DOM
+  ══════════════════════════════════════════════ */
+  var grid         = document.getElementById('productGrid');
+  var emptyState   = document.getElementById('emptyState');
+  var countLabel   = document.getElementById('countLabel');
+  var searchInput  = document.getElementById('searchInput');
+  var searchMobile = document.getElementById('searchMobile');
+
+  var drawer       = document.getElementById('cartDrawer');
+  var overlay      = document.getElementById('overlay');
+  var cartEmpty    = document.getElementById('cartEmpty');
+  var cartFilled   = document.getElementById('cartFilled');
+  var cartFooter   = document.getElementById('cartFooter');
+  var cartItemsBox = document.getElementById('cartItems');
+  var drawerCount  = document.getElementById('drawerCount');
+  var sumSubtotal  = document.getElementById('sumSubtotal');
+  var sumTotal     = document.getElementById('sumTotal');
+  var cartBadge    = document.getElementById('cartBadge');
+
+  var custName     = document.getElementById('custName');
+  var custPhone    = document.getElementById('custPhone');
+  var custAddress  = document.getElementById('custAddress');
+
+  var toast        = document.getElementById('toast');
+  var toastText    = document.getElementById('toastText');
+
+  /* ══════════════════════════════════════════════
+     HELPERS
+  ══════════════════════════════════════════════ */
+  function rupee(n) {
+    return '₹' + Number(n).toLocaleString('en-IN');
+  }
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  var toastTimer;
+  function showToast(msg) {
+    toastText.textContent = msg;
+    toast.classList.remove('is-hidden');
+    toast.classList.add('is-shown');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove('is-shown');
+      toast.classList.add('is-hidden');
+    }, 2400);
+  }
+
+  /* ══════════════════════════════════════════════
+     RENDER CATALOG
+  ══════════════════════════════════════════════ */
+  function getVisible() {
+    var q = query.trim().toLowerCase();
+    return PRODUCTS.filter(function (p) {
+      var catOK = activeCategory === 'All' || p.category === activeCategory;
+      var qOK = !q ||
+        p.name.toLowerCase().indexOf(q) !== -1 ||
+        p.category.toLowerCase().indexOf(q) !== -1 ||
+        p.description.toLowerCase().indexOf(q) !== -1;
+      return catOK && qOK;
+    });
+  }
+
+  function renderCatalog() {
+    var items = getVisible();
+    grid.innerHTML = '';
+
+    if (!items.length) {
+      emptyState.classList.remove('hidden');
+      countLabel.textContent = '00 Objects';
+      return;
+    }
+    emptyState.classList.add('hidden');
+    countLabel.textContent = String(items.length).padStart(2, '0') +
+      (items.length === 1 ? ' Object' : ' Objects');
+
+    items.forEach(function (p, i) {
+      var card = document.createElement('article');
+      card.className = 'p-card fade-up bg-paper border border-line rounded-2xl overflow-hidden flex flex-col shadow-soft';
+      card.style.animationDelay = (i * 55) + 'ms';
+
+      var variantBlock = p.variantLabel ? (
+        '<div class="mt-4">' +
+          '<label for="variant-' + p.id + '" class="block font-display font-semibold t-label text-ink/40 mb-2">' +
+            esc(p.variantLabel) +
+          '</label>' +
+          '<div class="relative">' +
+            '<select id="variant-' + p.id + '" data-variant-for="' + p.id + '" ' +
+              'class="lux-select w-full pl-3.5 pr-9 py-2.5 bg-cream border border-line rounded-full t-meta font-medium text-ink/80 focus:outline-none focus:border-gold cursor-pointer transition-colors">' +
+              p.variants.map(function (v) {
+                return '<option value="' + esc(v) + '">' + esc(v) + '</option>';
+              }).join('') +
+            '</select>' +
+            '<i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-[9px] text-ink/35 pointer-events-none"></i>' +
+          '</div>' +
+        '</div>'
+      ) : '';
+
+      card.innerHTML =
+        '<div class="p-media">' +
+          '<img src="' + p.primary + '" alt="' + esc(p.name) + ' — front view" ' +
+               'class="p-img-a" loading="lazy" ' +
+               'onerror="this.onerror=null;this.src=\'' + FALLBACK + '\';">' +
+          '<img src="' + p.secondary + '" alt="' + esc(p.name) + ' — alternate view" ' +
+               'class="p-img-b" loading="lazy" ' +
+               'onerror="this.onerror=null;this.src=\'' + FALLBACK + '\';">' +
+          '<span class="absolute top-3.5 left-3.5 z-10 font-display font-semibold t-label bg-paper/95 backdrop-blur-sm text-ink/60 px-3 py-1.5 rounded-full border border-line">' +
+            esc(p.category) +
+          '</span>' +
+        '</div>' +
+
+        '<div class="p-5 flex flex-col flex-1">' +
+          '<h3 class="font-display font-semibold t-card-title text-ink mb-2">' +
+            esc(p.name) +
+          '</h3>' +
+          '<p class="t-desc font-light text-ink/50 mb-4 flex-1">' +
+            esc(p.description) +
+          '</p>' +
+          '<p class="font-display font-bold t-price text-gold mb-4">' +
+            rupee(p.price) +
+          '</p>' +
+
+          '<div class="mt-auto">' +
+            variantBlock +
+            '<button type="button" data-add="' + p.id + '" ' +
+              'class="btn-press w-full mt-4 border border-ink/15 bg-paper hover:bg-ink hover:border-ink text-ink hover:text-cream t-btn font-display font-bold py-3.5 rounded-full cursor-pointer flex items-center justify-center gap-2.5">' +
+              '<i class="fa-solid fa-plus text-[9px]"></i>' +
+              'Add to Bag' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+
+      grid.appendChild(card);
+    });
+  }
+
+  /* ══════════════════════════════════════════════
+     FILTERS
+  ══════════════════════════════════════════════ */
+  function setCategory(cat) {
+    activeCategory = cat;
+    var pills = document.querySelectorAll('.pill');
+    for (var i = 0; i < pills.length; i++) {
+      pills[i].classList.toggle('is-active', pills[i].getAttribute('data-cat') === cat);
+    }
+    renderCatalog();
+  }
+
+  window.resetFilters = function () {
+    query = '';
+    if (searchInput)  searchInput.value  = '';
+    if (searchMobile) searchMobile.value = '';
+    setCategory('All');
+  };
+
+  /* Bind all filter pills */
+  var pillEls = document.querySelectorAll('.pill');
+  for (var pi = 0; pi < pillEls.length; pi++) {
+    (function (el) {
+      el.addEventListener('click', function () {
+        setCategory(el.getAttribute('data-cat'));
+      });
+    })(pillEls[pi]);
+  }
+
+  window.onSearch = function (fromMobile) {
+    query = fromMobile ? searchMobile.value : searchInput.value;
+    if (fromMobile) searchInput.value = query;
+    else searchMobile.value = query;
+    renderCatalog();
+  };
+
+  window.toggleMobileSearch = function () {
+    var wrap = document.getElementById('mobileSearchWrap');
+    wrap.classList.toggle('hidden');
+    if (!wrap.classList.contains('hidden')) searchMobile.focus();
+  };
+
+  /* ══════════════════════════════════════════════
+     CART LOGIC
+  ══════════════════════════════════════════════ */
+  function findProduct(id) {
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      if (PRODUCTS[i].id === id) return PRODUCTS[i];
+    }
+    return null;
+  }
+  function makeKey(pid, variant) {
+    return pid + '::' + (variant || '');
+  }
+
+  function addToCart(productId) {
+    var product = findProduct(productId);
+    if (!product) return;
+
+    var variant = null;
+    if (product.variantLabel) {
+      var sel = document.querySelector('[data-variant-for="' + productId + '"]');
+      variant = sel ? sel.value : product.variants[0];
+    }
+
+    var key = makeKey(productId, variant);
+    var existing = null;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].key === key) { existing = cart[i]; break; }
+    }
+
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({
+        key: key,
+        productId: productId,
+        name: product.name,
+        price: product.price,
+        image: product.primary,
+        variantLabel: product.variantLabel,
+        variant: variant,
+        qty: 1
+      });
+    }
+
+    syncCart();
+    openCart();
+    showToast(product.name + ' — added');
+  }
+
+  /* Global delegated handler for all [data-add] buttons */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-add]');
+    if (btn) {
+      e.preventDefault();
+      addToCart(btn.getAttribute('data-add'));
+    }
+  });
+
+  window.changeQty = function (key, delta) {
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].key === key) {
+        cart[i].qty += delta;
+        if (cart[i].qty <= 0) cart.splice(i, 1);
+        break;
+      }
+    }
+    syncCart();
+  };
+
+  window.removeLine = function (key) {
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].key === key) { cart.splice(i, 1); break; }
+    }
+    syncCart();
+    showToast('Item removed');
+  };
+
+  /* ══════════════════════════════════════════════
+     SYNC CART UI
+  ══════════════════════════════════════════════ */
+  function syncCart() {
+    var totalQty = 0;
+    var subtotal = 0;
+    for (var i = 0; i < cart.length; i++) {
+      totalQty += cart[i].qty;
+      subtotal += cart[i].price * cart[i].qty;
+    }
+
+    /* Badge */
+    if (totalQty > 0) {
+      cartBadge.textContent = totalQty > 99 ? '99+' : String(totalQty);
+      cartBadge.classList.remove('hidden');
+      cartBadge.classList.add('flex');
+      cartBadge.classList.remove('bump');
+      void cartBadge.offsetWidth;
+      cartBadge.classList.add('bump');
+    } else {
+      cartBadge.classList.add('hidden');
+      cartBadge.classList.remove('flex');
+    }
+
+    /* Drawer count */
+    drawerCount.textContent = totalQty + (totalQty === 1 ? ' item' : ' items');
+
+    /* Empty vs filled */
+    if (cart.length === 0) {
+      cartEmpty.classList.remove('hidden');
+      cartFilled.classList.add('hidden');
+      cartFooter.classList.add('hidden');
+    } else {
+      cartEmpty.classList.add('hidden');
+      cartFilled.classList.remove('hidden');
+      cartFooter.classList.remove('hidden');
+    }
+
+    /* Totals */
+    sumSubtotal.textContent = rupee(subtotal);
+    sumTotal.textContent = rupee(subtotal);
+
+    renderCartLines();
+  }
+
+  function renderCartLines() {
+    cartItemsBox.innerHTML = '';
+
+    cart.forEach(function (line) {
+      var row = document.createElement('div');
+      row.className = 'flex gap-4 pb-5 border-b border-line last:border-b-0 last:pb-0';
+
+      row.innerHTML =
+        '<div class="w-[72px] h-[90px] rounded-xl overflow-hidden bg-cream2 shrink-0 border border-line">' +
+          '<img src="' + line.image + '" alt="' + esc(line.name) + '" ' +
+               'class="w-full h-full object-cover" loading="lazy" ' +
+               'onerror="this.onerror=null;this.src=\'' + FALLBACK + '\';">' +
+        '</div>' +
+
+        '<div class="flex-1 min-w-0 flex flex-col">' +
+          '<div class="flex items-start justify-between gap-3">' +
+            '<h4 class="font-display font-semibold t-card-title text-ink leading-snug pr-1">' +
+              esc(line.name) +
+            '</h4>' +
+            '<button type="button" data-remove="' + line.key + '" aria-label="Remove" ' +
+              'class="shrink-0 text-ink/25 hover:text-ink/60 transition-colors cursor-pointer mt-0.5">' +
+              '<i class="fa-solid fa-xmark text-[13px]"></i>' +
+            '</button>' +
+          '</div>' +
+
+          (line.variant
+            ? '<p class="t-desc font-light text-ink/45 mt-1">' +
+                esc(line.variantLabel) + ': ' +
+                '<span class="text-ink/70 font-medium">' + esc(line.variant) + '</span>' +
+              '</p>'
+            : '') +
+
+          '<div class="flex items-end justify-between mt-auto pt-3">' +
+            '<div class="flex items-center border border-line rounded-full bg-cream overflow-hidden">' +
+              '<button type="button" data-dec="' + line.key + '" aria-label="Decrease" ' +
+                'class="qty w-7 h-7 flex items-center justify-center text-ink/55 hover:bg-cream2 cursor-pointer">' +
+                '<i class="fa-solid fa-minus text-[8.5px]"></i>' +
+              '</button>' +
+              '<span class="w-7 text-center t-meta font-bold text-ink">' + line.qty + '</span>' +
+              '<button type="button" data-inc="' + line.key + '" aria-label="Increase" ' +
+                'class="qty w-7 h-7 flex items-center justify-center text-ink/55 hover:bg-cream2 cursor-pointer">' +
+                '<i class="fa-solid fa-plus text-[8.5px]"></i>' +
+              '</button>' +
+            '</div>' +
+            '<span class="font-display font-bold t-price text-gold">' +
+              rupee(line.price * line.qty) +
+            '</span>' +
+          '</div>' +
+        '</div>';
+
+      cartItemsBox.appendChild(row);
+    });
+
+    var incs = cartItemsBox.querySelectorAll('[data-inc]');
+    for (var i = 0; i < incs.length; i++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          window.changeQty(btn.getAttribute('data-inc'), 1);
+        });
+      })(incs[i]);
+    }
+    var decs = cartItemsBox.querySelectorAll('[data-dec]');
+    for (var j = 0; j < decs.length; j++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          window.changeQty(btn.getAttribute('data-dec'), -1);
+        });
+      })(decs[j]);
+    }
+    var rems = cartItemsBox.querySelectorAll('[data-remove]');
+    for (var k = 0; k < rems.length; k++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          window.removeLine(btn.getAttribute('data-remove'));
+        });
+      })(rems[k]);
+    }
+  }
+
+  /* ══════════════════════════════════════════════
+     DRAWER OPEN / CLOSE
+  ══════════════════════════════════════════════ */
+  window.openCart = function () {
+    drawer.classList.remove('is-closed');
+    drawer.classList.add('is-open');
+    overlay.classList.remove('is-hidden');
+    overlay.classList.add('is-shown');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeCart = function () {
+    drawer.classList.remove('is-open');
+    drawer.classList.add('is-closed');
+    overlay.classList.remove('is-shown');
+    overlay.classList.add('is-hidden');
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') window.closeCart();
+  });
+
+  /* ══════════════════════════════════════════════
+     WHATSAPP CHECKOUT
+  ══════════════════════════════════════════════ */
+  window.orderViaWhatsApp = function () {
+    if (!cart.length) {
+      showToast('Your bag is empty');
+      return;
+    }
+
+    var name    = custName.value.trim();
+    var phone   = custPhone.value.trim();
+    var address = custAddress.value.trim();
+    var payEl   = document.querySelector('input[name="payMethod"]:checked');
+    var payment = payEl ? payEl.value : 'Cash on Delivery';
+
+    if (!name) {
+      showToast('Enter your full name');
+      custName.focus();
+      return;
+    }
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      showToast('Enter a valid 10-digit mobile');
+      custPhone.focus();
+      return;
+    }
+    if (address.length < 10) {
+      showToast('Enter a complete delivery address');
+      custAddress.focus();
+      return;
+    }
+
+    var subtotal = 0;
+    for (var i = 0; i < cart.length; i++) {
+      subtotal += cart[i].price * cart[i].qty;
+    }
+
+    var itemLines = '';
+    cart.forEach(function (line, idx) {
+      var variantTxt = line.variant
+        ? ' [' + line.variantLabel + ': ' + line.variant + ']'
+        : '';
+      itemLines += (idx + 1) + '. ' + line.name + variantTxt + '\n';
+      itemLines += '    Qty: ' + line.qty + ' × ' + rupee(line.price) +
+                   ' = ' + rupee(line.price * line.qty) + '\n';
+    });
+
+    var message =
+      '🛍️ *NEW ORDER — AXIOMATE | EDITORIAL*\n' +
+      '────────────────────\n\n' +
+      '👤 *Name:* ' + name + '\n' +
+      '📞 *Phone:* ' + phone + '\n' +
+      '📍 *Address:* ' + address + '\n' +
+      '💳 *Payment:* ' + payment + '\n\n' +
+      '────────────────────\n' +
+      '📦 *ORDER ITEMS*\n\n' +
+      itemLines + '\n' +
+      '────────────────────\n' +
+      '🧾 *Subtotal:* ' + rupee(subtotal) + '\n' +
+      '🚚 *Shipping:* Complimentary\n' +
+      '💰 *TOTAL: ' + rupee(subtotal) + '*\n\n' +
+      'Please confirm my order. Thank you.';
+
+    var url = 'https://api.whatsapp.com/send?phone=919004600946&text=' +
+              encodeURIComponent(message);
+    window.open(url, '_blank', 'noopener');
+    showToast('Opening WhatsApp…');
+  };
+
+  /* Phone input guard */
+  custPhone.addEventListener('input', function () {
+    custPhone.value = custPhone.value.replace(/\D/g, '').slice(0, 10);
+  });
+
+  /* ══════════════════════════════════════════════
+     INIT
+  ══════════════════════════════════════════════ */
+  renderCatalog();
+  syncCart();
+})();
+</script>
+
 </body>
 </html>
