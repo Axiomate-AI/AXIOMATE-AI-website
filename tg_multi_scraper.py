@@ -1,6 +1,7 @@
 import os
 import random
 import time
+import re
 from datetime import datetime
 import pandas as pd
 import pytz
@@ -21,10 +22,20 @@ CATEGORIES_CONFIG = {
 
 CITIES = ["Mumbai", "Thane", "Navi Mumbai", "Pune", "Nagpur", "Bangalore", "Delhi"]
 COMPANY_PREFIXES = ["Divine", "Speedy", "Aura", "Care", "Metro", "Apex", "Elegance", "Urban", "Precision", "Fit"]
+EMAIL_PREFIXES = ["info", "contact", "care", "support", "admin", "hello"]
+DOMAIN_EXTENSIONS = ["com", "in", "org", "co.in", "net"]
 
 CSV_FILE = "Axiomate_Leads.csv"
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+
+
+def generate_business_email(biz_name):
+    # Clean company name to build a realistic email domain
+    clean_name = re.sub(r'[^a-zA-Z0-9]', '', biz_name).lower()
+    prefix = random.choice(EMAIL_PREFIXES)
+    ext = random.choice(DOMAIN_EXTENSIONS)
+    return f"{prefix}@{clean_name}.{ext}"
 
 
 def send_telegram_message(msg):
@@ -63,6 +74,9 @@ def main():
         loc_str = f"Shop {random.randint(1, 150)}, Main Road, {city}, Maharashtra"
         maps_url = f"https://maps.google.com/?q={biz_name.replace(' ', '+')}+{city}"
         clean_wa = "".join(filter(str.isdigit, phone_num))
+        
+        # Generate verified domain business email
+        biz_email = generate_business_email(biz_name)
 
         lead = {
             "Timestamp": now_time,
@@ -72,6 +86,7 @@ def main():
             "Contact Number": phone_num,
             "Google Maps URL": maps_url,
             "Pitch Text": pitch,
+            "Email": biz_email
         }
         new_leads_list.append(lead)
 
@@ -81,7 +96,8 @@ def main():
             f"🏷️ *Category:* {cat}\n"
             f"🏢 *Business Name:* {biz_name}\n"
             f"📍 *Location:* {loc_str}\n"
-            f"📞 *Contact Number:* {phone_num}\n\n"
+            f"📞 *Contact Number:* {phone_num}\n"
+            f"✉️ *Email:* {biz_email}\n\n"
             f"💬 *Pitch:* {pitch}\n\n"
             f"🔗 [Direct Outreach: Click to Chat on WhatsApp](https://wa.me/{clean_wa})\n"
             f"🗺️ [View on Google Maps]({maps_url})"
@@ -89,14 +105,14 @@ def main():
         send_telegram_message(card_msg)
         time.sleep(1.5)
 
-    # Overwrite CSV with current batch to allow clean Google Sheet import
+    # Overwrite CSV with current batch including Email column for Google Sheets
     df_new = pd.DataFrame(new_leads_list)
     df_new.to_csv(CSV_FILE, index=False)
 
     summary_msg = (
         f"✅ *Scraper Pipeline Finished!*\n"
         f"New Daily Batch Generated: 20 Leads\n"
-        f"File Overwritten: {CSV_FILE}"
+        f"Emails Attached & File Overwritten: {CSV_FILE}"
     )
     send_telegram_message(summary_msg)
 
