@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4S6JXMZ438"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-4S6JXMZ438');
     </script>
@@ -16,16 +13,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Axiomate AI | Next-Gen AI Websites & Business Automation</title>
-    <!-- Tailwind + FontAwesome -->
-    <script src="https://cdn.tailwindcss.com">
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Enable class-based dark mode so `dark:` utilities follow our html.light / html.dark toggle -->
+    <script>
+        tailwind.config = { darkMode: 'class' };
     </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <!-- ===== SEO & SOCIAL MEDIA TAGS ===== -->
     <meta name="description" content="Axiomate AI builds fast AI-powered websites, 24/7 WhatsApp automation bots, AI promo videos, and local SEO systems for businesses.">
     <link rel="canonical" href="https://axiomate-ai-website.vercel.app/">
-
-    <!-- Open Graph / Social Media Preview Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://axiomate-ai-website.vercel.app/">
     <meta property="og:title" content="Axiomate AI | Next-Gen AI Websites & Business Automation">
@@ -34,819 +34,412 @@
 
     <!-- JSON-LD Schema Markup -->
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [{
-                "@type": ["Organization", "ProfessionalService"],
-                "@id": "https://axiomate-ai-website.vercel.app/#organization",
-                "name": "Axiomate AI",
-                "alternateName": "Axiomate AI - AI Websites & Business Automation",
-                "url": "https://axiomate-ai-website.vercel.app/",
-                "logo": {
-                    "@type": "ImageObject",
-                    "@id": "https://axiomate-ai-website.vercel.app/#logo",
-                    "url": "https://axiomate-ai-website.vercel.app/logo.png",
-                    "caption": "Axiomate AI"
-                },
-                "image": { "@id": "https://axiomate-ai-website.vercel.app/#logo" },
-                "description": "Axiomate AI builds fast AI-powered websites, 24/7 WhatsApp automation bots, AI promo videos, and local SEO systems that turn website visitors into paying customers for small and medium businesses.",
-                "email": "axiomate.ai@gmail.com",
-                "telephone": "+91-9004600946",
-                "priceRange": "₹399 - ₹11999",
-                "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "Mumbai",
-                    "addressLocality": "Mumbai",
-                    "addressRegion": "Maharashtra",
-                    "postalCode": "400102",
-                    "addressCountry": "IN"
-                },
-                "founder": {
-                    "@type": "Person",
-                    "name": "Owais",
-                    "jobTitle": "Founder",
-                    "worksFor": { "@id": "https://axiomate-ai-website.vercel.app/#organization" }
-                },
-                "areaServed": {
-                    "@type": "Country",
-                    "name": "India"
-                },
-                "sameAs": [
-                    "https://wa.me/919004600946",
-                    "https://www.instagram.com/axiomate_ai/",
-                    "https://www.linkedin.com/in/owais-axiomate/",
-                    "https://www.threads.net/@axiomate_ai"
-                ],
-                "contactPoint": [{
-                    "@type": "ContactPoint",
-                    "telephone": "+91-9004600946",
-                    "contactType": "sales",
-                    "email": "axiomate.ai@gmail.com",
-                    "areaServed": "IN",
-                    "availableLanguage": ["English", "Hindi"]
-                }]
-            },
-            {
-                "@type": "WebSite",
-                "@id": "https://axiomate-ai-website.vercel.app/#website",
-                "url": "https://axiomate-ai-website.vercel.app/",
-                "name": "Axiomate AI",
-                "publisher": { "@id": "https://axiomate-ai-website.vercel.app/#organization" },
-                "inLanguage": "en-IN"
-            },
-            {
-                "@type": "WebPage",
-                "@id": "https://axiomate-ai-website.vercel.app/#webpage",
-                "url": "https://axiomate-ai-website.vercel.app/",
-                "name": "Axiomate AI | Next-Gen AI Websites & Business Automation",
-                "isPartOf": { "@id": "https://axiomate-ai-website.vercel.app/#website" },
-                "about": { "@id": "https://axiomate-ai-website.vercel.app/#organization" },
-                "description": "We build fast AI websites, viral promo videos, and 24/7 automated WhatsApp systems that turn visitors into paying customers.",
-                "inLanguage": "en-IN",
-                "breadcrumb": { "@id": "https://axiomate-ai-website.vercel.app/#breadcrumb" }
-            },
-            {
-                "@type": "BreadcrumbList",
-                "@id": "https://axiomate-ai-website.vercel.app/#breadcrumb",
-                "itemListElement": [
-                    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://axiomate-ai-website.vercel.app/" },
-                    { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://axiomate-ai-website.vercel.app/#pay-per-service" },
-                    { "@type": "ListItem", "position": 3, "name": "Pricing & Packages", "item": "https://axiomate-ai-website.vercel.app/#packages" },
-                    { "@type": "ListItem", "position": 4, "name": "FAQ", "item": "https://axiomate-ai-website.vercel.app/#faq" },
-                    { "@type": "ListItem", "position": 5, "name": "Contact Us", "item": "https://axiomate-ai-website.vercel.app/#contact" }
-                ]
-            },
-            {
-                "@type": "Service",
-                "@id": "https://axiomate-ai-website.vercel.app/#service-ai-website",
-                "name": "AI-Powered Website Development",
-                "serviceType": "Website Design and Development",
-                "provider": { "@id": "https://axiomate-ai-website.vercel.app/#organization" },
-                "areaServed": { "@type": "Country", "name": "India" },
-                "description": "Custom AI-built websites and landing pages with fast loading, mobile-responsive design, and lead-capture forms, delivered within 3 days.",
-                "offers": [
-                    { "@type": "Offer", "name": "Single Page AI Website", "price": "1999", "priceCurrency": "INR", "url": "https://axiomate-ai-website.vercel.app/single-demo.html" },
-                    { "@type": "Offer", "name": "E-Commerce Catalog & Website", "price": "3499", "priceCurrency": "INR", "url": "https://axiomate-ai-website.vercel.app/ecom-demo.html" }
-                ]
-            },
-            {
-                "@type": "Service",
-                "@id": "https://axiomate-ai-website.vercel.app/#service-whatsapp-automation",
-                "name": "WhatsApp AI Chatbot & Business Automation",
-                "serviceType": "Business Process Automation",
-                "provider": { "@id": "https://axiomate-ai-website.vercel.app/#organization" },
-                "areaServed": { "@type": "Country", "name": "India" },
-                "description": "24/7 AI-automated WhatsApp customer support and booking bot built on Meta's official Cloud API, handling FAQs, lead capture, and appointment confirmations.",
-                "offers": [{
-                    "@type": "Offer",
-                    "name": "WhatsApp AI Bot - Recommended Plan",
-                    "price": "499",
-                    "priceCurrency": "INR",
-                    "priceSpecification": {
-                        "@type": "UnitPriceSpecification",
-                        "price": "499",
-                        "priceCurrency": "INR",
-                        "billingDuration": "P1M",
-                        "referenceQuantity": { "@type": "QuantitativeValue", "value": "1", "unitCode": "MON" }
-                    },
-                    "url": "https://axiomate-ai-website.vercel.app/whatsapp-gallery.html"
-                }]
-            },
-            {
-                "@type": "Service",
-                "@id": "https://axiomate-ai-website.vercel.app/#service-local-seo",
-                "name": "Local SEO & Google Business Profile Optimization",
-                "serviceType": "Search Engine Optimization",
-                "provider": { "@id": "https://axiomate-ai-website.vercel.app/#organization" },
-                "areaServed": { "@type": "Country", "name": "India" },
-                "description": "Google Map pin location setup, business profile optimization, keyword targeting, and automated review collection to improve local search ranking.",
-                "offers": [
-                    { "@type": "Offer", "name": "Google Business Profile Setup", "price": "399", "priceCurrency": "INR", "url": "https://axiomate-ai-website.vercel.app/google-gallery.html" }
-                ]
-            },
-            {
-                "@type": "FAQPage",
-                "@id": "https://axiomate-ai-website.vercel.app/#faq",
-                "mainEntity": [
-                    { "@type": "Question", "name": "How fast will my website and WhatsApp bot be ready?", "acceptedAnswer": { "@type": "Answer", "text": "Our standard delivery time is 3 days. Once you provide your business details, we build, test, and launch your automated system within 72 hours." } },
-                    { "@type": "Question", "name": "Is there any risk of my WhatsApp account getting banned?", "acceptedAnswer": { "@type": "Answer", "text": "Zero risk. We use Meta's official Cloud API for all WhatsApp automations, keeping your business number 100% safe, compliant, and secure." } },
-                    { "@type": "Question", "name": "Do I need any technical knowledge to manage this?", "acceptedAnswer": { "@type": "Answer", "text": "Not at all. We handle the complete setup, domain linking, hosting, and bot configuration for you. You just receive leads and customer messages directly on your phone." } },
-                    { "@type": "Question", "name": "Can I update content on my website later?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, absolutely. We provide support and can handle minor content updates for you, or guide you on how to manage your site effortlessly." } },
-                    { "@type": "Question", "name": "What happens after my website is launched?", "acceptedAnswer": { "@type": "Answer", "text": "We provide ongoing support, regular backups, and technical assistance to ensure your site and bots run smoothly 24/7 without downtime." } }
-                ]
-            }]
-        }
+        {"@context":"https://schema.org","@graph":[{"@type":["Organization","ProfessionalService"],"@id":"https://axiomate-ai-website.vercel.app/#organization","name":"Axiomate AI","url":"https://axiomate-ai-website.vercel.app/","logo":{"@type":"ImageObject","url":"https://axiomate-ai-website.vercel.app/logo.png","caption":"Axiomate AI"},"description":"Axiomate AI builds fast AI-powered websites, 24/7 WhatsApp automation bots, AI promo videos, and local SEO systems.","email":"axiomate.ai@gmail.com","telephone":"+91-9004600946","priceRange":"₹399 - ₹11999","address":{"@type":"PostalAddress","addressLocality":"Mumbai","addressRegion":"Maharashtra","postalCode":"400102","addressCountry":"IN"},"founder":{"@type":"Person","name":"Owais","jobTitle":"Founder"},"sameAs":["https://wa.me/919004600946","https://www.instagram.com/axiomate_ai/","https://www.linkedin.com/in/owais-axiomate/","https://www.threads.net/@axiomate_ai"]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How fast will my website and WhatsApp bot be ready?","acceptedAnswer":{"@type":"Answer","text":"Our standard delivery time is 3 days."}},{"@type":"Question","name":"Is there any risk of my WhatsApp account getting banned?","acceptedAnswer":{"@type":"Answer","text":"Zero risk. We use Meta's official Cloud API."}}]}]}
     </script>
 
     <style>
-        input,
-        select,
-        textarea {
-            color: #ffffff !important;
-            background-color: rgba(255, 255, 255, 0.08) !important;
+        :root {
+            --bg-primary: #0b1120;
+            --bg-secondary: #060b16;
+            --bg-card: rgba(18, 30, 51, 0.7);
+            --bg-card-solid: #111c2e;
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #1f3147;
+            --border-card: rgba(0, 200, 255, 0.15);
+            --section-border: #1f3147;
+            --header-bg: rgba(11, 17, 32, 0.9);
         }
-        select option {
-            background: #0b1120 !important;
-            color: #ffffff !important;
+        html.light {
+            --bg-primary: #F8FAFC;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.75);
+            --bg-card-solid: #ffffff;
+            --text-primary: #0F172A;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border-card: rgba(99, 102, 241, 0.18);
+            --section-border: #e2e8f0;
+            --header-bg: rgba(248, 250, 252, 0.9);
         }
-        * {
-            scroll-behavior: smooth;
-        }
+
+        input, select, textarea { color: #ffffff !important; background-color: rgba(255,255,255,0.08) !important; }
+        select option { background: #0b1120 !important; color: #ffffff !important; }
+        html.light input, html.light select, html.light textarea { color: #0F172A !important; background-color: #f1f5f9 !important; }
+        html.light select option { background: #ffffff !important; color: #0F172A !important; }
+
+        * { scroll-behavior: smooth; }
+        html { transition: background-color .35s ease, color .35s ease; }
         body {
-            background: #0b1120;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            transition: background-color .35s ease, color .35s ease;
+            overflow-x: hidden;
         }
-        .glow-text {
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+
+        /* =============== AURORA MESH GRADIENT (LIGHT MODE) =============== */
+        .aurora-bg { display: none; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        html.light .aurora-bg { display: block; }
+        .aurora-bg .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            animation: orbFloat 20s ease-in-out infinite;
+            will-change: transform;
         }
-        .neon-glow {
-            box-shadow: 0 0 30px rgba(0, 200, 255, 0.08), 0 0 60px rgba(255, 0, 200, 0.03);
+        .aurora-bg .orb-1 { width: 560px; height: 560px; top: -12%; left: -12%; background: radial-gradient(circle, #a5b4fc 0%, rgba(165,180,252,0) 70%); }
+        .aurora-bg .orb-2 { width: 520px; height: 520px; top: 18%; right: -14%; background: radial-gradient(circle, #93c5fd 0%, rgba(147,197,253,0) 70%); animation-delay: -5s; animation-duration: 24s; }
+        .aurora-bg .orb-3 { width: 500px; height: 500px; bottom: -18%; left: 22%; background: radial-gradient(circle, #a5f3fc 0%, rgba(165,243,252,0) 70%); animation-delay: -9s; animation-duration: 27s; }
+        .aurora-bg .orb-4 { width: 440px; height: 440px; bottom: 8%; right: 12%; background: radial-gradient(circle, #f5d0fe 0%, rgba(245,208,254,0) 70%); animation-delay: -13s; animation-duration: 22s; }
+        @keyframes orbFloat {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(60px,-40px) scale(1.1); }
+            66% { transform: translate(-40px,50px) scale(0.95); }
         }
-        .neon-border {
-            border: 1px solid rgba(0, 200, 255, 0.15);
+
+        /* =============== FLOATING TECH PARTICLES =============== */
+        .particles-layer { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #00c8ff, rgba(0,200,255,0));
+            box-shadow: 0 0 12px rgba(0,200,255,.7);
+            opacity: 0;
+            animation: particleRise linear infinite;
+            will-change: transform, opacity;
         }
-        .card-bg {
-            background: rgba(18, 30, 51, 0.7);
-            backdrop-filter: blur(6px);
+        html.light .particle {
+            background: radial-gradient(circle, #6366f1, rgba(99,102,241,0));
+            box-shadow: 0 0 12px rgba(99,102,241,.55);
         }
-        .gradient-primary {
-            background: linear-gradient(135deg, #00c8ff, #d946ef);
+        @keyframes particleRise {
+            0% { transform: translateY(100vh) translateX(0) scale(0.6); opacity: 0; }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) translateX(40px) scale(1); opacity: 0; }
         }
-        .gradient-primary:hover {
-            background: linear-gradient(135deg, #00d4ff, #e879f9);
+
+        /* =============== ONE-TIME WALKING AI MECH ROBOT =============== */
+        .robot-track {
+            position: fixed;
+            bottom: 14px;
+            left: -200px;
+            z-index: 45;
+            pointer-events: none;
+            opacity: 0;
+            animation: robotWalk 5.4s cubic-bezier(.42,0,.58,1) forwards;
+            will-change: transform, opacity;
         }
-        .gradient-text {
+        @keyframes robotWalk {
+            0%   { transform: translateX(0) translateY(0); opacity: 0; }
+            6%   { opacity: 1; }
+            50%  { transform: translateX(calc(50vw + 100px)) translateY(-6px); opacity: 1; }
+            88%  { opacity: 1; }
+            100% { transform: translateX(calc(100vw + 240px)) translateY(0); opacity: 0; }
+        }
+        .robot-svg {
+            width: 92px; height: 92px;
+            display: block;
+            filter: drop-shadow(0 0 14px rgba(0,200,255,.55)) drop-shadow(0 8px 12px rgba(0,0,0,.45));
+        }
+        html.light .robot-svg {
+            filter: drop-shadow(0 0 14px rgba(99,102,241,.45)) drop-shadow(0 8px 12px rgba(15,23,42,.18));
+        }
+        .robot-leg-l, .robot-leg-r { transform-origin: center top; animation: legSwing 0.55s ease-in-out infinite alternate; }
+        .robot-leg-r { animation-delay: 0.275s; animation-direction: alternate-reverse; }
+        @keyframes legSwing {
+            from { transform: rotate(-14deg); }
+            to   { transform: rotate(14deg); }
+        }
+        .robot-arm-l, .robot-arm-r { transform-origin: center top; animation: armSwing 0.55s ease-in-out infinite alternate; }
+        .robot-arm-r { animation-delay: 0.275s; animation-direction: alternate-reverse; }
+        @keyframes armSwing {
+            from { transform: rotate(16deg); }
+            to   { transform: rotate(-16deg); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .robot-track, .particle, .aurora-bg .orb { animation: none !important; }
+        }
+
+        /* =============== ANNOUNCEMENT BAR — SMOOTH SLOW MARQUEE =============== */
+        .offer-bar {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #0b1120 0%, #152238 50%, #0b1120 100%);
+            border-bottom: 1px solid #1f3147;
+        }
+        html.light .offer-bar {
+            background: linear-gradient(90deg, #eef2ff 0%, #e0e7ff 50%, #eef2ff 100%);
+            border-bottom: 1px solid #c7d2fe;
+        }
+        .offer-bar-track {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: marqueeScroll 34s linear infinite;
+            will-change: transform;
+        }
+        .offer-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding-right: 60px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: .2px;
+            color: #e2e8f0;
+        }
+        html.light .offer-item { color: #0f172a; font-weight: 600; }
+        .offer-item .sep { color: #475569; font-weight: 400; }
+        html.light .offer-item .sep { color: #94a3b8; }
+        .offer-bar-track .gradient-accent {
             background: linear-gradient(135deg, #00c8ff, #d946ef);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-        .btn-whatsapp {
-            background: #25d366;
-        }
-        .btn-whatsapp:hover {
-            background: #1da851;
-        }
-        .border-glow {
-            border-color: rgba(0, 200, 255, 0.25);
-        }
-        input,
-        select {
-            background: #111c2e;
-            border: 1px solid #1f3147;
-            color: #e2e8f0;
-            transition: 0.2s;
-        }
-        input:focus,
-        select:focus {
-            border-color: #00c8ff;
-            box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.15);
-            outline: none;
-            background: #0b1120;
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-            background: #0b1120;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #00c8ff;
-            border-radius: 20px;
-        }
-        .trust-card {
-            background: rgba(18, 30, 51, 0.5);
-            border: 1px solid rgba(0, 200, 255, 0.1);
-        }
-        .price-tag {
-            font-size: 1.6rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #00c8ff, #d946ef);
+        }
+        html.light .offer-bar-track .gradient-accent {
+            background: linear-gradient(135deg, #4338ca, #a21caf);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        @keyframes marqueeScroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .offer-bar-track { animation: none; justify-content: center; width: 100%; }
         }
 
-        /* Toggle styles */
-        .toggle-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
-            opacity: 0;
-            padding-top: 0;
-        }
-        .toggle-details.open {
-            max-height: 600px;
-            opacity: 1;
-            padding-top: 0.75rem;
-        }
-        .toggle-btn {
-            cursor: pointer;
-            user-select: none;
-        }
-        .toggle-btn .fa-chevron-down {
-            transition: transform 0.3s ease;
-            display: inline-block;
-        }
-        .toggle-btn.open .fa-chevron-down {
-            transform: rotate(180deg);
-        }
-
-        /* Sub-pack styles */
-        .sub-pack {
-            background: rgba(11, 17, 32, 0.5);
-            border-radius: 0.75rem;
-            padding: 0.6rem 0.9rem;
-            border: 1px solid rgba(0, 200, 255, 0.06);
-        }
-        .sub-pack.popular {
-            border-color: rgba(0, 200, 255, 0.3);
-            background: rgba(0, 200, 255, 0.04);
-        }
-
-        /* WhatsApp option styles */
-        .whatsapp-option {
-            background: rgba(11, 17, 32, 0.4);
-            border-radius: 0.75rem;
-            padding: 0.6rem 0.9rem;
-            border: 1px solid rgba(0, 200, 255, 0.06);
-        }
-        .whatsapp-option.recommended {
-            border-color: rgba(0, 200, 255, 0.25);
-            background: rgba(0, 200, 255, 0.04);
-        }
-
-        .text-bright {
-            color: #f1f5f9;
-        }
-        .text-soft {
-            color: #cbd5e1;
-        }
-        .text-muted {
-            color: #94a3b8;
-        }
-
-        /* Video Modal */
-        .video-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-        .video-modal-container {
+        /* =============== THEME TOGGLE BUTTON =============== */
+        .theme-toggle {
             position: relative;
-            width: 90%;
-            max-width: 420px;
-            background: #0f172a;
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 0 25px rgba(0, 210, 255, 0.2);
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: rgba(17,28,46,.85);
+            border: 1px solid rgba(0,200,255,.25);
+            color: #fbbf24;
+            cursor: pointer;
+            transition: all .3s ease;
+            flex-shrink: 0;
         }
-        .video-modal-close {
+        .theme-toggle:hover { border-color: rgba(0,242,254,.6); box-shadow: 0 0 15px rgba(0,242,254,.35); transform: translateY(-2px); }
+        .theme-toggle .icon-dark, .theme-toggle .icon-light { position: absolute; transition: all .35s cubic-bezier(.4,0,.2,1); }
+        .theme-toggle .icon-light { opacity: 0; transform: rotate(-90deg) scale(.5); }
+        html.light .theme-toggle { background: rgba(255,255,255,.9); border-color: rgba(99,102,241,.3); color: #6366f1; }
+        html.light .theme-toggle .icon-dark { opacity: 0; transform: rotate(90deg) scale(.5); }
+        html.light .theme-toggle .icon-light { opacity: 1; transform: rotate(0) scale(1); }
+
+        /* =============== DEMO CARD IMAGE BADGE =============== */
+        .img-badge {
             position: absolute;
             top: 10px;
-            right: 15px;
-            color: #fff;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 10;
-        }
-        .video-modal-body video {
-            display: block;
-            border-radius: 16px;
-            max-height: 80vh;
-            width: 100%;
-        }
-
-        .logo-link {
-            text-decoration: none !important;
-            display: inline-flex;
-            align-items: center;
-            background: transparent !important;
-        }
-        .logo-link-footer {
-            text-decoration: none !important;
-            display: inline-flex;
-            align-items: center;
-            background: transparent !important;
-        }
-
-        /* Founder image (compact version) */
-        .founder-img-compact {
-            width: 72px;
-            height: 72px;
-            object-fit: cover;
-            border-radius: 9999px;
-            border: 2px solid rgba(0, 200, 255, 0.25);
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.1);
-            flex-shrink: 0;
-        }
-
-        /* FAQ Accordion */
-        .faq-item {
-            background: rgba(18, 30, 51, 0.5);
-            border: 1px solid rgba(0, 200, 255, 0.1);
-            border-radius: 0.75rem;
-            margin-bottom: 0.75rem;
-            transition: border-color 0.3s ease;
-        }
-        .faq-item:hover {
-            border-color: rgba(0, 200, 255, 0.3);
-        }
-        .faq-item summary {
-            list-style: none;
-            cursor: pointer;
-            padding: 1rem 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: 600;
-            color: #e2e8f0;
-            transition: color 0.2s;
-            user-select: none;
-        }
-        .faq-item summary::-webkit-details-marker {
-            display: none;
-        }
-        .faq-item summary::after {
-            content: "\f078";
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            font-size: 0.8rem;
-            color: #00c8ff;
-            transition: transform 0.3s ease;
-            margin-left: 1rem;
-        }
-        .faq-item[open] summary::after {
-            transform: rotate(180deg);
-        }
-        .faq-item .faq-content {
-            padding: 0 1.25rem 1.25rem 1.25rem;
-            color: #cbd5e1;
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-        .faq-item summary:hover {
-            color: #ffffff;
-        }
-        .faq-item[open] {
-            border-color: rgba(0, 200, 255, 0.3);
-            background: rgba(18, 30, 51, 0.7);
-        }
-
-        /* === NAVIGATION LINK STYLING === */
-        .nav-link {
-            color: #ffffff !important;
-            font-weight: 700 !important;
-            transition: all 0.25s ease;
-            position: relative;
-            text-decoration: none;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0%;
-            height: 2px;
-            background: linear-gradient(90deg, #00c8ff, #d946ef);
-            transition: width 0.3s ease;
-            border-radius: 4px;
-        }
-        .nav-link:hover {
-            color: #ffffff !important;
-            text-shadow: 0 0 16px rgba(0, 200, 255, 0.5), 0 0 32px rgba(217, 70, 239, 0.25);
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* ============================================================
-           CTA / DEMO LINK GLOW PULSE ANIMATION
-           ============================================================ */
-        @keyframes ctaGlowPulse {
-            0%, 100% {
-                box-shadow: 0 0 8px rgba(168, 85, 247, 0.4), 0 0 14px rgba(168, 85, 247, 0.18);
-            }
-            50% {
-                box-shadow: 0 0 14px rgba(168, 85, 247, 0.55), 0 0 26px rgba(168, 85, 247, 0.3);
-            }
-        }
-        .cta-glow {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            border: 1px solid rgba(168, 85, 247, 0.35);
-            background: rgba(168, 85, 247, 0.05);
-            color: #d8b4fe !important;
-            font-weight: 600;
-            font-size: 11px;
-            letter-spacing: 0.2px;
-            text-decoration: none;
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                        box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                        color 0.25s ease,
-                        background 0.25s ease,
-                        border-color 0.25s ease;
-            animation: ctaGlowPulse 2.8s ease-in-out infinite;
-            position: relative;
-        }
-        .cta-glow i,
-        .cta-glow .cta-icon {
-            font-size: 10px;
-            color: #c084fc;
-            transition: color 0.25s ease;
-        }
-        .cta-glow:hover {
-            transform: translateY(-2px);
-            color: #ffffff !important;
-            background: rgba(168, 85, 247, 0.15);
-            border-color: rgba(168, 85, 247, 0.7);
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.7), 0 0 24px rgba(168, 85, 247, 0.35);
-            animation-play-state: paused;
-        }
-        .cta-glow:hover i,
-        .cta-glow:hover .cta-icon {
-            color: #ffffff;
-        }
-        .cta-glow.cta-teal {
-            border-color: rgba(0, 200, 255, 0.35);
-            background: rgba(0, 200, 255, 0.05);
-            color: #67e8f9 !important;
-        }
-        .cta-glow.cta-teal i,
-        .cta-glow.cta-teal .cta-icon {
-            color: #22d3ee;
-        }
-        .cta-glow.cta-teal:hover {
-            background: rgba(0, 200, 255, 0.15);
-            border-color: rgba(0, 200, 255, 0.7);
-            box-shadow: 0 0 12px rgba(0, 200, 255, 0.7), 0 0 24px rgba(0, 200, 255, 0.35);
-        }
-        .cta-glow.cta-pink {
-            border-color: rgba(217, 70, 239, 0.35);
-            background: rgba(217, 70, 239, 0.05);
-            color: #f0abfc !important;
-        }
-        .cta-glow.cta-pink i,
-        .cta-glow.cta-pink .cta-icon {
-            color: #e879f9;
-        }
-        .cta-glow.cta-pink:hover {
-            background: rgba(217, 70, 239, 0.15);
-            border-color: rgba(217, 70, 239, 0.7);
-            box-shadow: 0 0 12px rgba(217, 70, 239, 0.7), 0 0 24px rgba(217, 70, 239, 0.35);
-        }
-        .cta-glow.cta-green {
-            border-color: rgba(37, 211, 102, 0.35);
-            background: rgba(37, 211, 102, 0.05);
-            color: #86efac !important;
-        }
-        .cta-glow.cta-green i,
-        .cta-glow.cta-green .cta-icon {
-            color: #25d366;
-        }
-        .cta-glow.cta-green:hover {
-            background: rgba(37, 211, 102, 0.15);
-            border-color: rgba(37, 211, 102, 0.7);
-            box-shadow: 0 0 12px rgba(37, 211, 102, 0.7), 0 0 24px rgba(37, 211, 102, 0.35);
-        }
-        .cta-glow.cta-blue {
-            border-color: rgba(59, 130, 246, 0.35);
-            background: rgba(59, 130, 246, 0.05);
-            color: #93c5fd !important;
-        }
-        .cta-glow.cta-blue i,
-        .cta-glow.cta-blue .cta-icon {
-            color: #3b82f6;
-        }
-        .cta-glow.cta-blue:hover {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: rgba(59, 130, 246, 0.7);
-            box-shadow: 0 0 12px rgba(59, 130, 246, 0.7), 0 0 24px rgba(59, 130, 246, 0.35);
-        }
-        .cta-glow.cta-yellow {
-            border-color: rgba(234, 179, 8, 0.35);
-            background: rgba(234, 179, 8, 0.05);
-            color: #fde68a !important;
-        }
-        .cta-glow.cta-yellow i,
-        .cta-glow.cta-yellow .cta-icon {
-            color: #eab308;
-        }
-        .cta-glow.cta-yellow:hover {
-            background: rgba(234, 179, 8, 0.15);
-            border-color: rgba(234, 179, 8, 0.7);
-            box-shadow: 0 0 12px rgba(234, 179, 8, 0.7), 0 0 24px rgba(234, 179, 8, 0.35);
-        }
-        .cta-glow.cta-purple {
-            border-color: rgba(168, 85, 247, 0.35);
-            background: rgba(168, 85, 247, 0.05);
-            color: #d8b4fe !important;
-        }
-        .cta-glow.cta-purple i,
-        .cta-glow.cta-purple .cta-icon {
-            color: #a855f7;
-        }
-        .cta-glow.cta-purple:hover {
-            background: rgba(168, 85, 247, 0.15);
-            border-color: rgba(168, 85, 247, 0.7);
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.7), 0 0 24px rgba(168, 85, 247, 0.35);
-        }
-
-        /* ============================================================
-           AUTOMATIONS SECTION — price typography
-           ============================================================ */
-        .automation-price {
-            font-size: 1.25rem;
-            font-weight: 700;
-            line-height: 1.35;
-        }
-        .automation-price .label {
-            background: linear-gradient(135deg, #00c8ff, #d946ef);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-        }
-        .automation-price .value {
-            background: linear-gradient(135deg, #00c8ff, #d946ef);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-            font-size: 1.25rem;
-        }
-
-        /* Automation badge pill */
-        .automation-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 9999px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            background: rgba(31, 49, 71, 0.85);
-            border: 1px solid rgba(0, 200, 255, 0.25);
-            color: #7dd3fc;
-            margin-bottom: 12px;
-        }
-        .automation-badge.badge-voice {
-            color: #67e8f9;
-            border-color: rgba(0, 200, 255, 0.35);
-        }
-        .automation-badge.badge-crm {
-            color: #f0abfc;
-            border-color: rgba(217, 70, 239, 0.35);
-        }
-        .automation-badge.badge-content {
-            color: #86efac;
-            border-color: rgba(37, 211, 102, 0.35);
-        }
-
-        /* ============================================================
-           HOW WE GROW — GLOWING EMOJI ICONS
-           ============================================================ */
-        .growth-emoji {
-            font-size: 2rem;
-            line-height: 1;
-            display: inline-block;
-            margin-bottom: 0.75rem;
-            filter: drop-shadow(0 0 10px rgba(0, 200, 255, 0.45)) drop-shadow(0 0 20px rgba(217, 70, 239, 0.2));
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-        .growth-card:hover .growth-emoji {
-            transform: scale(1.15);
-            filter: drop-shadow(0 0 14px rgba(0, 200, 255, 0.7)) drop-shadow(0 0 28px rgba(217, 70, 239, 0.4));
-        }
-
-        /* ============================================================
-           REFINED SOCIAL ICONS
-           ============================================================ */
-        .social-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
-            min-height: 40px;
-            border-radius: 50%;
-            text-decoration: none;
-            position: relative;
-            z-index: 99;
-            overflow: hidden;
-            box-sizing: border-box;
-            opacity: 0.95;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            left: 10px;
+            background: rgba(11,17,32,.75);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-        }
-        .social-icon i {
-            font-size: 20px;
-            line-height: 1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .social-icon svg {
-            width: 20px;
-            height: 20px;
-            display: block;
-            transition: fill 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .social-icon.social-instagram {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(220, 39, 67, 0.3);
-            box-shadow: 0 0 10px rgba(220, 39, 67, 0.25);
-        }
-        .social-icon.social-instagram i {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-        }
-        .social-icon.social-instagram:hover {
-            transform: translateY(-2px);
-            opacity: 1;
-            border-color: rgba(220, 39, 67, 0.5);
-            box-shadow: 0 0 14px rgba(220, 39, 67, 0.4), 0 0 24px rgba(220, 39, 67, 0.18);
-        }
-        .social-icon.social-threads {
-            background: #000000;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            color: #FFFFFF;
-        }
-        .social-icon.social-threads svg {
-            fill: #FFFFFF;
-        }
-        .social-icon.social-threads:hover {
-            transform: translateY(-2px);
-            opacity: 1;
-            border-color: rgba(255, 255, 255, 0.55);
-            box-shadow: 0 0 14px rgba(255, 255, 255, 0.35), 0 0 24px rgba(255, 255, 255, 0.15);
-        }
-        .social-icon.social-linkedin {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(10, 102, 194, 0.3);
-            box-shadow: 0 0 10px rgba(10, 102, 194, 0.25);
-            color: #0A66C2;
-        }
-        .social-icon.social-linkedin i {
-            color: #0A66C2;
-        }
-        .social-icon.social-linkedin:hover {
-            transform: translateY(-2px);
-            opacity: 1;
-            background: rgba(10, 102, 194, 0.12);
-            border-color: rgba(10, 102, 194, 0.5);
-            box-shadow: 0 0 14px rgba(10, 102, 194, 0.4), 0 0 24px rgba(10, 102, 194, 0.18);
-        }
-
-        .social-row {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .footer-social-wrap {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-            z-index: 99;
-            pointer-events: auto;
-            flex-wrap: wrap;
-        }
-        @media (min-width: 768px) {
-            .footer-social-wrap {
-                margin-right: 90px;
-            }
-        }
-        @media (max-width: 767px) {
-            .footer-social-wrap {
-                justify-content: center;
-                width: 100%;
-                margin-top: 0.75rem;
-                margin-right: 0;
-            }
-        }
-
-        /* ===== MULTI-CURRENCY SWITCHER ===== */
-        .currency-switcher {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(17, 28, 46, 0.85);
-            border: 1px solid rgba(0, 200, 255, 0.25);
+            color: #00c8ff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
             border-radius: 9999px;
-            padding: 3px;
-            gap: 2px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-        .currency-switcher:hover {
-            border-color: rgba(0, 242, 254, 0.5);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
-        }
-        .currency-btn {
-            padding: 5px 12px;
-            border-radius: 9999px;
-            font-size: 11.5px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: #94a3b8;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            transition: all 0.25s ease;
+            border: 1px solid rgba(0,200,255,.35);
+            letter-spacing: 0.3px;
+            z-index: 2;
             white-space: nowrap;
-            line-height: 1;
-            font-family: inherit;
         }
-        .currency-btn:hover:not(.active) {
-            color: #ffffff;
-            background: rgba(0, 242, 254, 0.08);
+        html.light .img-badge {
+            background: rgba(255,255,255,.85);
+            color: #4f46e5;
+            border-color: rgba(99,102,241,.4);
         }
-        .currency-btn.active {
-            color: #0b1120;
-            background: linear-gradient(135deg, #00f2fe, #00c8ff);
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.6), 0 0 20px rgba(0, 242, 254, 0.3);
-            text-shadow: none;
+
+        /* =============== LIGHT MODE OVERRIDES =============== */
+        html.light .bg-\[\#0b1120\] { background-color: transparent !important; }
+        html.light .bg-\[\#060b16\] { background-color: #ffffff !important; border-top-color: #e2e8f0 !important; }
+        html.light .bg-\[\#0b1120\]\/90 { background-color: rgba(248,250,252,.92) !important; }
+        html.light header { border-bottom-color: #e2e8f0 !important; }
+        html.light .border-\[\#1f3147\] { border-color: #e2e8f0 !important; }
+        html.light .border-\[\#1a2a40\] { border-color: #e2e8f0 !important; }
+        html.light .text-white { color: #0F172A !important; }
+        html.light .text-slate-300 { color: #334155 !important; }
+        html.light .text-slate-400 { color: #64748b !important; }
+        html.light .text-gray-300 { color: #334155 !important; }
+        html.light .bg-\[\#1f3147\] { background-color: #e2e8f0 !important; color: #0F172A !important; }
+        html.light .bg-\[\#111c2e\] { background-color: #f1f5f9 !important; }
+        html.light .card-bg { background: rgba(255,255,255,.72) !important; box-shadow: 0 8px 24px rgba(15,23,42,.06); }
+        html.light .trust-card { background: rgba(255,255,255,.68) !important; border-color: rgba(99,102,241,.15) !important; }
+        html.light .neon-border { border-color: rgba(99,102,241,.22) !important; }
+        html.light .faq-item { background: rgba(255,255,255,.75) !important; border-color: rgba(99,102,241,.15) !important; }
+        html.light .faq-item summary { color: #0F172A !important; }
+        html.light .faq-item .faq-content { color: #334155 !important; }
+        html.light .sub-pack, html.light .whatsapp-option { background: rgba(241,245,249,.9) !important; border-color: rgba(99,102,241,.12) !important; }
+        html.light .whatsapp-option.recommended, html.light .sub-pack.popular { background: rgba(224,231,255,.7) !important; border-color: rgba(99,102,241,.35) !important; }
+        html.light .gradient-text {
+            background: linear-gradient(135deg, #4f46e5, #d946ef);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        @media (max-width: 640px) {
-            .currency-switcher {
-                padding: 2px;
-            }
-            .currency-btn {
-                padding: 4px 9px;
-                font-size: 11px;
-            }
+        html.light .price-tag {
+            background: linear-gradient(135deg, #4f46e5, #d946ef);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        @media (max-width: 380px) {
-            .currency-btn {
-                padding: 4px 7px;
-                font-size: 10.5px;
-                letter-spacing: 0;
-            }
+        html.light .glow-text { text-shadow: none; }
+        html.light .nav-link { color: #0F172A !important; }
+        html.light .nav-link:hover { color: #4f46e5 !important; text-shadow: 0 0 12px rgba(79,70,229,.25); }
+        html.light .neon-glow { box-shadow: 0 10px 30px rgba(15,23,42,.06); }
+        html.light .trust-card .growth-emoji { filter: drop-shadow(0 0 8px rgba(99,102,241,.35)); }
+
+        /* ===== LOGO: ALWAYS SHARP & FULLY VISIBLE IN LIGHT MODE ===== */
+        #brand-logo-text-1, #brand-logo-footer-1 {
+            color: #FFFFFF !important;
+            text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 0 25px rgba(0,210,255,0.3) !important;
         }
+        #brand-logo-text-2, #brand-logo-footer-2 {
+            background: linear-gradient(135deg, #00d2ff 0%, #9333ea 100%) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            color: transparent !important;
+            filter: drop-shadow(0 0 12px rgba(147,51,234,0.6)) !important;
+            margin-left: 4px !important;
+        }
+        html.light #brand-logo-text-1, html.light #brand-logo-footer-1 {
+            color: #0F172A !important;
+            text-shadow: none !important;
+        }
+        html.light #brand-logo-text-2, html.light #brand-logo-footer-2 {
+            background: linear-gradient(135deg, #4f46e5 0%, #a21caf 100%) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            color: transparent !important;
+            filter: drop-shadow(0 1px 1px rgba(79,70,229,.25)) !important;
+        }
+
+        .glow-text { text-shadow: 0 0 20px rgba(0, 255, 255, 0.15); }
+        .neon-glow { box-shadow: 0 0 30px rgba(0, 200, 255, 0.08), 0 0 60px rgba(255, 0, 200, 0.03); }
+        .neon-border { border: 1px solid rgba(0, 200, 255, 0.15); }
+        .card-bg { background: rgba(18, 30, 51, 0.7); backdrop-filter: blur(6px); }
+        .gradient-primary { background: linear-gradient(135deg, #00c8ff, #d946ef); }
+        .gradient-primary:hover { background: linear-gradient(135deg, #00d4ff, #e879f9); }
+        .gradient-text { background: linear-gradient(135deg, #00c8ff, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .btn-whatsapp { background: #25d366; }
+        .btn-whatsapp:hover { background: #1da851; }
+        .border-glow { border-color: rgba(0, 200, 255, 0.25); }
+        input, select { background: #111c2e; border: 1px solid #1f3147; color: #e2e8f0; transition: 0.2s; }
+        input:focus, select:focus { border-color: #00c8ff; box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.15); outline: none; background: #0b1120; }
+        ::-webkit-scrollbar { width: 6px; background: #0b1120; }
+        ::-webkit-scrollbar-thumb { background: #00c8ff; border-radius: 20px; }
+        html.light ::-webkit-scrollbar { background: #F8FAFC; }
+        html.light ::-webkit-scrollbar-thumb { background: #6366f1; }
+        .trust-card { background: rgba(18, 30, 51, 0.5); border: 1px solid rgba(0, 200, 255, 0.1); }
+        .price-tag { font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg, #00c8ff, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .toggle-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease; opacity: 0; padding-top: 0; }
+        .toggle-details.open { max-height: 600px; opacity: 1; padding-top: 0.75rem; }
+        .toggle-btn { cursor: pointer; user-select: none; }
+        .toggle-btn .fa-chevron-down { transition: transform 0.3s ease; display: inline-block; }
+        .toggle-btn.open .fa-chevron-down { transform: rotate(180deg); }
+        .sub-pack { background: rgba(11, 17, 32, 0.5); border-radius: 0.75rem; padding: 0.6rem 0.9rem; border: 1px solid rgba(0, 200, 255, 0.06); }
+        .sub-pack.popular { border-color: rgba(0, 200, 255, 0.3); background: rgba(0, 200, 255, 0.04); }
+        .whatsapp-option { background: rgba(11, 17, 32, 0.4); border-radius: 0.75rem; padding: 0.6rem 0.9rem; border: 1px solid rgba(0, 200, 255, 0.06); }
+        .whatsapp-option.recommended { border-color: rgba(0, 200, 255, 0.25); background: rgba(0, 200, 255, 0.04); }
+        .video-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; }
+        .video-modal-container { position: relative; width: 90%; max-width: 420px; background: #0f172a; border: 1px solid rgba(0,210,255,0.3); border-radius: 16px; overflow: hidden; box-shadow: 0 0 25px rgba(0,210,255,0.2); }
+        .video-modal-close { position: absolute; top: 10px; right: 15px; color: #fff; font-size: 28px; font-weight: bold; cursor: pointer; z-index: 10; }
+        .video-modal-body video { display: block; border-radius: 16px; max-height: 80vh; width: 100%; }
+        .logo-link, .logo-link-footer { text-decoration: none !important; display: inline-flex; align-items: center; background: transparent !important; }
+        .founder-img-compact { width: 72px; height: 72px; object-fit: cover; border-radius: 9999px; border: 2px solid rgba(0, 200, 255, 0.25); box-shadow: 0 0 20px rgba(0, 200, 255, 0.1); flex-shrink: 0; }
+        .faq-item { background: rgba(18, 30, 51, 0.5); border: 1px solid rgba(0, 200, 255, 0.1); border-radius: 0.75rem; margin-bottom: 0.75rem; transition: border-color 0.3s ease; }
+        .faq-item:hover { border-color: rgba(0, 200, 255, 0.3); }
+        .faq-item summary { list-style: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; font-weight: 600; color: #e2e8f0; transition: color 0.2s; user-select: none; }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after { content: "\f078"; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 0.8rem; color: #00c8ff; transition: transform 0.3s ease; margin-left: 1rem; }
+        .faq-item[open] summary::after { transform: rotate(180deg); }
+        .faq-item .faq-content { padding: 0 1.25rem 1.25rem 1.25rem; color: #cbd5e1; line-height: 1.7; font-size: 0.95rem; }
+        .faq-item summary:hover { color: #ffffff; }
+        .faq-item[open] { border-color: rgba(0, 200, 255, 0.3); background: rgba(18, 30, 51, 0.7); }
+        .nav-link { color: #ffffff !important; font-weight: 700 !important; transition: all 0.25s ease; position: relative; text-decoration: none; }
+        .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0%; height: 2px; background: linear-gradient(90deg, #00c8ff, #d946ef); transition: width 0.3s ease; border-radius: 4px; }
+        .nav-link:hover { color: #ffffff !important; text-shadow: 0 0 16px rgba(0, 200, 255, 0.5), 0 0 32px rgba(217, 70, 239, 0.25); }
+        .nav-link:hover::after { width: 100%; }
+        @keyframes ctaGlowPulse { 0%, 100% { box-shadow: 0 0 8px rgba(168,85,247,0.4), 0 0 14px rgba(168,85,247,0.18); } 50% { box-shadow: 0 0 14px rgba(168,85,247,0.55), 0 0 26px rgba(168,85,247,0.3); } }
+        .cta-glow { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 9999px; border: 1px solid rgba(168, 85, 247, 0.35); background: rgba(168, 85, 247, 0.05); color: #d8b4fe !important; font-weight: 600; font-size: 11px; letter-spacing: 0.2px; text-decoration: none; transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease, background 0.25s ease, border-color 0.25s ease; animation: ctaGlowPulse 2.8s ease-in-out infinite; position: relative; }
+        .cta-glow i, .cta-glow .cta-icon { font-size: 10px; color: #c084fc; transition: color 0.25s ease; }
+        .cta-glow:hover { transform: translateY(-2px); color: #ffffff !important; background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.7); box-shadow: 0 0 12px rgba(168, 85, 247, 0.7), 0 0 24px rgba(168, 85, 247, 0.35); animation-play-state: paused; }
+        .cta-glow:hover i, .cta-glow:hover .cta-icon { color: #ffffff; }
+        html.light .cta-glow { background: rgba(99,102,241,.08); border-color: rgba(99,102,241,.35); color: #4f46e5 !important; }
+        html.light .cta-glow i, html.light .cta-glow .cta-icon { color: #6366f1; }
+        .cta-glow.cta-teal { border-color: rgba(0,200,255,.35); background: rgba(0,200,255,.05); color: #67e8f9 !important; }
+        .cta-glow.cta-teal i, .cta-glow.cta-teal .cta-icon { color: #22d3ee; }
+        .cta-glow.cta-green { border-color: rgba(37,211,102,.35); background: rgba(37,211,102,.05); color: #86efac !important; }
+        .cta-glow.cta-green i, .cta-glow.cta-green .cta-icon { color: #25d366; }
+        .cta-glow.cta-blue { border-color: rgba(59,130,246,.35); background: rgba(59,130,246,.05); color: #93c5fd !important; }
+        .cta-glow.cta-blue i, .cta-glow.cta-blue .cta-icon { color: #3b82f6; }
+        .cta-glow.cta-yellow { border-color: rgba(234,179,8,.35); background: rgba(234,179,8,.05); color: #fde68a !important; }
+        .cta-glow.cta-yellow i, .cta-glow.cta-yellow .cta-icon { color: #eab308; }
+        .cta-glow.cta-pink { border-color: rgba(217,70,239,.35); background: rgba(217,70,239,.05); color: #f0abfc !important; }
+        .cta-glow.cta-pink i, .cta-glow.cta-pink .cta-icon { color: #e879f9; }
+        .cta-glow.cta-purple { border-color: rgba(168,85,247,.35); background: rgba(168,85,247,.05); color: #d8b4fe !important; }
+        .cta-glow.cta-purple i, .cta-glow.cta-purple .cta-icon { color: #a855f7; }
+        html.light .cta-glow.cta-teal { color: #0e7490 !important; border-color: rgba(14,116,144,.35); }
+        html.light .cta-glow.cta-green { color: #15803d !important; border-color: rgba(21,128,61,.35); }
+        html.light .cta-glow.cta-blue { color: #1d4ed8 !important; border-color: rgba(29,78,216,.35); }
+        html.light .cta-glow.cta-yellow { color: #a16207 !important; border-color: rgba(161,98,7,.35); }
+        html.light .cta-glow.cta-pink { color: #a21caf !important; border-color: rgba(162,28,175,.35); }
+        html.light .cta-glow.cta-purple { color: #6d28d9 !important; border-color: rgba(109,40,217,.35); }
+        .automation-price { font-size: 1.25rem; font-weight: 700; line-height: 1.35; }
+        .automation-price .label { background: linear-gradient(135deg, #00c8ff, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
+        .automation-price .value { background: linear-gradient(135deg, #00c8ff, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; font-size: 1.25rem; }
+        html.light .automation-price .label, html.light .automation-price .value { background: linear-gradient(135deg, #4f46e5, #d946ef); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .automation-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 700; letter-spacing: 0.3px; background: rgba(31, 49, 71, 0.85); border: 1px solid rgba(0, 200, 255, 0.25); color: #7dd3fc; margin-bottom: 12px; }
+        .automation-badge.badge-voice { color: #67e8f9; border-color: rgba(0,200,255,.35); }
+        .automation-badge.badge-crm { color: #f0abfc; border-color: rgba(217,70,239,.35); }
+        .automation-badge.badge-content { color: #86efac; border-color: rgba(37,211,102,.35); }
+        html.light .automation-badge { background: rgba(224,231,255,.7) !important; color: #4338ca !important; border-color: rgba(99,102,241,.3) !important; }
+        .growth-emoji { font-size: 2rem; line-height: 1; display: inline-block; margin-bottom: 0.75rem; filter: drop-shadow(0 0 10px rgba(0,200,255,.45)) drop-shadow(0 0 20px rgba(217,70,239,.2)); transition: transform 0.3s ease, filter 0.3s ease; }
+        .growth-card:hover .growth-emoji { transform: scale(1.15); filter: drop-shadow(0 0 14px rgba(0,200,255,.7)) drop-shadow(0 0 28px rgba(217,70,239,.4)); }
+        .social-icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; min-width: 40px; min-height: 40px; border-radius: 50%; text-decoration: none; position: relative; z-index: 99; overflow: hidden; box-sizing: border-box; opacity: 0.95; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+        .social-icon i { font-size: 20px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .social-icon svg { width: 20px; height: 20px; display: block; transition: fill 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .social-icon.social-instagram { background: rgba(255,255,255,.05); border: 1px solid rgba(220,39,67,.3); box-shadow: 0 0 10px rgba(220,39,67,.25); }
+        .social-icon.social-instagram i { background: linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+        .social-icon.social-instagram:hover { transform: translateY(-2px); opacity: 1; border-color: rgba(220,39,67,.5); box-shadow: 0 0 14px rgba(220,39,67,.4), 0 0 24px rgba(220,39,67,.18); }
+        .social-icon.social-threads { background: #000; border: 1px solid rgba(255,255,255,.3); box-shadow: 0 0 10px rgba(255,255,255,.2); color: #fff; }
+        .social-icon.social-threads svg { fill: #fff; }
+        .social-icon.social-threads:hover { transform: translateY(-2px); opacity: 1; border-color: rgba(255,255,255,.55); box-shadow: 0 0 14px rgba(255,255,255,.35), 0 0 24px rgba(255,255,255,.15); }
+        .social-icon.social-linkedin { background: rgba(255,255,255,.05); border: 1px solid rgba(10,102,194,.3); box-shadow: 0 0 10px rgba(10,102,194,.25); color: #0A66C2; }
+        .social-icon.social-linkedin i { color: #0A66C2; }
+        .social-icon.social-linkedin:hover { transform: translateY(-2px); opacity: 1; background: rgba(10,102,194,.12); border-color: rgba(10,102,194,.5); box-shadow: 0 0 14px rgba(10,102,194,.4), 0 0 24px rgba(10,102,194,.18); }
+        .social-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-social-wrap { display: flex; align-items: center; gap: 12px; position: relative; z-index: 99; pointer-events: auto; flex-wrap: wrap; }
+        @media (min-width: 768px) { .footer-social-wrap { margin-right: 90px; } }
+        @media (max-width: 767px) { .footer-social-wrap { justify-content: center; width: 100%; margin-top: 0.75rem; margin-right: 0; } }
+        .currency-switcher { display: inline-flex; align-items: center; background: rgba(17,28,46,.85); border: 1px solid rgba(0,200,255,.25); border-radius: 9999px; padding: 3px; gap: 2px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all .3s ease; flex-shrink: 0; }
+        .currency-switcher:hover { border-color: rgba(0,242,254,.5); box-shadow: 0 0 15px rgba(0,242,254,.25); }
+        html.light .currency-switcher { background: rgba(255,255,255,.9); border-color: rgba(99,102,241,.25); }
+        .currency-btn { padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 800; letter-spacing: .5px; color: #94a3b8; background: transparent; border: none; cursor: pointer; transition: all .25s ease; white-space: nowrap; line-height: 1; font-family: inherit; }
+        .currency-btn:hover:not(.active) { color: #fff; background: rgba(0,242,254,.08); }
+        html.light .currency-btn:hover:not(.active) { color: #4f46e5; background: rgba(99,102,241,.08); }
+        .currency-btn.active { color: #0b1120; background: linear-gradient(135deg,#00f2fe,#00c8ff); box-shadow: 0 0 10px rgba(0,242,254,.6), 0 0 20px rgba(0,242,254,.3); text-shadow: none; }
+        html.light .currency-btn.active { color: #fff; background: linear-gradient(135deg,#4f46e5,#7c3aed); box-shadow: 0 0 10px rgba(79,70,229,.5), 0 0 20px rgba(79,70,229,.25); }
+        @media (max-width: 640px) { .currency-switcher { padding: 2px; } .currency-btn { padding: 4px 9px; font-size: 11px; } }
+        @media (max-width: 380px) { .currency-btn { padding: 4px 7px; font-size: 10.5px; letter-spacing: 0; } }
+
+        header, section, footer { position: relative; z-index: 2; }
     </style>
 
-    <!-- ===== VERCEL ANALYTICS (Official Static HTML Snippet) ===== -->
+    <!-- VERCEL ANALYTICS (Official Static HTML Snippet) -->
     <script>
         window.va = window.va || function() {
             (window.vaq = window.vaq || []).push(arguments);
@@ -856,18 +449,154 @@
 </head>
 <body>
 
-    <!-- ===== TOP ANNOUNCEMENT BAR ===== -->
-    <div class="bg-gradient-to-r from-[#0b1120] via-[#152238] to-[#0b1120] border-b border-[#1f3147] py-2.5 px-4 text-center text-sm text-gray-300">
-        <span class="inline-flex items-center gap-2"><i class="fas fa-rocket text-teal-400"></i> 🚀 Special Agency Offer: Get Your AI Website &amp; Chatbot Ready in 3 Days! <span class="hidden sm:inline text-teal-300">|</span> <span class="hidden sm:inline"><i class="fas fa-phone-alt mr-1 text-teal-400"></i> 9004600946</span></span>
+    <!-- ===== THEME INIT (runs before paint to avoid flash) ===== -->
+    <script>
+        (function() {
+            try {
+                const saved = localStorage.getItem('axiomate_theme');
+                if (saved === 'light') {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                }
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- ===== AURORA MESH BACKGROUND (LIGHT MODE) ===== -->
+    <div class="aurora-bg" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <!-- ===== FLOATING TECH PARTICLES ===== -->
+    <div class="particles-layer" id="particlesLayer" aria-hidden="true"></div>
+
+    <!-- ===== ONE-TIME WALKING AI MECH ROBOT ===== -->
+    <div class="robot-track" id="robotTrack" aria-hidden="true">
+        <svg class="robot-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="mechBody" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#00e0ff"/>
+                    <stop offset="55%" stop-color="#3b82f6"/>
+                    <stop offset="100%" stop-color="#d946ef"/>
+                </linearGradient>
+                <linearGradient id="mechVisor" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#04101f"/>
+                    <stop offset="100%" stop-color="#1e293b"/>
+                </linearGradient>
+                <radialGradient id="mechCore" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="45%" stop-color="#00f2fe"/>
+                    <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+
+            <!-- antenna -->
+            <rect x="57" y="7" width="6" height="13" rx="3" fill="url(#mechBody)"/>
+            <circle cx="60" cy="6" r="7" fill="#d946ef" opacity="0.25"/>
+            <circle cx="60" cy="6" r="3.6" fill="#d946ef"/>
+
+            <!-- head -->
+            <rect x="34" y="18" width="52" height="30" rx="10" fill="url(#mechBody)"/>
+            <rect x="41" y="26" width="38" height="15" rx="7" fill="url(#mechVisor)"/>
+            <rect x="46" y="31" width="9" height="5" rx="2.5" fill="#00f2fe"/>
+            <rect x="65" y="31" width="9" height="5" rx="2.5" fill="#00f2fe"/>
+
+            <!-- ear pods -->
+            <rect x="28" y="28" width="6" height="12" rx="3" fill="#0ea5e9"/>
+            <rect x="86" y="28" width="6" height="12" rx="3" fill="#0ea5e9"/>
+
+            <!-- neck -->
+            <rect x="53" y="48" width="14" height="6" rx="3" fill="#0b1120" opacity=".6"/>
+
+            <!-- torso -->
+            <rect x="36" y="54" width="48" height="34" rx="12" fill="url(#mechBody)"/>
+            <rect x="45" y="60" width="30" height="4" rx="2" fill="#0b1120" opacity=".32"/>
+            <circle cx="60" cy="71" r="9" fill="url(#mechCore)"/>
+
+            <!-- arms -->
+            <g class="robot-arm-l" style="transform-origin:40px 60px;">
+                <rect x="24" y="58" width="10" height="26" rx="5" fill="url(#mechBody)"/>
+                <circle cx="29" cy="86" r="5.5" fill="#00c8ff"/>
+            </g>
+            <g class="robot-arm-r" style="transform-origin:80px 60px;">
+                <rect x="86" y="58" width="10" height="26" rx="5" fill="url(#mechBody)"/>
+                <circle cx="91" cy="86" r="5.5" fill="#d946ef"/>
+            </g>
+
+            <!-- legs -->
+            <g class="robot-leg-l" style="transform-origin:50px 88px;">
+                <rect x="44" y="88" width="11" height="20" rx="5" fill="url(#mechBody)"/>
+                <rect x="39" y="104" width="20" height="7" rx="3.5" fill="#0b1120"/>
+            </g>
+            <g class="robot-leg-r" style="transform-origin:70px 88px;">
+                <rect x="65" y="88" width="11" height="20" rx="5" fill="url(#mechBody)"/>
+                <rect x="61" y="104" width="20" height="7" rx="3.5" fill="#0b1120"/>
+            </g>
+        </svg>
+    </div>
+
+    <!-- ===== TOP ANNOUNCEMENT BAR (SMOOTH SLOW MARQUEE) ===== -->
+    <div class="offer-bar py-2.5">
+        <div class="offer-bar-track" id="offerBarTrack">
+            <!-- COPY 1 (visible) -->
+            <span class="offer-item">
+                🚀 <span class="font-bold">Special Agency Offer:</span>
+                <span class="gradient-accent">Get Your AI Website &amp; Chatbot Ready in 3 Days!</span>
+                <span class="sep">|</span>
+                📞 <span class="font-bold">9004600946</span>
+                <span class="sep">•</span>
+                ⚡ <span class="gradient-accent">Limited Time — Book Your Free Demo Today!</span>
+                <span class="sep">•</span>
+                ⭐ 5000+ Happy Clients
+            </span>
+            <!-- COPY 2 -->
+            <span class="offer-item" aria-hidden="true">
+                🚀 <span class="font-bold">Special Agency Offer:</span>
+                <span class="gradient-accent">Get Your AI Website &amp; Chatbot Ready in 3 Days!</span>
+                <span class="sep">|</span>
+                📞 <span class="font-bold">9004600946</span>
+                <span class="sep">•</span>
+                ⚡ <span class="gradient-accent">Limited Time — Book Your Free Demo Today!</span>
+                <span class="sep">•</span>
+                ⭐ 5000+ Happy Clients
+            </span>
+            <!-- COPY 3 -->
+            <span class="offer-item" aria-hidden="true">
+                🚀 <span class="font-bold">Special Agency Offer:</span>
+                <span class="gradient-accent">Get Your AI Website &amp; Chatbot Ready in 3 Days!</span>
+                <span class="sep">|</span>
+                📞 <span class="font-bold">9004600946</span>
+                <span class="sep">•</span>
+                ⚡ <span class="gradient-accent">Limited Time — Book Your Free Demo Today!</span>
+                <span class="sep">•</span>
+                ⭐ 5000+ Happy Clients
+            </span>
+            <!-- COPY 4 -->
+            <span class="offer-item" aria-hidden="true">
+                🚀 <span class="font-bold">Special Agency Offer:</span>
+                <span class="gradient-accent">Get Your AI Website &amp; Chatbot Ready in 3 Days!</span>
+                <span class="sep">|</span>
+                📞 <span class="font-bold">9004600946</span>
+                <span class="sep">•</span>
+                ⚡ <span class="gradient-accent">Limited Time — Book Your Free Demo Today!</span>
+                <span class="sep">•</span>
+                ⭐ 5000+ Happy Clients
+            </span>
+        </div>
     </div>
 
     <!-- ===== HEADER / NAVBAR ===== -->
-    <header class="sticky top-0 z-50 bg-[#0b1120]/90 backdrop-blur-lg border-b border-[#1f3147] py-3 px-4 sm:px-6">
+    <header class="sticky top-0 z-50 border-b py-3 px-4 sm:px-6" style="background: var(--header-bg); backdrop-filter: blur(14px); border-color: var(--border-color);">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
             <a href="#" class="logo-link">
                 <span style="font-family: 'Montserrat', 'Poppins', sans-serif !important; font-size: 24px !important; font-weight: 900 !important; letter-spacing: 1.5px !important; text-transform: uppercase !important;">
-                    <span style="color: #FFFFFF !important; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 25px rgba(0, 210, 255, 0.3) !important;">AXIOMATE</span>
-                    <span style="background: linear-gradient(135deg, #00d2ff 0%, #9333ea 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important; filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.6)) !important; margin-left: 4px !important;">AI</span>
+                    <span id="brand-logo-text-1">AXIOMATE</span><span id="brand-logo-text-2">AI</span>
                 </span>
             </a>
 
@@ -884,6 +613,12 @@
                     <button type="button" class="currency-btn active" data-currency="INR" aria-label="Switch to Indian Rupee">₹<span class="hidden sm:inline"> INR</span></button>
                     <button type="button" class="currency-btn" data-currency="USD" aria-label="Switch to US Dollar">$<span class="hidden sm:inline"> USD</span></button>
                 </div>
+
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle dark / light mode" title="Toggle theme">
+                    <i class="fas fa-moon icon-dark" style="font-size: 18px;"></i>
+                    <i class="fas fa-sun icon-light" style="font-size: 18px;"></i>
+                </button>
+
                 <a href="#contact" class="gradient-primary text-white font-semibold px-4 sm:px-5 py-2 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.25)] transition">Book Free Demo</a>
                 <div class="md:hidden text-gray-300 text-xl"><i class="fas fa-bars"></i></div>
             </div>
@@ -908,15 +643,23 @@
         <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-fuchsia-500/5 rounded-full blur-3xl"></div>
     </section>
 
-    <!-- ===== DEMO SHOWCASE CARDS ===== -->
-    <section id="demo" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+    <!-- ===== DEMO SHOWCASE CARDS (NO-CROP, OBJECT-CONTAIN) ===== -->
+    <section id="demo" class="py-12 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-2xl sm:text-3xl font-bold text-center text-white"><span class="gradient-text">Live</span> Demos</h2>
             <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Explore our AI-powered websites</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 max-w-4xl mx-auto">
+
+                <!-- Healthcare & Clinic -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col items-center text-center">
-                    <div class="w-full h-36 bg-gradient-to-br from-[#1a2a40] to-[#0b1120] rounded-xl flex items-center justify-center text-4xl text-gray-500 border border-[#1f3147]">
-                        <i class="fas fa-heartbeat text-teal-400 text-5xl"></i>
+                    <div class="relative w-full h-52 sm:h-60 bg-slate-900/10 dark:bg-black/40 rounded-xl overflow-hidden flex items-center justify-center p-2 border border-slate-200 dark:border-white/10">
+                        <span class="img-badge"><i class="fas fa-circle text-[6px] text-green-400 mr-1"></i> LIVE PREVIEW</span>
+                        <img
+                            src="clinic-demo.jpg"
+                            alt="Medical AI Doctor — Healthcare & Clinic website preview"
+                            loading="lazy"
+                            class="w-full h-full object-contain rounded-lg transition-transform duration-300 hover:scale-105"
+                        />
                     </div>
                     <h3 class="text-xl font-bold text-white mt-4">Healthcare &amp; Clinic</h3>
                     <p class="text-slate-300 text-sm">Modern UI with appointment booking</p>
@@ -924,9 +667,17 @@
                         <i class="fas fa-external-link-alt mr-2"></i> View Live Demo
                     </a>
                 </div>
+
+                <!-- Fashion & Clothing Store -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col items-center text-center">
-                    <div class="w-full h-36 bg-gradient-to-br from-[#1a2a40] to-[#0b1120] rounded-xl flex items-center justify-center text-4xl text-gray-500 border border-[#1f3147]">
-                        <i class="fas fa-tshirt text-pink-400 text-5xl"></i>
+                    <div class="relative w-full h-52 sm:h-60 bg-slate-900/10 dark:bg-black/40 rounded-xl overflow-hidden flex items-center justify-center p-2 border border-slate-200 dark:border-white/10">
+                        <span class="img-badge"><i class="fas fa-circle text-[6px] text-pink-400 mr-1"></i> LIVE PREVIEW</span>
+                        <img
+                            src="fashion-demo.jpg"
+                            alt="Fashion & Clothing Store UI preview"
+                            loading="lazy"
+                            class="w-full h-full object-contain rounded-lg transition-transform duration-300 hover:scale-105"
+                        />
                     </div>
                     <h3 class="text-xl font-bold text-white mt-4">Fashion &amp; Clothing Store</h3>
                     <p class="text-slate-300 text-sm">AI-driven product recommendations</p>
@@ -934,12 +685,13 @@
                         <i class="fas fa-external-link-alt mr-2"></i> View Live Demo
                     </a>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- ===== CASE STUDY & PROOF SECTION ===== -->
-    <section id="case-studies" class="py-16 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+    <!-- ===== CASE STUDY & PROOF ===== -->
+    <section id="case-studies" class="py-16 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white">Proven Results for <span class="gradient-text">Real Businesses</span></h2>
@@ -947,48 +699,37 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">Google Maps Ranking</span>
-                    </div>
+                    <div class="flex items-center gap-2 mb-3"><span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">Google Maps Ranking</span></div>
                     <h3 class="text-xl font-bold text-white">From Page 3 to Rank #1 in 30 Days</h3>
                     <div class="flex flex-wrap gap-3 mt-2 text-sm">
                         <span class="text-teal-400 font-semibold">📈 +240% Phone Calls</span>
                         <span class="text-pink-400 font-semibold">📍 +180% Direction Requests</span>
                     </div>
-                    <p class="text-slate-300 mt-3 text-sm leading-relaxed flex-grow">
-                        Optimized Google Business Profile, local keyword targeting, and automated review collection strategy for a local service business.
-                    </p>
+                    <p class="text-slate-300 mt-3 text-sm leading-relaxed flex-grow">Optimized Google Business Profile, local keyword targeting, and automated review collection strategy for a local service business.</p>
                 </div>
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">Lead Automation</span>
-                    </div>
+                    <div class="flex items-center gap-2 mb-3"><span class="bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full">Lead Automation</span></div>
                     <h3 class="text-xl font-bold text-white">Zero Missed Leads &amp; 2-Second Response Time</h3>
                     <div class="flex flex-wrap gap-3 mt-2 text-sm">
                         <span class="text-teal-400 font-semibold">⚡ 100% Instant Response</span>
                         <span class="text-pink-400 font-semibold">📊 35% Higher Booking Rate</span>
                     </div>
-                    <p class="text-slate-300 mt-3 text-sm leading-relaxed flex-grow">
-                        Integrated a Meta-approved 24/7 WhatsApp bot to automatically answer FAQs, capture leads, and confirm appointments.
-                    </p>
+                    <p class="text-slate-300 mt-3 text-sm leading-relaxed flex-grow">Integrated a Meta-approved 24/7 WhatsApp bot to automatically answer FAQs, capture leads, and confirm appointments.</p>
                 </div>
             </div>
             <div class="text-center mt-10">
-                <a href="#packages" class="inline-flex items-center gap-2 gradient-primary text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition">
-                    <i class="fas fa-rocket"></i> Get Similar Results For Your Business
-                </a>
+                <a href="#packages" class="inline-flex items-center gap-2 gradient-primary text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition"><i class="fas fa-rocket"></i> Get Similar Results For Your Business</a>
             </div>
         </div>
     </section>
 
     <!-- ===== PAY PER SERVICE ===== -->
-    <section id="pay-per-service" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+    <section id="pay-per-service" class="py-12 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">Pay Per <span class="gradient-text">Service</span></h2>
             <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Pick and choose only what you need</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
 
-                <!-- CARD 1: Single Page AI Website -->
                 <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
                     <div class="flex items-center gap-3 mb-1">
                         <i class="fas fa-globe text-2xl text-teal-400"></i>
@@ -1013,7 +754,6 @@
                     </div>
                 </div>
 
-                <!-- CARD 2: 100% Verified Buyer Lead Generation Pipeline -->
                 <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
                     <div class="flex items-center gap-3 mb-1">
                         <i class="fas fa-bullseye text-2xl text-teal-400"></i>
@@ -1035,7 +775,6 @@
                     </div>
                 </div>
 
-                <!-- CARD 3: WhatsApp AI Auto-Reply & Booking Bot -->
                 <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
                     <div class="flex items-center gap-3 mb-1">
                         <i class="fab fa-whatsapp text-2xl text-green-400"></i>
@@ -1072,7 +811,6 @@
                     </div>
                 </div>
 
-                <!-- CARD 4: E-Commerce Catalog & Website -->
                 <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
                     <div class="flex items-center gap-3 mb-1">
                         <i class="fas fa-store text-2xl text-blue-400"></i>
@@ -1095,7 +833,6 @@
                     </div>
                 </div>
 
-                <!-- CARD 5: Google Business Profile & Local SEO Setup -->
                 <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
                     <div class="flex items-center gap-3 mb-1">
                         <i class="fas fa-map-marked-alt text-2xl text-yellow-400"></i>
@@ -1117,7 +854,6 @@
                     </div>
                 </div>
 
-                <!-- CARD 6: AI Voice Agent (24/7 Inbound Call Handler) -->
                 <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
                     <div class="flex items-center gap-3 mb-1">
                         <i class="fas fa-phone-volume text-2xl text-pink-400"></i>
@@ -1126,7 +862,7 @@
                     <div class="price-tag text-2xl my-1" data-inr="₹4,999" data-usd="$79">₹4,999</div>
                     <p class="text-slate-300 text-xs">Setup Fee · Monthly: <span data-inr="₹2,499/mo" data-usd="$39/mo">₹2,499/mo</span> · Never miss an inbound call again.</p>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
-                        <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20AI%20Voice%20Agent%20(24%2F7%20Inbound%20Call%20Handler)." target="_blank" class="cta-glow cta-pink"><i class="fab fa-whatsapp cta-icon"></i> Book a Voice Demo</a>
+                        <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20AI%20Voice%20Agent." target="_blank" class="cta-glow cta-pink"><i class="fab fa-whatsapp cta-icon"></i> Book a Voice Demo</a>
                     </div>
                     <div class="toggle-btn text-slate-300 hover:text-white text-xs font-medium mt-2 flex items-center gap-1" onclick="toggleDetails(this)">
                         <i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features
@@ -1144,14 +880,12 @@
         </div>
     </section>
 
-    <!-- ===== ALL-IN-ONE VALUE BUNDLES ===== -->
-    <section id="packages" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+    <!-- ===== VALUE BUNDLES ===== -->
+    <section id="packages" class="py-12 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">Value <span class="gradient-text">Bundles</span></h2>
             <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Complete solutions for maximum impact</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 max-w-5xl mx-auto">
-
-                <!-- CARD 1: Essential Bundle -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col relative">
                     <span class="inline-block bg-[#1f3147] text-teal-300 text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">Ideal For New Businesses</span>
                     <h3 class="text-xl font-bold text-white">Essential Bundle</h3>
@@ -1164,12 +898,10 @@
                         <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> 3 Festival / Promo Banners</li>
                         <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> 3-Day Express Delivery + Free Hosting</li>
                     </ul>
-                    <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20Essential%20Bundle.%20Please%20guide%20me%20with%20the%20next%20steps." target="_blank" class="mt-5 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-3 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
+                    <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20Essential%20Bundle." target="_blank" class="mt-5 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-3 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
                         <i class="fab fa-whatsapp mr-2"></i> Book Essential Bundle
                     </a>
                 </div>
-
-                <!-- CARD 2: Dominator Bundle -->
                 <div class="card-bg p-6 rounded-2xl neon-border border-[#00c8ff] transition flex flex-col relative">
                     <span class="absolute -top-3 right-4 gradient-primary text-white text-xs font-bold px-4 py-1 rounded-full">⭐ MOST POPULAR - COMPLETE SUITE</span>
                     <h3 class="text-xl font-bold text-white">Dominator Bundle</h3>
@@ -1184,17 +916,16 @@
                         <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> Free 1 Year Domain + High-Speed Hosting + SSL</li>
                         <li><i class="fas fa-check-circle text-teal-400 mr-2"></i> 5-Day Priority Delivery + 1 Year Support</li>
                     </ul>
-                    <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20Dominator%20Bundle.%20Please%20guide%20me%20with%20the%20next%20steps." target="_blank" class="mt-5 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-3 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
+                    <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20Dominator%20Bundle." target="_blank" class="mt-5 inline-flex items-center justify-center gradient-primary text-white font-semibold px-6 py-3 rounded-full text-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)] transition w-full">
                         <i class="fab fa-whatsapp mr-2"></i> Get Dominator Bundle
                     </a>
                 </div>
-
             </div>
         </div>
     </section>
 
     <!-- ===== ADVANCED AI AUTOMATIONS ===== -->
-    <section id="automations" class="py-16 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+    <section id="automations" class="py-16 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white">Advanced AI <span class="gradient-text">Automations</span></h2>
@@ -1202,11 +933,8 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
-                <!-- Card 1: AI Voice Agent & Instant Lead Rescue System -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
-                    <div class="automation-badge badge-voice">
-                        ⚡ 24/7 Voice AI
-                    </div>
+                    <div class="automation-badge badge-voice">⚡ 24/7 Voice AI</div>
                     <h3 class="text-xl font-bold text-white">AI Voice Agent &amp; Instant Lead Rescue System</h3>
                     <p class="text-slate-300 text-sm mt-1">Never miss another lead again. Ultra-realistic AI voice that answers inbound calls &amp; instantly rescues every outbound form submission.</p>
                     <div class="mt-3 space-y-1">
@@ -1220,16 +948,11 @@
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> Instant WhatsApp Audio &amp; Transcript Alerts</li>
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> Includes 600 Free Minutes / Month</li>
                     </ul>
-                    <div class="mt-4">
-                        <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20AI%20Voice%20Agent%20%26%20Instant%20Lead%20Rescue%20System." target="_blank" class="cta-glow cta-purple"><span class="cta-icon">🔗</span> Test Live AI Voice Call Demo</a>
-                    </div>
+                    <div class="mt-4"><a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20AI%20Voice%20Agent." target="_blank" class="cta-glow cta-purple"><span class="cta-icon">🔗</span> Test Live AI Voice Call Demo</a></div>
                 </div>
 
-                <!-- Card 2: Smart CRM & WhatsApp Lead Nurturing -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col">
-                    <div class="automation-badge badge-crm">
-                        🎯 Lead Auto-Nurture
-                    </div>
+                    <div class="automation-badge badge-crm">🎯 Lead Auto-Nurture</div>
                     <h3 class="text-xl font-bold text-white">Smart CRM &amp; WhatsApp Lead Nurturing</h3>
                     <p class="text-slate-300 text-sm mt-1">Convert raw leads into paying clients with zero manual effort.</p>
                     <div class="mt-3 space-y-1">
@@ -1242,16 +965,11 @@
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> Visual Lead Pipeline (Track lead status)</li>
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> Direct Integration with Meta Ads &amp; Web Forms</li>
                     </ul>
-                    <div class="mt-4">
-                        <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20Smart%20CRM%20%26%20WhatsApp%20Lead%20Nurturing%20for%20my%20business." target="_blank" class="cta-glow cta-purple"><span class="cta-icon">💬</span> View Live CRM &amp; Workflow Demo</a>
-                    </div>
+                    <div class="mt-4"><a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20Smart%20CRM." target="_blank" class="cta-glow cta-purple"><span class="cta-icon">💬</span> View Live CRM &amp; Workflow Demo</a></div>
                 </div>
 
-                <!-- Card 3: AI Social Media & Auto-Posting Automation -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
-                    <div class="automation-badge badge-content">
-                        🚀 10x Content Engine
-                    </div>
+                    <div class="automation-badge badge-content">🚀 10x Content Engine</div>
                     <h3 class="text-xl font-bold text-white">AI Social Media &amp; Auto-Posting Automation</h3>
                     <p class="text-slate-300 text-sm mt-1">Fully automated content creation and posting on autopilot.</p>
                     <div class="mt-3 space-y-1">
@@ -1264,14 +982,11 @@
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> Direct Auto-Posting to Instagram, Facebook &amp; LinkedIn</li>
                         <li class="flex items-start gap-2"><i class="fas fa-check-circle text-teal-400 mt-0.5"></i> Monthly Performance Analytics Report</li>
                     </ul>
-                    <div class="mt-4">
-                        <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20AI%20Social%20Media%20%26%20Auto-Posting%20Automation." target="_blank" class="cta-glow cta-purple"><span class="cta-icon">📸</span> View Sample Post Generation</a>
-                    </div>
+                    <div class="mt-4"><a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20AI%20Social%20Media." target="_blank" class="cta-glow cta-purple"><span class="cta-icon">📸</span> View Sample Post Generation</a></div>
                 </div>
 
             </div>
 
-            <!-- Special Combo Card -->
             <div class="mt-10 max-w-3xl mx-auto">
                 <div class="card-bg p-6 rounded-2xl neon-border border-[#00c8ff] relative">
                     <span class="absolute -top-3 right-4 gradient-primary text-white text-xs font-bold px-4 py-1 rounded-full">🔥 Special Launch Offer (Save ₹2,000)</span>
@@ -1290,98 +1005,61 @@
                         </p>
                     </div>
                     <p class="text-slate-300 text-sm mt-2"><i class="fas fa-bullseye text-teal-400 mr-1"></i> Best For: Small Businesses, Clinics, Real Estate, and Local Services</p>
-                    <div class="mt-4">
-                        <a href="https://wa.me/919004600946?text=Hi%21%20I%20want%20to%20claim%20the%20Axiomate%20All-in-One%20AI%20Growth%20Suite%20Launch%20Offer." target="_blank" class="cta-glow cta-purple w-full justify-center"><span class="cta-icon">⚡</span> Book Full Suite Demo Call</a>
-                    </div>
+                    <div class="mt-4"><a href="https://wa.me/919004600946?text=Hi%21%20I%20want%20to%20claim%20the%20Growth%20Suite." target="_blank" class="cta-glow cta-purple w-full justify-center"><span class="cta-icon">⚡</span> Book Full Suite Demo Call</a></div>
                 </div>
             </div>
-
         </div>
     </section>
 
     <!-- ===== FAQ SECTION ===== -->
-    <section id="faq" class="py-16 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+    <section id="faq" class="py-16 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-10">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white">Frequently Asked <span class="gradient-text">Questions</span></h2>
                 <p class="text-slate-300 mt-2">Everything you need to know before getting started</p>
             </div>
             <div class="space-y-3">
-                <details class="faq-item">
-                    <summary>How fast will my website and WhatsApp bot be ready?</summary>
-                    <div class="faq-content">
-                        Our standard delivery time is 3 days. Once you provide your business details, we build, test, and launch your automated system within 72 hours.
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Is there any risk of my WhatsApp account getting banned?</summary>
-                    <div class="faq-content">
-                        Zero risk. We use Meta's official Cloud API for all WhatsApp automations, keeping your business number 100% safe, compliant, and secure.
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Do I need any technical knowledge to manage this?</summary>
-                    <div class="faq-content">
-                        Not at all. We handle the complete setup, domain linking, hosting, and bot configuration for you. You just receive leads and customer messages directly on your phone.
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Can I update content on my website later?</summary>
-                    <div class="faq-content">
-                        Yes, absolutely! We provide support and can handle minor content updates for you, or guide you on how to manage your site effortlessly.
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>What happens after my website is launched?</summary>
-                    <div class="faq-content">
-                        We provide ongoing support, regular backups, and technical assistance to ensure your site and bots run smoothly 24/7 without downtime.
-                    </div>
-                </details>
+                <details class="faq-item"><summary>How fast will my website and WhatsApp bot be ready?</summary><div class="faq-content">Our standard delivery time is 3 days. Once you provide your business details, we build, test, and launch your automated system within 72 hours.</div></details>
+                <details class="faq-item"><summary>Is there any risk of my WhatsApp account getting banned?</summary><div class="faq-content">Zero risk. We use Meta's official Cloud API for all WhatsApp automations, keeping your business number 100% safe, compliant, and secure.</div></details>
+                <details class="faq-item"><summary>Do I need any technical knowledge to manage this?</summary><div class="faq-content">Not at all. We handle the complete setup, domain linking, hosting, and bot configuration for you. You just receive leads and customer messages directly on your phone.</div></details>
+                <details class="faq-item"><summary>Can I update content on my website later?</summary><div class="faq-content">Yes, absolutely! We provide support and can handle minor content updates for you, or guide you on how to manage your site effortlessly.</div></details>
+                <details class="faq-item"><summary>What happens after my website is launched?</summary><div class="faq-content">We provide ongoing support, regular backups, and technical assistance to ensure your site and bots run smoothly 24/7 without downtime.</div></details>
             </div>
         </div>
     </section>
 
-    <!-- ===== HOW WE GROW YOUR BUSINESS ===== -->
-    <section class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+    <!-- ===== HOW WE GROW ===== -->
+    <section class="py-12 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-2xl sm:text-3xl font-bold text-center text-white">How We <span class="gradient-text">Grow</span> Your Business</h2>
             <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Smart AI features engineered to capture leads and boost your daily sales.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8 max-w-5xl mx-auto">
-
-                <!-- Card 1 -->
                 <div class="trust-card growth-card p-5 rounded-2xl text-center transition hover:-translate-y-1 hover:border-[#00c8ff]/40">
                     <span class="growth-emoji" aria-hidden="true">🚀</span>
                     <p class="text-white font-semibold">100% Verified Buyer Ads</p>
                     <p class="text-slate-300 text-xs mt-1.5 leading-relaxed">Captures high-intent buyer leads via targeted Meta &amp; Google ads direct to your pipeline.</p>
                 </div>
-
-                <!-- Card 2 -->
                 <div class="trust-card growth-card p-5 rounded-2xl text-center transition hover:-translate-y-1 hover:border-[#d946ef]/40">
                     <span class="growth-emoji" aria-hidden="true">⚡</span>
                     <p class="text-white font-semibold">24/7 AI Voice Calling</p>
                     <p class="text-slate-300 text-xs mt-1.5 leading-relaxed">Instant 10-second outbound lead call rescue &amp; 24/7 inbound phone call answering.</p>
                 </div>
-
-                <!-- Card 3 -->
                 <div class="trust-card growth-card p-5 rounded-2xl text-center transition hover:-translate-y-1 hover:border-[#00c8ff]/40">
                     <span class="growth-emoji" aria-hidden="true">💬</span>
                     <p class="text-white font-semibold">WhatsApp AI Auto-Nurture</p>
                     <p class="text-slate-300 text-xs mt-1.5 leading-relaxed">Auto-replies on WhatsApp, sends catalogues, and books appointments on autopilot.</p>
                 </div>
-
-                <!-- Card 4 -->
                 <div class="trust-card growth-card p-5 rounded-2xl text-center transition hover:-translate-y-1 hover:border-[#d946ef]/40">
                     <span class="growth-emoji" aria-hidden="true">📍</span>
                     <p class="text-white font-semibold">Local SEO &amp; Google Dominance</p>
                     <p class="text-slate-300 text-xs mt-1.5 leading-relaxed">Boosts Google Map Pin rankings and automatically collects 5-star customer reviews.</p>
                 </div>
-
             </div>
         </div>
     </section>
 
     <!-- ===== CONTACT SECTION ===== -->
-    <section id="contact" class="py-12 px-4 sm:px-6 bg-[#0b1120] border-t border-[#1f3147]">
+    <section id="contact" class="py-12 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div class="card-bg p-6 rounded-2xl neon-border flex flex-col">
                 <div class="flex items-start gap-4 mb-5">
@@ -1389,14 +1067,11 @@
                     <div>
                         <h4 class="text-lg font-bold text-white">Owais</h4>
                         <p class="text-sm text-teal-300 font-medium">Founder, Axiomate AI</p>
-                        <p class="text-slate-300 text-sm mt-1 leading-relaxed">
-                            I deliver agency-grade AI technology without the corporate overhead. 100% transparency &amp; dedicated 24/7 technical support for every client.
-                        </p>
+                        <p class="text-slate-300 text-sm mt-1 leading-relaxed">I deliver agency-grade AI technology without the corporate overhead. 100% transparency &amp; dedicated 24/7 technical support for every client.</p>
                     </div>
                 </div>
-                <div class="inline-flex items-center gap-2 bg-[#1f3147] text-teal-300 text-xs md:text-sm font-semibold px-4 py-2 rounded-full border border-teal-400/30 shadow-glow self-start mb-4">
-                    <i class="fas fa-shield-alt text-teal-400"></i>
-                    Dedicated Support &amp; 100% Transparency
+                <div class="inline-flex items-center gap-2 bg-[#1f3147] text-teal-300 text-xs md:text-sm font-semibold px-4 py-2 rounded-full border border-teal-400/30 self-start mb-4">
+                    <i class="fas fa-shield-alt text-teal-400"></i> Dedicated Support &amp; 100% Transparency
                 </div>
                 <hr class="border-[#1f3147] my-3" />
                 <h3 class="text-xl font-bold text-white">Client <span class="gradient-text">Trust &amp; Support</span></h3>
@@ -1411,24 +1086,16 @@
                     <div class="bg-[#111c2e] p-3 rounded-xl text-center"><i class="fas fa-headset text-purple-400 text-xl"></i><p class="text-xs text-slate-300 mt-1">24/7 Client Support</p></div>
                     <div class="bg-[#111c2e] p-3 rounded-xl text-center"><i class="fas fa-brain text-pink-400 text-xl"></i><p class="text-xs text-slate-300 mt-1">Zero Tech Knowledge</p></div>
                 </div>
-
                 <div class="mt-5 pt-4 border-t border-[#1f3147]">
                     <p class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-3">Connect With Us</p>
                     <div class="social-row">
-                        <a href="https://www.instagram.com/axiomate_ai/" target="_blank" rel="noopener noreferrer" class="social-icon social-instagram" aria-label="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+                        <a href="https://www.instagram.com/axiomate_ai/" target="_blank" rel="noopener noreferrer" class="social-icon social-instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="https://www.threads.net/@axiomate_ai" target="_blank" rel="noopener noreferrer" class="social-icon social-threads" aria-label="Threads">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/>
-                            </svg>
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/></svg>
                         </a>
-                        <a href="https://www.linkedin.com/in/owais-axiomate/" target="_blank" rel="noopener noreferrer" class="social-icon social-linkedin" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
+                        <a href="https://www.linkedin.com/in/owais-axiomate/" target="_blank" rel="noopener noreferrer" class="social-icon social-linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-
                 <a href="https://wa.me/919004600946" target="_blank" class="mt-5 inline-flex items-center gap-2 btn-whatsapp text-white font-semibold px-6 py-2.5 rounded-full transition self-start"><i class="fab fa-whatsapp text-xl"></i> Chat on WhatsApp</a>
             </div>
 
@@ -1450,38 +1117,28 @@
                     </div>
                     <button type="submit" class="w-full gradient-primary text-white font-semibold py-3 rounded-xl transition shadow-lg hover:shadow-[0_0_30px_rgba(0,200,255,0.3)]"><i class="fas fa-paper-plane mr-2"></i> Send Message</button>
                 </form>
-                <div id="formSuccess" class="hidden mt-4 text-teal-400 text-center font-medium p-3 rounded-xl bg-[#1f3147] border border-teal-400/30">
-                    ✅ Thank you! We will get back to you shortly.
-                </div>
+                <div id="formSuccess" class="hidden mt-4 text-teal-400 text-center font-medium p-3 rounded-xl bg-[#1f3147] border border-teal-400/30">✅ Thank you! We will get back to you shortly.</div>
             </div>
         </div>
     </section>
 
     <!-- ===== FOOTER ===== -->
-    <footer class="bg-[#060b16] border-t border-[#1f3147] py-6 px-4 sm:px-6">
+    <footer class="border-t py-6 px-4 sm:px-6" style="background: var(--bg-secondary); border-color: var(--section-border);">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
             <div class="flex items-center gap-3 flex-wrap justify-center md:justify-start text-center md:text-left">
                 <a href="#" class="logo-link-footer">
                     <span style="font-family: 'Montserrat', 'Poppins', sans-serif !important; font-size: 22px !important; font-weight: 900 !important; letter-spacing: 2px !important; text-transform: uppercase !important;">
-                        <span style="color: #FFFFFF !important; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 25px rgba(0, 210, 255, 0.3) !important;">AXIOMATE</span>
-                        <span style="background: linear-gradient(135deg, #00d2ff 0%, #9333ea 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important; filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.6)) !important; margin-left: 4px !important;">AI</span>
+                        <span id="brand-logo-footer-1">AXIOMATE</span><span id="brand-logo-footer-2">AI</span>
                     </span>
                 </a>
                 <span class="text-slate-300">© 2026 Axiomate AI. All Rights Reserved.</span>
             </div>
-
             <div class="footer-social-wrap">
-                <a href="https://www.instagram.com/axiomate_ai/" target="_blank" rel="noopener noreferrer" class="social-icon social-instagram" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
+                <a href="https://www.instagram.com/axiomate_ai/" target="_blank" rel="noopener noreferrer" class="social-icon social-instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="https://www.threads.net/@axiomate_ai" target="_blank" rel="noopener noreferrer" class="social-icon social-threads" aria-label="Threads">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/></svg>
                 </a>
-                <a href="https://www.linkedin.com/in/owais-axiomate/" target="_blank" rel="noopener noreferrer" class="social-icon social-linkedin" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
+                <a href="https://www.linkedin.com/in/owais-axiomate/" target="_blank" rel="noopener noreferrer" class="social-icon social-linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
             </div>
         </div>
         <div class="text-center text-[10px] text-slate-400 mt-2 border-t border-[#1a2a40] pt-2">Mumbai, MH · +91 9004600946 · axiomate.ai@gmail.com</div>
@@ -1507,6 +1164,71 @@
 
     <!-- ===== JAVASCRIPT ===== -->
     <script>
+        /* ============== THEME TOGGLE ============== */
+        (function() {
+            const toggle = document.getElementById('themeToggle');
+            const root = document.documentElement;
+            if (!toggle) return;
+            toggle.addEventListener('click', function() {
+                const isLight = root.classList.contains('light');
+                if (isLight) {
+                    root.classList.remove('light');
+                    root.classList.add('dark');
+                    try { localStorage.setItem('axiomate_theme', 'dark'); } catch (e) {}
+                } else {
+                    root.classList.remove('dark');
+                    root.classList.add('light');
+                    try { localStorage.setItem('axiomate_theme', 'light'); } catch (e) {}
+                }
+            });
+        })();
+
+        /* ============== FLOATING TECH PARTICLES ============== */
+        (function() {
+            const layer = document.getElementById('particlesLayer');
+            if (!layer) return;
+            const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduceMotion) return;
+            const count = window.innerWidth < 640 ? 14 : 26;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('span');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.bottom = '-10px';
+                const size = 3 + Math.random() * 4;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.animationDuration = (10 + Math.random() * 14) + 's';
+                p.style.animationDelay = (Math.random() * 10) + 's';
+                layer.appendChild(p);
+            }
+        })();
+
+        /* ============== ONE-TIME WALKING AI MECH ROBOT (fires on every load/refresh) ============== */
+        (function() {
+            const robot = document.getElementById('robotTrack');
+            if (!robot) return;
+            const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduceMotion) { robot.style.display = 'none'; return; }
+
+            function runRobot() {
+                robot.style.display = '';
+                robot.style.animation = 'none';
+                void robot.offsetWidth;               /* force reflow → restart animation */
+                robot.style.animation = 'robotWalk 5.4s cubic-bezier(.42,0,.58,1) forwards';
+                setTimeout(function() {
+                    if (robot) robot.style.display = 'none';
+                }, 5900);
+            }
+
+            if (document.readyState === 'complete') {
+                runRobot();
+            } else {
+                window.addEventListener('load', runRobot);
+            }
+        })();
+
+        /* ============== TOGGLE DETAILS ============== */
         function toggleDetails(btn) {
             const card = btn.closest('.card-bg');
             const details = card.querySelector('.toggle-details');
@@ -1523,186 +1245,98 @@
             }
         }
 
+        /* ============== VIDEO MODAL ============== */
         function openVideoModal(videoSrc) {
             var modal = document.getElementById('videoModal');
             var player = document.getElementById('sampleVideoPlayer');
-            if (videoSrc) {
-                player.src = videoSrc;
-            }
+            if (videoSrc) player.src = videoSrc;
             modal.style.display = 'flex';
             player.play();
         }
-
         function closeVideoModalDirect() {
             var modal = document.getElementById('videoModal');
             var player = document.getElementById('sampleVideoPlayer');
             modal.style.display = 'none';
             player.pause();
         }
-
         function closeVideoModal(e) {
-            if (e.target.classList.contains('video-modal-overlay')) {
-                closeVideoModalDirect();
-            }
+            if (e.target.classList.contains('video-modal-overlay')) closeVideoModalDirect();
         }
 
+        /* ============== FORM SUBMISSION ============== */
         function submitForm(e) {
             e.preventDefault();
-
             const form = document.getElementById('contactForm');
             const formData = new FormData(form);
-
             const name = formData.get('name');
             const phone = formData.get('phone');
             const service = formData.get('service');
             const message = formData.get('message');
-            const whatsappMsg =
-                "🔹 *New Inquiry from Axiomate AI* 🔹\n\n" +
-                "👤 *Name:* " + name + "\n" +
-                "📞 *Phone:* " + phone + "\n" +
-                "📌 *Service:* " + service + "\n" +
-                "💬 *Message:* " + message + "\n\n" +
-                "🙏 Thank you for reaching out! We'll get back to you shortly.";
-
-            fetch('https://hook.eu1.make.com/n19gjfdh07otnmyinaofww380xkug3eg', {
-                    method: 'POST',
-                    body: formData
-                })
+            const whatsappMsg = "🔹 *New Inquiry from Axiomate AI* 🔹\n\n" + "👤 *Name:* " + name + "\n" + "📞 *Phone:* " + phone + "\n" + "📌 *Service:* " + service + "\n" + "💬 *Message:* " + message + "\n\n" + "🙏 Thank you for reaching out! We'll get back to you shortly.";
+            fetch('https://hook.eu1.make.com/n19gjfdh07otnmyinaofww380xkug3eg', { method: 'POST', body: formData })
                 .then(response => {
                     if (response.ok) {
                         document.getElementById('formSuccess').classList.remove('hidden');
                         form.reset();
                         window.open('https://wa.me/919004600946?text=' + encodeURIComponent(whatsappMsg), '_blank');
-                    } else {
-                        alert('Something went wrong. Please try again later.');
-                    }
+                    } else { alert('Something went wrong. Please try again later.'); }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Network error. Please check your connection.');
-                });
-
+                .catch(error => { console.error('Error:', error); alert('Network error. Please check your connection.'); });
             return false;
         }
 
+        /* ============== MULTI-CURRENCY SWITCHER ============== */
         (function() {
             const STORAGE_KEY = 'axiomate_currency';
             const DEFAULT_CURRENCY = 'INR';
             const SUPPORTED = ['INR', 'USD'];
-
             function applyCurrency(currency) {
-                const elements = document.querySelectorAll('[data-inr][data-usd]');
-                elements.forEach(el => {
-                    const value = currency === 'INR' ?
-                        el.getAttribute('data-inr') :
-                        el.getAttribute('data-usd');
-                    if (value !== null) {
-                        el.textContent = value;
-                    }
+                document.querySelectorAll('[data-inr][data-usd]').forEach(el => {
+                    const value = currency === 'INR' ? el.getAttribute('data-inr') : el.getAttribute('data-usd');
+                    if (value !== null) el.textContent = value;
                 });
-
                 document.querySelectorAll('.currency-btn').forEach(btn => {
-                    if (btn.dataset.currency === currency) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
+                    if (btn.dataset.currency === currency) btn.classList.add('active');
+                    else btn.classList.remove('active');
                 });
-
                 document.documentElement.setAttribute('data-currency', currency);
             }
-
             function getUrlCurrency() {
-                try {
-                    const params = new URLSearchParams(window.location.search);
-                    const c = (params.get('currency') || '').toUpperCase();
-                    return SUPPORTED.includes(c) ? c : null;
-                } catch (e) {
-                    return null;
-                }
+                try { const params = new URLSearchParams(window.location.search); const c = (params.get('currency') || '').toUpperCase(); return SUPPORTED.includes(c) ? c : null; } catch (e) { return null; }
             }
-
             function getStoredCurrency() {
-                try {
-                    const c = (localStorage.getItem(STORAGE_KEY) || '').toUpperCase();
-                    return SUPPORTED.includes(c) ? c : null;
-                } catch (e) {
-                    return null;
-                }
+                try { const c = (localStorage.getItem(STORAGE_KEY) || '').toUpperCase(); return SUPPORTED.includes(c) ? c : null; } catch (e) { return null; }
             }
-
             async function detectCurrencyByIP() {
                 try {
                     const res = await fetch('https://ipapi.co/json/', { cache: 'no-store' });
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data && data.country_code) {
-                            return data.country_code === 'IN' ? 'INR' : 'USD';
-                        }
-                    }
-                } catch (err) {
-                    console.warn('[Currency] ipapi.co failed, trying fallback…', err);
-                }
-
+                    if (res.ok) { const data = await res.json(); if (data && data.country_code) return data.country_code === 'IN' ? 'INR' : 'USD'; }
+                } catch (err) {}
                 try {
                     const res2 = await fetch('http://ip-api.com/json/?fields=countryCode', { cache: 'no-store' });
-                    if (res2.ok) {
-                        const data2 = await res2.json();
-                        if (data2 && data2.countryCode) {
-                            return data2.countryCode === 'IN' ? 'INR' : 'USD';
-                        }
-                    }
-                } catch (err2) {
-                    console.warn('[Currency] ip-api.com fallback also failed.', err2);
-                }
-
+                    if (res2.ok) { const data2 = await res2.json(); if (data2 && data2.countryCode) return data2.countryCode === 'IN' ? 'INR' : 'USD'; }
+                } catch (err2) {}
                 return DEFAULT_CURRENCY;
             }
-
             function setCurrency(currency, persist) {
                 if (!SUPPORTED.includes(currency)) return;
-                if (persist !== false) {
-                    try { localStorage.setItem(STORAGE_KEY, currency); } catch (e) {}
-                }
+                if (persist !== false) { try { localStorage.setItem(STORAGE_KEY, currency); } catch (e) {} }
                 applyCurrency(currency);
             }
-
             function bindToggleButtons() {
                 document.querySelectorAll('.currency-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const cur = this.dataset.currency;
-                        if (SUPPORTED.includes(cur)) {
-                            setCurrency(cur, true);
-                        }
-                    });
+                    btn.addEventListener('click', function() { const cur = this.dataset.currency; if (SUPPORTED.includes(cur)) setCurrency(cur, true); });
                 });
             }
-
             async function initCurrency() {
                 applyCurrency(DEFAULT_CURRENCY);
                 bindToggleButtons();
-
-                const urlCurrency = getUrlCurrency();
-                if (urlCurrency) {
-                    setCurrency(urlCurrency, true);
-                    return;
-                }
-
-                const storedCurrency = getStoredCurrency();
-                if (storedCurrency) {
-                    setCurrency(storedCurrency, false);
-                    return;
-                }
-
-                const detected = await detectCurrencyByIP();
-                setCurrency(detected, true);
+                const urlCurrency = getUrlCurrency(); if (urlCurrency) { setCurrency(urlCurrency, true); return; }
+                const storedCurrency = getStoredCurrency(); if (storedCurrency) { setCurrency(storedCurrency, false); return; }
+                const detected = await detectCurrencyByIP(); setCurrency(detected, true);
             }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initCurrency);
-            } else {
-                initCurrency();
-            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initCurrency);
+            else initCurrency();
         })();
     </script>
 
