@@ -11,12 +11,11 @@
     </script>
 
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Axiomate AI | Next-Gen AI Websites & Business Automation</title>
 
-    <!-- Tailwind (CDN) -->
+    <!-- Tailwind (CDN) + class-based dark mode -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Enable class-based dark mode so `dark:` utilities follow our html.light / html.dark toggle -->
     <script>
         tailwind.config = { darkMode: 'class' };
     </script>
@@ -78,6 +77,7 @@
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             transition: background-color .35s ease, color .35s ease;
             overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
         }
 
         /* =============== AURORA MESH GRADIENT (LIGHT MODE) =============== */
@@ -90,6 +90,8 @@
             opacity: 0.5;
             animation: orbFloat 20s ease-in-out infinite;
             will-change: transform;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
         .aurora-bg .orb-1 { width: 560px; height: 560px; top: -12%; left: -12%; background: radial-gradient(circle, #a5b4fc 0%, rgba(165,180,252,0) 70%); }
         .aurora-bg .orb-2 { width: 520px; height: 520px; top: 18%; right: -14%; background: radial-gradient(circle, #93c5fd 0%, rgba(147,197,253,0) 70%); animation-delay: -5s; animation-duration: 24s; }
@@ -112,6 +114,8 @@
             opacity: 0;
             animation: particleRise linear infinite;
             will-change: transform, opacity;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
         html.light .particle {
             background: radial-gradient(circle, #6366f1, rgba(99,102,241,0));
@@ -128,19 +132,36 @@
         .robot-track {
             position: fixed;
             bottom: 14px;
-            left: -200px;
+            left: -220px;
             z-index: 45;
             pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
             opacity: 0;
-            animation: robotWalk 5.4s cubic-bezier(.42,0,.58,1) forwards;
             will-change: transform, opacity;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            contain: layout style;
+        }
+        .robot-track.robot-run {
+            animation: robotWalk 5.4s cubic-bezier(.42,0,.58,1) forwards;
+            -webkit-animation: robotWalk 5.4s cubic-bezier(.42,0,.58,1) forwards;
         }
         @keyframes robotWalk {
-            0%   { transform: translateX(0) translateY(0); opacity: 0; }
+            0%   { transform: translate3d(0,0,0); opacity: 0; }
             6%   { opacity: 1; }
-            50%  { transform: translateX(calc(50vw + 100px)) translateY(-6px); opacity: 1; }
+            50%  { transform: translate3d(calc(50vw + 110px), -6px, 0); opacity: 1; }
             88%  { opacity: 1; }
-            100% { transform: translateX(calc(100vw + 240px)) translateY(0); opacity: 0; }
+            100% { transform: translate3d(calc(100vw + 260px), 0, 0); opacity: 0; }
+        }
+        @-webkit-keyframes robotWalk {
+            0%   { -webkit-transform: translate3d(0,0,0); opacity: 0; }
+            6%   { opacity: 1; }
+            50%  { -webkit-transform: translate3d(calc(50vw + 110px), -6px, 0); opacity: 1; }
+            88%  { opacity: 1; }
+            100% { -webkit-transform: translate3d(calc(100vw + 260px), 0, 0); opacity: 0; }
         }
         .robot-svg {
             width: 92px; height: 92px;
@@ -166,57 +187,87 @@
             .robot-track, .particle, .aurora-bg .orb { animation: none !important; }
         }
 
-        /* =============== ANNOUNCEMENT BAR — SMOOTH SLOW MARQUEE =============== */
+        /* ============================================================
+           ANNOUNCEMENT BAR — MOBILE-SAFE, GPU-ACCELERATED MARQUEE
+           ============================================================ */
         .offer-bar {
             position: relative;
             overflow: hidden;
+            width: 100%;
             background: linear-gradient(90deg, #0b1120 0%, #152238 50%, #0b1120 100%);
             border-bottom: 1px solid #1f3147;
+            /* Isolate the marquee so it never affects page scroll */
+            contain: content;
         }
         html.light .offer-bar {
             background: linear-gradient(90deg, #eef2ff 0%, #e0e7ff 50%, #eef2ff 100%);
             border-bottom: 1px solid #c7d2fe;
         }
+
         .offer-bar-track {
-            display: inline-flex;
+            display: flex;
+            flex-wrap: nowrap;
             align-items: center;
             white-space: nowrap;
-            animation: marqueeScroll 34s linear infinite;
+            width: -moz-max-content;
+            width: max-content;
+            animation: marquee 12s linear infinite;
+            -webkit-animation: marquee 12s linear infinite;
             will-change: transform;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000px;
+            perspective: 1000px;
         }
-        .offer-item {
+
+        @keyframes marquee {
+            0%   { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+        @-webkit-keyframes marquee {
+            0%   { -webkit-transform: translate3d(0, 0, 0); }
+            100% { -webkit-transform: translate3d(-50%, 0, 0); }
+        }
+
+        .offer-segment {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding-right: 60px;
+            flex-shrink: 0;
+            padding-right: 64px;
             font-size: 0.875rem;
             font-weight: 500;
             letter-spacing: .2px;
+            line-height: 1.4;
             color: #e2e8f0;
         }
-        html.light .offer-item { color: #0f172a; font-weight: 600; }
-        .offer-item .sep { color: #475569; font-weight: 400; }
-        html.light .offer-item .sep { color: #94a3b8; }
-        .offer-bar-track .gradient-accent {
+        html.light .offer-segment { color: #0f172a; font-weight: 600; }
+        .offer-segment .sep { color: #475569; font-weight: 400; padding: 0 2px; }
+        html.light .offer-segment .sep { color: #94a3b8; }
+        .offer-segment .gradient-accent {
             background: linear-gradient(135deg, #00c8ff, #d946ef);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-weight: 700;
         }
-        html.light .offer-bar-track .gradient-accent {
+        html.light .offer-segment .gradient-accent {
             background: linear-gradient(135deg, #4338ca, #a21caf);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-weight: 800;
         }
-        @keyframes marqueeScroll {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+
+        @media (max-width: 640px) {
+            .offer-segment { font-size: 0.78rem; padding-right: 42px; }
+            .offer-bar-track { animation-duration: 12s; -webkit-animation-duration: 12s; }
         }
+
         @media (prefers-reduced-motion: reduce) {
-            .offer-bar-track { animation: none; justify-content: center; width: 100%; }
+            .offer-bar-track { animation: none; -webkit-animation: none; justify-content: center; width: 100%; }
+            .offer-segment { padding-right: 0; }
         }
 
         /* =============== THEME TOGGLE BUTTON =============== */
@@ -300,7 +351,7 @@
         html.light .neon-glow { box-shadow: 0 10px 30px rgba(15,23,42,.06); }
         html.light .trust-card .growth-emoji { filter: drop-shadow(0 0 8px rgba(99,102,241,.35)); }
 
-        /* ===== LOGO: ALWAYS SHARP & FULLY VISIBLE IN LIGHT MODE ===== */
+        /* ===== LOGO: SHARP + HIGH CONTRAST IN BOTH MODES ===== */
         #brand-logo-text-1, #brand-logo-footer-1 {
             color: #FFFFFF !important;
             text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 0 25px rgba(0,210,255,0.3) !important;
@@ -496,30 +547,24 @@
                 </radialGradient>
             </defs>
 
-            <!-- antenna -->
             <rect x="57" y="7" width="6" height="13" rx="3" fill="url(#mechBody)"/>
             <circle cx="60" cy="6" r="7" fill="#d946ef" opacity="0.25"/>
             <circle cx="60" cy="6" r="3.6" fill="#d946ef"/>
 
-            <!-- head -->
             <rect x="34" y="18" width="52" height="30" rx="10" fill="url(#mechBody)"/>
             <rect x="41" y="26" width="38" height="15" rx="7" fill="url(#mechVisor)"/>
             <rect x="46" y="31" width="9" height="5" rx="2.5" fill="#00f2fe"/>
             <rect x="65" y="31" width="9" height="5" rx="2.5" fill="#00f2fe"/>
 
-            <!-- ear pods -->
             <rect x="28" y="28" width="6" height="12" rx="3" fill="#0ea5e9"/>
             <rect x="86" y="28" width="6" height="12" rx="3" fill="#0ea5e9"/>
 
-            <!-- neck -->
             <rect x="53" y="48" width="14" height="6" rx="3" fill="#0b1120" opacity=".6"/>
 
-            <!-- torso -->
             <rect x="36" y="54" width="48" height="34" rx="12" fill="url(#mechBody)"/>
             <rect x="45" y="60" width="30" height="4" rx="2" fill="#0b1120" opacity=".32"/>
             <circle cx="60" cy="71" r="9" fill="url(#mechCore)"/>
 
-            <!-- arms -->
             <g class="robot-arm-l" style="transform-origin:40px 60px;">
                 <rect x="24" y="58" width="10" height="26" rx="5" fill="url(#mechBody)"/>
                 <circle cx="29" cy="86" r="5.5" fill="#00c8ff"/>
@@ -529,7 +574,6 @@
                 <circle cx="91" cy="86" r="5.5" fill="#d946ef"/>
             </g>
 
-            <!-- legs -->
             <g class="robot-leg-l" style="transform-origin:50px 88px;">
                 <rect x="44" y="88" width="11" height="20" rx="5" fill="url(#mechBody)"/>
                 <rect x="39" y="104" width="20" height="7" rx="3.5" fill="#0b1120"/>
@@ -541,11 +585,11 @@
         </svg>
     </div>
 
-    <!-- ===== TOP ANNOUNCEMENT BAR (SMOOTH SLOW MARQUEE) ===== -->
+    <!-- ===== TOP ANNOUNCEMENT BAR (MOBILE-SAFE CONTINUOUS MARQUEE) ===== -->
     <div class="offer-bar py-2.5">
         <div class="offer-bar-track" id="offerBarTrack">
-            <!-- COPY 1 (visible) -->
-            <span class="offer-item">
+            <!-- SEGMENT 1 (visible) -->
+            <div class="offer-segment">
                 🚀 <span class="font-bold">Special Agency Offer:</span>
                 <span class="gradient-accent">Get Your AI Website &amp; Chatbot Ready in 3 Days!</span>
                 <span class="sep">|</span>
@@ -554,9 +598,9 @@
                 ⚡ <span class="gradient-accent">Limited Time — Book Your Free Demo Today!</span>
                 <span class="sep">•</span>
                 ⭐ 5000+ Happy Clients
-            </span>
-            <!-- COPY 2 -->
-            <span class="offer-item" aria-hidden="true">
+            </div>
+            <!-- SEGMENT 2 (seamless loop duplicate) -->
+            <div class="offer-segment" aria-hidden="true">
                 🚀 <span class="font-bold">Special Agency Offer:</span>
                 <span class="gradient-accent">Get Your AI Website &amp; Chatbot Ready in 3 Days!</span>
                 <span class="sep">|</span>
@@ -565,29 +609,7 @@
                 ⚡ <span class="gradient-accent">Limited Time — Book Your Free Demo Today!</span>
                 <span class="sep">•</span>
                 ⭐ 5000+ Happy Clients
-            </span>
-            <!-- COPY 3 -->
-            <span class="offer-item" aria-hidden="true">
-                🚀 <span class="font-bold">Special Agency Offer:</span>
-                <span class="gradient-accent">Get Your AI Website &amp; Chatbot Ready in 3 Days!</span>
-                <span class="sep">|</span>
-                📞 <span class="font-bold">9004600946</span>
-                <span class="sep">•</span>
-                ⚡ <span class="gradient-accent">Limited Time — Book Your Free Demo Today!</span>
-                <span class="sep">•</span>
-                ⭐ 5000+ Happy Clients
-            </span>
-            <!-- COPY 4 -->
-            <span class="offer-item" aria-hidden="true">
-                🚀 <span class="font-bold">Special Agency Offer:</span>
-                <span class="gradient-accent">Get Your AI Website &amp; Chatbot Ready in 3 Days!</span>
-                <span class="sep">|</span>
-                📞 <span class="font-bold">9004600946</span>
-                <span class="sep">•</span>
-                ⚡ <span class="gradient-accent">Limited Time — Book Your Free Demo Today!</span>
-                <span class="sep">•</span>
-                ⭐ 5000+ Happy Clients
-            </span>
+            </div>
         </div>
     </div>
 
@@ -643,14 +665,14 @@
         <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-fuchsia-500/5 rounded-full blur-3xl"></div>
     </section>
 
-    <!-- ===== DEMO SHOWCASE CARDS (NO-CROP, OBJECT-CONTAIN) ===== -->
+    <!-- ===== DEMO SHOWCASE CARDS (FIXED IMAGE PATHS + NO CROP) ===== -->
     <section id="demo" class="py-12 px-4 sm:px-6 border-t" style="border-color: var(--section-border);">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-2xl sm:text-3xl font-bold text-center text-white"><span class="gradient-text">Live</span> Demos</h2>
             <p class="text-slate-300 text-center max-w-2xl mx-auto mt-1">Explore our AI-powered websites</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 max-w-4xl mx-auto">
 
-                <!-- Healthcare & Clinic -->
+                <!-- Healthcare & Clinic — EXACT filename: clinic-demo.jpg -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col items-center text-center">
                     <div class="relative w-full h-52 sm:h-60 bg-slate-900/10 dark:bg-black/40 rounded-xl overflow-hidden flex items-center justify-center p-2 border border-slate-200 dark:border-white/10">
                         <span class="img-badge"><i class="fas fa-circle text-[6px] text-green-400 mr-1"></i> LIVE PREVIEW</span>
@@ -658,7 +680,8 @@
                             src="clinic-demo.jpg"
                             alt="Medical AI Doctor — Healthcare & Clinic website preview"
                             loading="lazy"
-                            class="w-full h-full object-contain rounded-lg transition-transform duration-300 hover:scale-105"
+                            decoding="async"
+                            class="w-full h-full object-contain rounded-lg"
                         />
                     </div>
                     <h3 class="text-xl font-bold text-white mt-4">Healthcare &amp; Clinic</h3>
@@ -668,7 +691,7 @@
                     </a>
                 </div>
 
-                <!-- Fashion & Clothing Store -->
+                <!-- Fashion & Clothing Store — EXACT filename: fashion-demo.jpg -->
                 <div class="card-bg p-6 rounded-2xl neon-border hover:border-[#d946ef] transition flex flex-col items-center text-center">
                     <div class="relative w-full h-52 sm:h-60 bg-slate-900/10 dark:bg-black/40 rounded-xl overflow-hidden flex items-center justify-center p-2 border border-slate-200 dark:border-white/10">
                         <span class="img-badge"><i class="fas fa-circle text-[6px] text-pink-400 mr-1"></i> LIVE PREVIEW</span>
@@ -676,7 +699,8 @@
                             src="fashion-demo.jpg"
                             alt="Fashion & Clothing Store UI preview"
                             loading="lazy"
-                            class="w-full h-full object-contain rounded-lg transition-transform duration-300 hover:scale-105"
+                            decoding="async"
+                            class="w-full h-full object-contain rounded-lg"
                         />
                     </div>
                     <h3 class="text-xl font-bold text-white mt-4">Fashion &amp; Clothing Store</h3>
@@ -1204,28 +1228,41 @@
             }
         })();
 
-        /* ============== ONE-TIME WALKING AI MECH ROBOT (fires on every load/refresh) ============== */
+        /* ============================================================
+           ONE-TIME WALKING AI MECH ROBOT (mobile-safe, scroll-safe)
+           - Uses class toggle to restart the CSS animation cleanly
+           - `pointer-events: none` guarantees it never blocks touch/scroll
+           ============================================================ */
         (function() {
             const robot = document.getElementById('robotTrack');
             if (!robot) return;
             const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             if (reduceMotion) { robot.style.display = 'none'; return; }
 
+            let robotTimer = null;
+
             function runRobot() {
+                if (robotTimer) clearTimeout(robotTimer);
                 robot.style.display = '';
-                robot.style.animation = 'none';
-                void robot.offsetWidth;               /* force reflow → restart animation */
-                robot.style.animation = 'robotWalk 5.4s cubic-bezier(.42,0,.58,1) forwards';
-                setTimeout(function() {
-                    if (robot) robot.style.display = 'none';
+                robot.classList.remove('robot-run');
+                /* force reflow so the animation restarts on every refresh */
+                void robot.offsetWidth;
+                robot.classList.add('robot-run');
+                robotTimer = setTimeout(function() {
+                    robot.style.display = 'none';
+                    robot.classList.remove('robot-run');
                 }, 5900);
             }
 
             if (document.readyState === 'complete') {
                 runRobot();
             } else {
-                window.addEventListener('load', runRobot);
+                window.addEventListener('load', runRobot, { once: true });
             }
+            /* Restart when returning via back/forward cache (mobile Safari / Chrome) */
+            window.addEventListener('pageshow', function(e) {
+                if (e.persisted) runRobot();
+            });
         })();
 
         /* ============== TOGGLE DETAILS ============== */
