@@ -216,8 +216,6 @@
         }
 
         /* =============== iOS / WebKit REDUCED-MOTION OVERRIDE =============== */
-        /* iOS Safari sometimes disables animations when "Reduce Motion" is on (or in Low Power Mode).
-           This block force-runs our two signature animations regardless of OS settings. */
         @media (prefers-reduced-motion: no-preference), (prefers-reduced-motion: reduce) {
             .mobile-marquee,
             .robot-animation,
@@ -796,13 +794,14 @@
                     </div>
                 </div>
 
+                <!-- UPDATED: 100% Verified Buyer & Seller Lead Pipeline -->
                 <div class="card-bg p-5 rounded-2xl neon-border hover:border-[#00c8ff] transition flex flex-col">
                     <div class="flex items-center gap-3 mb-1">
                         <i class="fas fa-bullseye text-2xl text-teal-400"></i>
-                        <h3 class="text-white font-bold text-base">100% Verified Buyer Lead Generation Pipeline</h3>
+                        <h3 class="text-white font-bold text-base">100% Verified Buyer &amp; Seller Lead Pipeline 🎯</h3>
                     </div>
-                    <div class="price-tag text-2xl my-1" data-inr="₹7,999" data-usd="$119">₹7,999</div>
-                    <p class="text-slate-300 text-xs">One-Time Setup · Hyper-targeted, verified, high-intent buyer leads delivered daily.</p>
+                    <div class="price-tag text-2xl my-1" data-inr="₹14,999" data-usd="$249 USD">₹14,999</div>
+                    <p class="text-slate-300 text-xs">One-Time Setup · Hyper-targeted, verified, high-intent buyer &amp; seller leads delivered daily.</p>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
                         <a href="https://wa.me/919004600946?text=Hi%21%20I%20am%20interested%20in%20the%20Verified%20Buyer%20Lead%20Generation%20Pipeline." target="_blank" class="cta-glow cta-teal"><i class="fab fa-whatsapp cta-icon"></i> Talk to a Strategist</a>
                     </div>
@@ -810,10 +809,11 @@
                         <i class="fas fa-chevron-down text-[10px]"></i> Click for Details / Features
                     </div>
                     <div class="toggle-details text-slate-300 text-xs space-y-1">
-                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> Meta &amp; Google Search Ads Setup</li>
-                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> Intent-Based Lead Forms</li>
-                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> Zero Fake Numbers (Intent Verified)</li>
-                        <li class="list-none"><i class="fas fa-check-circle text-teal-400 mr-1.5"></i> Auto-Sync to Google Sheets &amp; Email</li>
+                        <li class="list-none">🎯 Meta &amp; Google Search Ads Setup (Buyer &amp; Seller Ads)</li>
+                        <li class="list-none">🔐 Intent-Based Forms + OTP Verification (Zero Fake Numbers)</li>
+                        <li class="list-none">🤖 Instant WhatsApp AI Qualification Bot</li>
+                        <li class="list-none">⚡ Auto-Sync to Google Sheets, Email &amp; Telegram Alerts</li>
+                        <li class="list-none">📊 Direct Owner Scraping Engine Included</li>
                     </div>
                 </div>
 
@@ -1253,7 +1253,6 @@
             const robot = document.getElementById('robotTrack');
             if (!robot) return;
 
-            /* Force-run animation even if iOS has "Reduce Motion" enabled */
             function runRobot() {
                 robot.style.display = '';
                 robot.style.webkitAnimation = 'none';
