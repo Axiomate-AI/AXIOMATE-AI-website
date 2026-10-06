@@ -41,55 +41,48 @@ def send_telegram_message(msg):
     }
     try:
         res = requests.post(url, json=payload, timeout=10)
-        print(f"Telegram status: {res.status_code}")
+        print(f"Telegram Delivery Status Code: {res.status_code}")
     except Exception as e:
         print(f"Telegram Exception: {e}")
 
 
-def fetch_real_google_maps_leads(category, city):
-    if GOOGLE_PLACES_API_KEY:
-        query = f"{category} in {city}"
-        endpoint = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={query}&key={GOOGLE_PLACES_API_KEY}"
-        try:
-            res = requests.get(endpoint, timeout=10)
-            if res.status_code == 200:
-                results = res.json().get("results", [])
-                if results:
-                    return results
-        except Exception as e:
-            print(f"Google Places API Error: {e}")
+def fetch_google_places_real_leads(category, city):
+    if not GOOGLE_PLACES_API_KEY:
+        print("API Key Missing in Environment Secrets!")
+        return []
 
-    # Fallback endpoint if API fails or key delay
-    search_query = f"{category} in {city}"
-    url = f"https://nominatim.openstreetmap.org/search?q={search_query.replace(' ', '+')}&format=json&addressdetails=1&limit=5"
-    headers = {'User-Agent': 'AxiomateAI_LiveScraper/2.0'}
+    # Direct Text Search for mapped business locations
+    query = f"{category} in {city}"
+    endpoint = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={query}&key={GOOGLE_PLACES_API_KEY}"
+    
     try:
-        res = requests.get(url, headers=headers, timeout=10)
+        res = requests.get(endpoint, timeout=10)
         if res.status_code == 200:
-            return res.json()
+            return res.json().get("results", [])
     except Exception as e:
-        print(f"Fallback Fetch Error: {e}")
+        print(f"Google Places Search Error: {e}")
     return []
 
 
 def main():
-    print("Starting Live Google Maps Scraper Pipeline...")
+    print("Starting Live Google Places API Lead Scraper...")
     new_leads_list = []
 
     for category, pitch in CATEGORIES_CONFIG.items():
         for city in CITIES:
-            real_data = fetch_real_google_maps_leads(category, city)
+            results = fetch_google_places_real_leads(category, city)
             
-            for item in real_data:
+            for item in results:
                 now_time = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-                biz_name = item.get("name") or item.get("display_name", "").split(",")[0]
-                loc_str = item.get("formatted_address") or f"{city}, India"
-                
+                biz_name = item.get("name", "Local Business")
+                loc_str = item.get("formatted_address", f"{city}, India")
                 place_id = item.get("place_id")
+
                 phone_num = ""
                 biz_email = ""
 
-                if place_id and GOOGLE_PLACES_API_KEY:
+                # Fetch specific details using Place Details API
+                if place_id:
                     details_url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=formatted_phone_number,international_phone_number,website&key={GOOGLE_PLACES_API_KEY}"
                     try:
                         det_res = requests.get(details_url, timeout=5).json()
@@ -100,21 +93,21 @@ def main():
                             clean_domain = website.replace("http://", "").replace("https://", "").replace("www.", "").split("/")[0]
                             biz_email = f"contact@{clean_domain}"
                     except Exception as err:
-                        print(f"Details Exception: {err}")
+                        print(f"Details API Error: {err}")
 
-                # Ensure strict numeric filter
+                # Clean phone number extraction
                 clean_phone = re.sub(r'\D', '', phone_num) if phone_num else ""
-                
-                # Fallback generator for OSM items without direct phone number
-                if len(clean_phone) < 10:
-                    continue
 
-                if not clean_phone.startswith("91") and len(clean_phone) == 10:
-                    clean_phone = "91" + clean_phone
+                # Fallback: If Places Details API phone missing, use place query direct link
+                if not clean_phone or len(clean_phone) < 10:
+                    clean_phone = "919800000000"  # Marker for manual check
+                    formatted_display_phone = "Contact on Google Maps Page"
+                else:
+                    if not clean_phone.startswith("91") and len(clean_phone) == 10:
+                        clean_phone = "91" + clean_phone
+                    formatted_display_phone = f"+{clean_phone}"
 
-                formatted_display_phone = f"+{clean_phone}"
                 maps_url = f"https://maps.google.com/?q={biz_name.replace(' ', '+')}+{city}"
-                
                 if not biz_email:
                     biz_email = f"info@{clean_phone}.biz"
 
@@ -130,6 +123,9 @@ def main():
                 }
                 new_leads_list.append(lead)
 
+                # Send real-time card alert to Telegram
+                wa_link = f"https://wa.me/{clean_phone}" if len(clean_phone) >= 10 and clean_phone != "919800000000" else maps_url
+
                 card_msg = (
                     f"🚀 *NEW REAL GOOGLE MAPS LEAD DISCOVERED* 🚀\n\n"
                     f"📅 *Timestamp (IST):* {now_time}\n"
@@ -139,9 +135,9 @@ def main():
                     f"📞 *Contact Number:* {formatted_display_phone}\n"
                     f"✉️ *Email:* {biz_email}\n\n"
                     f"💬 *Pitch:* {pitch}\n\n"
-                    f"🔗 [Direct Outreach: Click to Chat on WhatsApp](https://wa.me/{clean_phone})\n"
+                    f"🔗 [Direct Outreach: Click to Chat on WhatsApp]({wa_link})\n"
                     f"🌐 [Axiomate AI Agency Demo]({WEBSITE_LINK})\n"
-                    f"🗺️️ [View on Google Maps]({maps_url})"
+                    f"🗺️ [View Listing on Google Maps]({maps_url})"
                 )
                 send_telegram_message(card_msg)
                 time.sleep(1)
@@ -153,13 +149,12 @@ def main():
         if len(new_leads_list) >= 20:
             break
 
+    # Save to CSV
     if new_leads_list:
         df_new = pd.DataFrame(new_leads_list)
         df_new.to_csv(CSV_FILE, index=False)
         print(f"Successfully saved {len(new_leads_list)} leads to {CSV_FILE}")
-        send_telegram_message(f"✅ *Workflow Complete!* Total Verified Leads: {len(new_leads_list)}")
-    else:
-        print("No new leads found in cycle.")
+        send_telegram_message(f"✅ *Pipeline Finished!* {len(new_leads_list)} real leads updated in repository.")
 
 
 if __name__ == "__main__":
