@@ -8,16 +8,19 @@ import requests
 
 tz = pytz.timezone("Asia/Kolkata")
 
-# Target Local Business Categories
+# Website Domain
+WEBSITE_LINK = "https://axiomateai.com"
+
+# Target Local Business Categories with Website Demo Link Integrated
 CATEGORIES_CONFIG = {
-    "Gym & Fitness Hub": "Hello! Boost your gym membership signups with automated WhatsApp appointment funnels. Open for a demo?",
-    "Auto Modification Studio": "Hello! Axiomate AI provides automated booking systems for auto modification centers. Would you like to check a demo?",
-    "Coaching Institute": "Hello! Axiomate AI helps coaching institutes automate student lead follow-ups via WhatsApp 24/7. Interested in a demo?",
-    "Skin & Hair Clinic": "Hi! We build automated consultation booking systems for skin & hair clinics. Can I share a quick demo link?",
-    "Real Estate Agency": "Hello! Axiomate AI automates property inquiry follow-ups and brochure distribution on WhatsApp. Open to a chat?",
-    "Digital Marketing Agency": "Hello! Axiomate AI builds custom WhatsApp agents & voice bots for agencies. Open for a quick overview?",
-    "Dental Clinic": "Hello! We help dental clinics get 20+ new patient bookings monthly using WhatsApp appointment funnels. Open for a demo?",
-    "Interior Designer": "Hello! We help interior design studios capture high-ticket client leads and automate follow-ups. Want to see a demo?",
+    "Gym & Fitness Hub": f"Hello! Boost your gym membership signups with automated WhatsApp appointment funnels. Check demo & details here: {WEBSITE_LINK}",
+    "Auto Modification Studio": f"Hello! Axiomate AI provides automated booking systems for auto modification centers. Check live demo here: {WEBSITE_LINK}",
+    "Coaching Institute": f"Hello! Axiomate AI helps coaching institutes automate student lead follow-ups via WhatsApp 24/7. View demo: {WEBSITE_LINK}",
+    "Skin & Hair Clinic": f"Hi! We build automated consultation booking systems for skin & hair clinics. Check live demo: {WEBSITE_LINK}",
+    "Real Estate Agency": f"Hello! Axiomate AI automates property inquiry follow-ups and brochure distribution on WhatsApp. See demo: {WEBSITE_LINK}",
+    "Digital Marketing Agency": f"Hello! Axiomate AI builds custom WhatsApp agents & voice bots for agencies. Explore details: {WEBSITE_LINK}",
+    "Dental Clinic": f"Hello! We help dental clinics get 20+ new patient bookings monthly using WhatsApp funnels. View demo: {WEBSITE_LINK}",
+    "Interior Designer": f"Hello! We help interior design studios capture high-ticket client leads and automate follow-ups. See demo: {WEBSITE_LINK}",
 }
 
 CITIES = ["Mumbai", "Thane", "Navi Mumbai", "Pune", "Nagpur", "Bangalore", "Delhi"]
@@ -25,17 +28,16 @@ CSV_FILE = "Axiomate_Leads.csv"
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
-GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")  # Live Google API Key
+GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")
 
 
 def fetch_real_google_maps_leads(category, city):
     """
     Fetch REAL live listed businesses from Google Places / Maps API.
-    No dummy data, no random number generation.
+    Strictly NO fake, synthetic, or dummy data.
     """
     if not GOOGLE_PLACES_API_KEY:
-        print("GOOGLE_PLACES_API_KEY missing. Falling back to public OSM/Google Places HTTP Endpoint.")
-        # Fallback to direct public search query fetcher for real listings
+        print("GOOGLE_PLACES_API_KEY missing. Falling back to public OpenStreetMap search endpoint.")
         search_query = f"{category} in {city}"
         url = f"https://nominatim.openstreetmap.org/search?q={search_query.replace(' ', '+')}&format=json&addressdetails=1&limit=5"
         headers = {'User-Agent': 'AxiomateAI_LiveScraper/1.0'}
@@ -47,7 +49,6 @@ def fetch_real_google_maps_leads(category, city):
             print(f"Fetch Error: {e}")
         return []
 
-    # Direct Google Places API Text Search Call
     query = f"{category} in {city}"
     endpoint = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={query}&key={GOOGLE_PLACES_API_KEY}"
     try:
@@ -68,7 +69,7 @@ def send_telegram_message(msg):
         "chat_id": TELEGRAM_CHAT_ID,
         "text": msg,
         "parse_mode": "Markdown",
-        "disable_web_page_preview": True,
+        "disable_web_page_preview": False,
     }
     try:
         res = requests.post(url, json=payload, timeout=10)
@@ -83,17 +84,15 @@ def main():
     print("Starting Live Google Maps Real Leads Fetching Process...")
 
     for category, pitch in CATEGORIES_CONFIG.items():
-        for city in CITIES[:3]:  # Loop through target cities
+        for city in CITIES[:3]:
             real_data = fetch_real_google_maps_leads(category, city)
             
             for item in real_data:
                 now_time = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
                 
-                # Extract real business details from Google listing
                 biz_name = item.get("name") or item.get("display_name", "").split(",")[0]
                 loc_str = item.get("formatted_address") or f"Main Road, {city}, India"
                 
-                # Fetch actual phone number from Google Place Details if available
                 place_id = item.get("place_id")
                 phone_num = ""
                 biz_email = ""
@@ -145,6 +144,7 @@ def main():
                     f"✉️ *Email:* {lead['Email']}\n\n"
                     f"💬 *Pitch:* {pitch}\n\n"
                     f"🔗 [Direct Outreach: Click to Chat on WhatsApp](https://wa.me/{clean_phone})\n"
+                    f"🌐 [Axiomate AI Agency Demo]({WEBSITE_LINK})\n"
                     f"🗺️ [View on Google Maps]({maps_url})"
                 )
                 send_telegram_message(card_msg)
