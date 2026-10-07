@@ -2,8 +2,7 @@ name: TG Multi-Category Scraper Pipeline
 
 on:
   schedule:
-    # 05:30 AM UTC = Exactly 11:00 AM IST
-    - cron: '30 5 * * *'
+    - cron: '30 5 * * *'  # 11:00 AM IST
   workflow_dispatch:
 
 jobs:
