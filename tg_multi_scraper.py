@@ -9,7 +9,7 @@ import requests
 tz = pytz.timezone("Asia/Kolkata")
 WEBSITE_LINK = "https://axiomateai.com"
 
-# 8 Target Categories with Custom Pitch Links
+# 8 Mapped Business Categories with Custom Pitches
 CATEGORIES_CONFIG = {
     "Gym & Fitness Hub": f"Hello! Boost gym membership signups with automated WhatsApp appointment funnels. View demo: {WEBSITE_LINK}",
     "Auto Modification Studio": f"Hello! Axiomate AI provides automated booking systems for auto modification centers. View demo: {WEBSITE_LINK}",
@@ -24,7 +24,7 @@ CATEGORIES_CONFIG = {
 CITIES = ["Mumbai", "Thane", "Navi Mumbai", "Pune", "Bangalore", "Delhi"]
 CSV_FILE = "Axiomate_Leads.csv"
 
-# Telegram & Google Credentials
+# Credentials from GitHub Secrets
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 ALERT_CHAT_ID = os.environ.get("ALERT_CHAT_ID") or TELEGRAM_CHAT_ID
@@ -53,64 +53,53 @@ def send_telegram_alert(msg):
         print(f"Alert Bot Exception: {e}")
 
 
-def fetch_google_places_leads(category, city):
+def fetch_google_places_new_leads(category, city):
+    """
+    Uses Google Places API (New) Native v1 Endpoint
+    """
     if not GOOGLE_PLACES_API_KEY:
-        send_telegram_alert("⚠️ *API Key Missing:* GOOGLE_PLACES_API_KEY is not configured in Secrets.")
+        send_telegram_alert("⚠️ *API Key Missing:* GOOGLE_PLACES_API_KEY is not configured in GitHub Secrets.")
         return []
 
-    query = f"{category} in {city}"
-    # Standard Places Text Search Endpoint
-    endpoint = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={query.replace(' ', '+')}&key={GOOGLE_PLACES_API_KEY}"
+    url = "https://places.googleapis.com/v1/places:searchText"
+    headers = {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": GOOGLE_PLACES_API_KEY,
+        "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.internationalPhoneNumber,places.websiteUri,places.googleMapsUri"
+    }
+    payload = {
+        "textQuery": f"{category} in {city}"
+    }
     
     try:
-        res = requests.get(endpoint, timeout=10)
+        res = requests.post(url, json=payload, headers=headers, timeout=10)
         if res.status_code == 200:
-            data = res.json()
-            status = data.get("status")
-            if status == "OK":
-                return data.get("results", [])
-            else:
-                send_telegram_alert(f"🚨 *Google API Status Warning:* Status `{status}` for query `{query}`.")
+            return res.json().get("places", [])
         else:
-            send_telegram_alert(f"🚨 *Google API HTTP Error:* `{res.status_code}` - `{res.text}`")
+            send_telegram_alert(f"🚨 *Google Places (New) API Error:* HTTP `{res.status_code}` - `{res.text}`")
     except Exception as e:
         send_telegram_alert(f"🚨 *Google API Exception:* {e}")
     return []
 
 
-def get_place_phone_and_details(place_id):
-    if not place_id or not GOOGLE_PLACES_API_KEY:
-        return "", ""
-    
-    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=formatted_phone_number,international_phone_number,website&key={GOOGLE_PLACES_API_KEY}"
-    try:
-        res = requests.get(url, timeout=5).json()
-        result = res.get("result", {})
-        phone = result.get("formatted_phone_number") or result.get("international_phone_number") or ""
-        website = result.get("website", "")
-        return phone, website
-    except Exception:
-        return "", ""
-
-
 def main():
-    send_telegram_alert("⚙️ *Pipeline Execution Started:* Fetching 20 Genuine Business Leads.")
+    send_telegram_alert("⚙️ *Pipeline Started:* Scraper initiated execution cycle using Places API (New).")
     new_leads_list = []
 
     for category, pitch in CATEGORIES_CONFIG.items():
         category_count = 0
         for city in CITIES:
-            results = fetch_google_places_leads(category, city)
+            places = fetch_google_places_new_leads(category, city)
             
-            for item in results:
+            for item in places:
                 now_time = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-                biz_name = item.get("name", "Local Business")
-                loc_str = item.get("formatted_address", f"{city}, India")
-                place_id = item.get("place_id")
+                biz_name = item.get("displayName", {}).get("text", "Local Business")
+                loc_str = item.get("formattedAddress", f"{city}, India")
+                phone_num = item.get("internationalPhoneNumber") or item.get("nationalPhoneNumber") or ""
+                website = item.get("websiteUri", "")
+                maps_url = item.get("googleMapsUri") or f"https://maps.google.com/?q={biz_name.replace(' ', '+')}+{city}"
 
-                phone_num, website = get_place_phone_and_details(place_id)
-
-                # Email domain calculation
+                # Extract Domain for Email
                 biz_email = ""
                 if website:
                     clean_domain = website.replace("http://", "").replace("https://", "").replace("www.", "").split("/")[0]
@@ -118,7 +107,7 @@ def main():
 
                 clean_phone = re.sub(r'\D', '', phone_num) if phone_num else ""
 
-                # STRICT RULE: NO DUMMY DATA. Skip if phone number is missing/invalid!
+                # STRICT RULE: NO FAKE/DUMMY LEADS. Skip if valid phone number is missing!
                 if not clean_phone or len(clean_phone) < 10:
                     continue
 
@@ -126,7 +115,6 @@ def main():
                     clean_phone = "91" + clean_phone
                 
                 formatted_phone = f"+{clean_phone}"
-                maps_url = f"https://maps.google.com/?q={biz_name.replace(' ', '+')}+{city}"
                 if not biz_email:
                     biz_email = f"info@{clean_phone}.biz"
 
@@ -143,7 +131,7 @@ def main():
                 new_leads_list.append(lead)
                 category_count += 1
 
-                # Send 100% Real Genuine Lead to Main Telegram Chat
+                # Send Genuine Verified Lead to Main Telegram Chat
                 card_msg = (
                     f"🚀 *NEW REAL GOOGLE MAPS LEAD DISCOVERED* 🚀\n\n"
                     f"📅 *Timestamp (IST):* {now_time}\n"
