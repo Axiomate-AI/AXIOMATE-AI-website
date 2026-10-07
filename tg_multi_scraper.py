@@ -27,7 +27,6 @@ CSV_FILE = "Axiomate_Leads.csv"
 # Credentials
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
-ALERT_BOT_TOKEN = os.environ.get("ALERT_BOT_TOKEN") or TELEGRAM_BOT_TOKEN
 ALERT_CHAT_ID = os.environ.get("ALERT_CHAT_ID") or TELEGRAM_CHAT_ID
 GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")
 
@@ -44,9 +43,9 @@ def send_telegram_lead(msg):
 
 
 def send_telegram_alert(msg):
-    if not ALERT_BOT_TOKEN or not ALERT_CHAT_ID:
+    if not TELEGRAM_BOT_TOKEN or not ALERT_CHAT_ID:
         return
-    url = f"https://api.telegram.org/bot{ALERT_BOT_TOKEN}/sendMessage"
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {"chat_id": ALERT_CHAT_ID, "text": msg, "parse_mode": "Markdown"}
     try:
         requests.post(url, json=payload, timeout=10)
@@ -54,65 +53,61 @@ def send_telegram_alert(msg):
         print(f"Alert Bot Exception: {e}")
 
 
-def fetch_google_places_leads(category, city):
+def fetch_google_places_new_leads(category, city):
+    """
+    Uses Google Places API (New) Text Search v1 Endpoint
+    """
     if not GOOGLE_PLACES_API_KEY:
         send_telegram_alert("⚠️ *API Key Missing:* GOOGLE_PLACES_API_KEY is not configured in Secrets.")
         return []
 
-    query = f"{category} in {city}"
-    endpoint = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={query}&key={GOOGLE_PLACES_API_KEY}"
+    url = "https://places.googleapis.com/v1/places:searchText"
+    headers = {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": GOOGLE_PLACES_API_KEY,
+        "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.internationalPhoneNumber,places.websiteUri,places.googleMapsUri"
+    }
+    payload = {
+        "textQuery": f"{category} in {city}"
+    }
     
     try:
-        res = requests.get(endpoint, timeout=10)
+        res = requests.post(url, json=payload, headers=headers, timeout=10)
         if res.status_code == 200:
-            data = res.json()
-            status = data.get("status")
-            if status == "OK":
-                return data.get("results", [])
-            else:
-                send_telegram_alert(f"🚨 *Google API Error Alert:* Status `{status}` for `{query}`. Ensure Places API is Enabled in Cloud Console.")
+            return res.json().get("places", [])
         else:
-            send_telegram_alert(f"🚨 *Google API HTTP Error:* {res.status_code}")
+            send_telegram_alert(f"🚨 *Google Places (New) API Error:* HTTP `{res.status_code}` - `{res.text}`")
     except Exception as e:
         send_telegram_alert(f"🚨 *Google API Exception:* {e}")
     return []
 
 
 def main():
-    send_telegram_alert("⚙️ *Pipeline Started:* Scraper initiated execution cycle.")
+    send_telegram_alert("⚙️ *Pipeline Started:* Scraper initiated execution cycle using Places API (New).")
     new_leads_list = []
 
-    # Iterate categories evenly (Max 2-3 leads per category to ensure wide distribution)
     for category, pitch in CATEGORIES_CONFIG.items():
         category_count = 0
         for city in CITIES:
-            results = fetch_google_places_leads(category, city)
+            places = fetch_google_places_new_leads(category, city)
             
-            for item in results:
+            for item in places:
                 now_time = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-                biz_name = item.get("name", "")
-                loc_str = item.get("formatted_address", f"{city}, India")
-                place_id = item.get("place_id")
+                biz_name = item.get("displayName", {}).get("text", "Local Business")
+                loc_str = item.get("formattedAddress", f"{city}, India")
+                phone_num = item.get("internationalPhoneNumber") or item.get("nationalPhoneNumber") or ""
+                website = item.get("websiteUri", "")
+                maps_url = item.get("googleMapsUri") or f"https://maps.google.com/?q={biz_name.replace(' ', '+')}+{city}"
 
-                phone_num = ""
+                # Extract Domain for Email
                 biz_email = ""
-
-                if place_id:
-                    details_url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=formatted_phone_number,international_phone_number,website&key={GOOGLE_PLACES_API_KEY}"
-                    try:
-                        det_res = requests.get(details_url, timeout=5).json()
-                        result = det_res.get("result", {})
-                        phone_num = result.get("formatted_phone_number") or result.get("international_phone_number") or ""
-                        website = result.get("website", "")
-                        if website:
-                            clean_domain = website.replace("http://", "").replace("https://", "").replace("www.", "").split("/")[0]
-                            biz_email = f"contact@{clean_domain}"
-                    except Exception as err:
-                        print(f"Details Fetch Exception: {err}")
+                if website:
+                    clean_domain = website.replace("http://", "").replace("https://", "").replace("www.", "").split("/")[0]
+                    biz_email = f"contact@{clean_domain}"
 
                 clean_phone = re.sub(r'\D', '', phone_num) if phone_num else ""
 
-                # STRICT RULE: Skip if no REAL valid phone number (No dummy numbers allowed)
+                # STRICT RULE: Skip if no REAL valid phone number exists
                 if not clean_phone or len(clean_phone) < 10:
                     continue
 
@@ -120,7 +115,6 @@ def main():
                     clean_phone = "91" + clean_phone
                 
                 formatted_phone = f"+{clean_phone}"
-                maps_url = f"https://maps.google.com/?q={biz_name.replace(' ', '+')}+{city}"
                 if not biz_email:
                     biz_email = f"info@{clean_phone}.biz"
 
@@ -137,7 +131,7 @@ def main():
                 new_leads_list.append(lead)
                 category_count += 1
 
-                # Send ONLY Genuine Verified Lead to Main Telegram Chat
+                # Send Genuine Verified Lead to Main Telegram Chat
                 card_msg = (
                     f"🚀 *NEW REAL GOOGLE MAPS LEAD DISCOVERED* 🚀\n\n"
                     f"📅 *Timestamp (IST):* {now_time}\n"
@@ -167,7 +161,7 @@ def main():
         df_new.to_csv(CSV_FILE, index=False)
         send_telegram_alert(f"✅ *Pipeline Completed Successfully!* {len(new_leads_list)} verified genuine leads updated in repository.")
     else:
-        send_telegram_alert("❌ *Execution Finished:* 0 valid phone leads found. Check Places API Enablement.")
+        send_telegram_alert("❌ *Execution Finished:* 0 valid phone leads found.")
 
 
 if __name__ == "__main__":
