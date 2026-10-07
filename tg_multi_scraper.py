@@ -30,7 +30,7 @@ GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")
 
 def send_telegram_message(msg):
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print("CRITICAL: Telegram credentials missing in secrets!")
+        print("ERROR: Telegram credentials missing!")
         return
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
@@ -41,20 +41,18 @@ def send_telegram_message(msg):
     }
     try:
         res = requests.post(url, json=payload, timeout=10)
-        print(f"Telegram Delivery Status Code: {res.status_code}")
+        print(f"Telegram status: {res.status_code}")
     except Exception as e:
         print(f"Telegram Exception: {e}")
 
 
-def fetch_google_places_real_leads(category, city):
+def fetch_google_places_leads(category, city):
     if not GOOGLE_PLACES_API_KEY:
-        print("API Key Missing in Environment Secrets!")
+        print("WARNING: GOOGLE_PLACES_API_KEY is not set.")
         return []
 
-    # Direct Text Search for mapped business locations
     query = f"{category} in {city}"
     endpoint = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={query}&key={GOOGLE_PLACES_API_KEY}"
-    
     try:
         res = requests.get(endpoint, timeout=10)
         if res.status_code == 200:
@@ -65,12 +63,12 @@ def fetch_google_places_real_leads(category, city):
 
 
 def main():
-    print("Starting Live Google Places API Lead Scraper...")
+    print("Starting Live Google Places API Scraper Pipeline...")
     new_leads_list = []
 
     for category, pitch in CATEGORIES_CONFIG.items():
         for city in CITIES:
-            results = fetch_google_places_real_leads(category, city)
+            results = fetch_google_places_leads(category, city)
             
             for item in results:
                 now_time = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
@@ -81,8 +79,7 @@ def main():
                 phone_num = ""
                 biz_email = ""
 
-                # Fetch specific details using Place Details API
-                if place_id:
+                if place_id and GOOGLE_PLACES_API_KEY:
                     details_url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=formatted_phone_number,international_phone_number,website&key={GOOGLE_PLACES_API_KEY}"
                     try:
                         det_res = requests.get(details_url, timeout=5).json()
@@ -93,19 +90,17 @@ def main():
                             clean_domain = website.replace("http://", "").replace("https://", "").replace("www.", "").split("/")[0]
                             biz_email = f"contact@{clean_domain}"
                     except Exception as err:
-                        print(f"Details API Error: {err}")
+                        print(f"Place Details Error: {err}")
 
-                # Clean phone number extraction
                 clean_phone = re.sub(r'\D', '', phone_num) if phone_num else ""
 
-                # Fallback: If Places Details API phone missing, use place query direct link
-                if not clean_phone or len(clean_phone) < 10:
-                    clean_phone = "919800000000"  # Marker for manual check
-                    formatted_display_phone = "Contact on Google Maps Page"
-                else:
+                if clean_phone and len(clean_phone) >= 10:
                     if not clean_phone.startswith("91") and len(clean_phone) == 10:
                         clean_phone = "91" + clean_phone
-                    formatted_display_phone = f"+{clean_phone}"
+                    formatted_phone = f"+{clean_phone}"
+                else:
+                    formatted_phone = "Contact on Google Maps"
+                    clean_phone = "919800000000"
 
                 maps_url = f"https://maps.google.com/?q={biz_name.replace(' ', '+')}+{city}"
                 if not biz_email:
@@ -116,15 +111,14 @@ def main():
                     "Category": category,
                     "Business Name": biz_name,
                     "Location": loc_str,
-                    "Contact Number": formatted_display_phone,
+                    "Contact Number": formatted_phone,
                     "Google Maps URL": maps_url,
                     "Pitch Text": pitch,
                     "Email": biz_email
                 }
                 new_leads_list.append(lead)
 
-                # Send real-time card alert to Telegram
-                wa_link = f"https://wa.me/{clean_phone}" if len(clean_phone) >= 10 and clean_phone != "919800000000" else maps_url
+                wa_link = f"https://wa.me/{clean_phone}" if clean_phone != "919800000000" else maps_url
 
                 card_msg = (
                     f"🚀 *NEW REAL GOOGLE MAPS LEAD DISCOVERED* 🚀\n\n"
@@ -132,7 +126,7 @@ def main():
                     f"🏷️ *Category:* {category}\n"
                     f"🏢 *Business Name:* {biz_name}\n"
                     f"📍 *Location:* {loc_str}\n"
-                    f"📞 *Contact Number:* {formatted_display_phone}\n"
+                    f"📞 *Contact Number:* {formatted_phone}\n"
                     f"✉️ *Email:* {biz_email}\n\n"
                     f"💬 *Pitch:* {pitch}\n\n"
                     f"🔗 [Direct Outreach: Click to Chat on WhatsApp]({wa_link})\n"
@@ -149,12 +143,13 @@ def main():
         if len(new_leads_list) >= 20:
             break
 
-    # Save to CSV
     if new_leads_list:
         df_new = pd.DataFrame(new_leads_list)
         df_new.to_csv(CSV_FILE, index=False)
-        print(f"Successfully saved {len(new_leads_list)} leads to {CSV_FILE}")
-        send_telegram_message(f"✅ *Pipeline Finished!* {len(new_leads_list)} real leads updated in repository.")
+        print(f"Saved {len(new_leads_list)} leads to {CSV_FILE}")
+        send_telegram_message(f"✅ *Pipeline Completed Successfully!* {len(new_leads_list)} live leads fetched & CSV updated.")
+    else:
+        print("No leads fetched in this cycle.")
 
 
 if __name__ == "__main__":
