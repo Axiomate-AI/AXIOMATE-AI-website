@@ -1,25 +1,29 @@
 #!/usr/bin/env python3
 """
-tg_multi_scraper.py  --  Axiomate AI lead-generation pipeline
+tg_multi_scraper.py  --  Axiomate AI lead-generation pipeline (SerpApi edition)
 
-Finds local Indian businesses through the Google Places API (New), verifies
-that each listing has a real Indian mobile number, and delivers the leads to
-Telegram plus a CSV file. No scraping, no synthetic / placeholder data.
+Finds local Indian businesses on Google Maps through SerpApi's Google Maps
+engine. SerpApi does the Maps fetching on its own infrastructure, so there is
+NO Google Cloud project, billing account or Google API key involved, and
+GitHub Actions IPs never talk to Google directly. Every lead is verified to
+have a real Indian mobile number; there is no synthetic / placeholder data.
 
 Environment variables
 ---------------------
 Required:
-    GOOGLE_PLACES_API_KEY   Google Places API (New) key
+    SERPAPI_API_KEY         Key from https://serpapi.com (free plan available)
     TELEGRAM_BOT_TOKEN      Bot token used to send lead cards
     TELEGRAM_CHAT_ID        Chat that receives lead cards
 
 Optional:
     ALERT_CHAT_ID           Chat for pipeline status alerts (default: TELEGRAM_CHAT_ID)
     ALERT_BOT_TOKEN         Bot token for alerts (default: TELEGRAM_BOT_TOKEN)
-    MAX_LEADS               Leads per run            (default: 20)
-    MAX_PER_QUERY           Max leads taken per category/city query on the
-                            first pass, to keep categories and cities mixed (default: 3)
-    CSV_PATH                Output CSV path          (default: Axiomate_Leads.csv)
+    MAX_LEADS               Leads per run                          (default: 20)
+    MAX_PER_QUERY           Leads taken per category/city search on the first
+                            pass, to keep categories/cities mixed   (default: 3)
+    MAX_SEARCHES            Hard cap on SerpApi searches per run, protects your
+                            monthly quota                           (default: 15)
+    CSV_PATH                Output CSV path                         (default: Axiomate_Leads.csv)
 
 Install:  pip install requests pandas pytz
 """
@@ -33,7 +37,7 @@ import sys
 import time
 from datetime import datetime
 from itertools import zip_longest
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 
 import pandas as pd
 import pytz
@@ -42,17 +46,21 @@ import requests
 # --------------------------------------------------------------------------- #
 # Configuration
 # --------------------------------------------------------------------------- #
-PLACES_URL = "https://places.googleapis.com/v1/places:searchText"
-FIELD_MASK = (
-    "places.displayName,places.formattedAddress,places.nationalPhoneNumber,"
-    "places.internationalPhoneNumber,places.websiteUri,places.googleMapsUri,places.id"
-)
+SERPAPI_URL = "https://serpapi.com/search.json"
 
 AGENCY_LINK = "https://axiomate-ai-website.vercel.app/"
 
-CITIES = ["Mumbai", "Thane", "Navi Mumbai", "Pune", "Bangalore", "Delhi"]
+# City -> Google Maps viewport (lat, lng) used to keep results local.
+CITIES = {
+    "Mumbai": (19.0760, 72.8777),
+    "Thane": (19.2183, 72.9781),
+    "Navi Mumbai": (19.0330, 73.0297),
+    "Pune": (18.5204, 73.8567),
+    "Bangalore": (12.9716, 77.5946),
+    "Delhi": (28.6139, 77.2090),
+}
 
-# "query" is the search phrase sent to Google; "pitch" is the outreach text.
+# "query" is the search phrase sent to Google Maps; "pitch" is the outreach text.
 CATEGORIES = {
     "Gym & Fitness Hub": {
         "query": "gym fitness center",
@@ -103,11 +111,12 @@ IST = pytz.timezone("Asia/Kolkata")
 
 MAX_LEADS = int(os.getenv("MAX_LEADS", "20"))
 MAX_PER_QUERY = int(os.getenv("MAX_PER_QUERY", "3"))
+MAX_SEARCHES = int(os.getenv("MAX_SEARCHES", "15"))
 CSV_PATH = os.getenv("CSV_PATH", "Axiomate_Leads.csv")
 
-REQUEST_TIMEOUT = 20      # seconds
-MAX_RETRIES = 4
-QUERY_DELAY = 0.5         # seconds between Places requests
+REQUEST_TIMEOUT = 60      # seconds (Maps searches can take a few seconds)
+MAX_RETRIES = 3
+QUERY_DELAY = 1.0         # seconds between SerpApi requests
 TELEGRAM_DELAY = 1.1      # seconds between Telegram messages (~1 msg/sec per chat)
 
 # Websites that are NOT a business's own domain. An email built from these
@@ -129,8 +138,8 @@ logging.basicConfig(
 log = logging.getLogger("tg_multi_scraper")
 
 
-class PlacesAuthError(Exception):
-    """Raised when Google rejects the API key / permissions (no point retrying)."""
+class SearchProviderError(Exception):
+    """Fatal SerpApi problem (bad key, quota exhausted). Retrying will not help."""
 
 
 # --------------------------------------------------------------------------- #
@@ -151,8 +160,8 @@ def normalize_indian_phone(raw):
     Return '+91XXXXXXXXXX' for a valid Indian mobile number, else None.
 
     Accepts the number with or without the 91 prefix (and with the trunk
-    prefix 0 that Google uses in national format, e.g. '098765 43210').
-    The 10 digits must start with 6, 7, 8 or 9, so landlines are rejected.
+    prefix 0 that Google often shows, e.g. '098765 43210'). The 10 digits
+    must start with 6, 7, 8 or 9, so landlines are rejected.
     """
     if not raw:
         return None
@@ -175,7 +184,7 @@ def email_from_website(website_uri):
     if not website_uri:
         return ""
     try:
-        uri = website_uri.strip()
+        uri = str(website_uri).strip()
         if "://" not in uri:
             uri = "http://" + uri
         host = (urlparse(uri).hostname or "").lower().strip(".")
@@ -190,18 +199,37 @@ def email_from_website(website_uri):
     return f"contact@{host}"
 
 
-def extract_lead(place, category, timestamp):
-    """Convert one Places API result into a verified lead dict, or None to skip."""
-    name = (place.get("displayName") or {}).get("text", "").strip()
+def build_map_pin_url(result, name):
+    """
+    Direct link to this exact business on Google Maps, built with Google's
+    documented Maps URL scheme from the listing's Place ID. If SerpApi did not
+    return a usable Place ID, fall back to name + exact coordinates.
+    """
+    place_id = result.get("place_id")
+    if isinstance(place_id, str) and place_id.startswith("ChIJ"):
+        return (
+            "https://www.google.com/maps/search/?api=1"
+            f"&query={quote(name)}&query_place_id={place_id}"
+        )
+
+    coords = result.get("gps_coordinates") or {}
+    lat, lng = coords.get("latitude"), coords.get("longitude")
+    if isinstance(lat, (int, float)) and isinstance(lng, (int, float)):
+        return f"https://www.google.com/maps/search/?api=1&query={quote(name)}%20{lat},{lng}"
+    return ""
+
+
+def extract_lead(result, category, timestamp):
+    """Convert one SerpApi Maps result into a verified lead dict, or None to skip."""
+    name = str(result.get("title") or "").strip()
     if not name:
         return None
 
-    phone = normalize_indian_phone(place.get("nationalPhoneNumber")) or \
-        normalize_indian_phone(place.get("internationalPhoneNumber"))
+    phone = normalize_indian_phone(result.get("phone"))
     if not phone:
-        return None  # no valid phone -> skip immediately
+        return None  # no valid mobile number -> skip immediately
 
-    maps_url = (place.get("googleMapsUri") or "").strip()
+    maps_url = build_map_pin_url(result, name)
     if not maps_url:
         return None  # can't link to the exact pin
 
@@ -209,64 +237,78 @@ def extract_lead(place, category, timestamp):
         "Timestamp": timestamp,
         "Category": category,
         "Business Name": name,
-        "Location": (place.get("formattedAddress") or "").strip(),
+        "Location": str(result.get("address") or "").strip(),
         "Contact Number": phone,
         "Google Maps URL": maps_url,
         "Pitch Text": CATEGORIES[category]["pitch"],
-        "Email": email_from_website(place.get("websiteUri")),
-        "_place_id": place.get("id", ""),
+        "Email": email_from_website(result.get("website")),
+        "_place_id": str(result.get("place_id") or ""),
     }
 
 
 # --------------------------------------------------------------------------- #
-# Google Places API (New)
+# SerpApi (Google Maps engine)
 # --------------------------------------------------------------------------- #
-def search_places(session, api_key, text_query):
-    """Run one Text Search request with retries. Returns a list of places."""
-    headers = {
-        "Content-Type": "application/json",
-        "X-Goog-Api-Key": api_key,
-        "X-Goog-FieldMask": FIELD_MASK,
-    }
-    body = {
-        "textQuery": text_query,
-        "pageSize": 20,
-        "regionCode": "IN",
-        "languageCode": "en",
+def search_maps(session, api_key, query, city):
+    """Run one Google Maps search via SerpApi with retries. Returns local results."""
+    lat, lng = CITIES[city]
+    params = {
+        "engine": "google_maps",
+        "type": "search",
+        "q": f"{query} in {city}",
+        "ll": f"@{lat},{lng},12z",
+        "hl": "en",
+        "gl": "in",
+        "api_key": api_key,
     }
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            resp = session.post(PLACES_URL, headers=headers, json=body, timeout=REQUEST_TIMEOUT)
+            resp = session.get(SERPAPI_URL, params=params, timeout=REQUEST_TIMEOUT)
         except requests.exceptions.RequestException as exc:
             wait = 2 ** attempt
-            log.warning("Places request error (%s) attempt %d/%d; retrying in %ds",
+            log.warning("SerpApi request error (%s) attempt %d/%d; retrying in %ds",
                         exc.__class__.__name__, attempt, MAX_RETRIES, wait)
             time.sleep(wait)
             continue
 
         status = resp.status_code
+        try:
+            payload = json.loads(resp.text)
+        except json.JSONDecodeError:
+            payload = {}
+        error_text = str(payload.get("error", "")) if isinstance(payload, dict) else ""
+
         if status == 200:
-            try:
-                return json.loads(resp.text).get("places", []) or []
-            except json.JSONDecodeError:
-                log.error("Places returned invalid JSON for '%s'", text_query)
+            if error_text:
+                if "hasn't returned any results" in error_text:
+                    return []  # normal "no results" response
+                log.error("SerpApi error for '%s': %s", params["q"], error_text[:300])
                 return []
+            return payload.get("local_results", []) or []
 
-        if status in (401, 403) or (status == 400 and "API_KEY_INVALID" in resp.text):
-            raise PlacesAuthError(f"HTTP {status}: {resp.text[:300]}")
+        if status in (401, 403):
+            raise SearchProviderError(f"HTTP {status}: {error_text or resp.text[:300]}")
 
-        if status == 429 or status >= 500:
+        if status == 429:
+            if "run out" in error_text.lower():
+                raise SearchProviderError(f"SerpApi quota exhausted: {error_text}")
+            wait = 5 * attempt
+            log.warning("SerpApi rate limit (%s); retrying in %ds", error_text[:120], wait)
+            time.sleep(wait)
+            continue
+
+        if status >= 500:
             wait = 2 ** attempt
-            log.warning("Places HTTP %d attempt %d/%d; retrying in %ds",
+            log.warning("SerpApi HTTP %d attempt %d/%d; retrying in %ds",
                         status, attempt, MAX_RETRIES, wait)
             time.sleep(wait)
             continue
 
-        log.error("Places HTTP %d for '%s': %s", status, text_query, resp.text[:300])
+        log.error("SerpApi HTTP %d for '%s': %s", status, params["q"], (error_text or resp.text)[:300])
         return []
 
-    log.error("Gave up on '%s' after %d attempts", text_query, MAX_RETRIES)
+    log.error("Gave up on '%s' after %d attempts", params["q"], MAX_RETRIES)
     return []
 
 
@@ -290,7 +332,7 @@ def telegram_send(session, token, chat_id, text, plain_text=None, parse_mode=Non
 
     for attempt in range(1, 4):
         try:
-            resp = session.post(url, json=payload, timeout=REQUEST_TIMEOUT)
+            resp = session.post(url, json=payload, timeout=20)
         except requests.exceptions.RequestException as exc:
             log.warning("Telegram request error (%s) attempt %d/3", exc.__class__.__name__, attempt)
             time.sleep(2 * attempt)
@@ -377,11 +419,11 @@ def save_leads_csv(leads, path):
 def build_query_plan():
     """
     All category x city combinations, shuffled per category and interleaved so
-    that consecutive queries hit different categories.
+    that consecutive searches hit different categories.
     """
     per_category = []
     for category in CATEGORIES:
-        cities = CITIES[:]
+        cities = list(CITIES)
         random.shuffle(cities)
         per_category.append([(category, city) for city in cities])
     random.shuffle(per_category)
@@ -407,7 +449,7 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
     seen_phones = load_existing_phones(CSV_PATH)
     seen_ids = set()
     leads, reserve = [], []
-    stats = {"queries": 0, "no_phone_or_name": 0, "duplicates": 0}
+    stats = {"searches": 0, "no_phone_or_name": 0, "duplicates": 0}
     fatal_error = None
 
     def accept(lead):
@@ -416,24 +458,23 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
             seen_ids.add(lead["_place_id"])
         leads.append(lead)
 
-    # Pass 1: take at most MAX_PER_QUERY per query to keep results diverse.
+    # Pass 1: take at most MAX_PER_QUERY per search to keep results diverse.
     for category, city in build_query_plan():
-        if len(leads) >= MAX_LEADS:
+        if len(leads) >= MAX_LEADS or stats["searches"] >= MAX_SEARCHES:
             break
 
-        query = f"{CATEGORIES[category]['query']} in {city}"
-        log.info("Searching: %s", query)
+        log.info("Searching: %s in %s", CATEGORIES[category]["query"], city)
         try:
-            places = search_places(session, api_key, query)
-        except PlacesAuthError as exc:
-            fatal_error = f"Google Places rejected the request: {exc}"
+            results = search_maps(session, api_key, CATEGORIES[category]["query"], city)
+        except SearchProviderError as exc:
+            fatal_error = f"SerpApi rejected the request: {exc}"
             log.error(fatal_error)
             break
-        stats["queries"] += 1
+        stats["searches"] += 1
 
         taken = 0
-        for place in places:
-            lead = extract_lead(place, category, timestamp)
+        for result in results:
+            lead = extract_lead(result, category, timestamp)
             if lead is None:
                 stats["no_phone_or_name"] += 1
                 continue
@@ -447,8 +488,8 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
                 reserve.append(lead)
         time.sleep(QUERY_DELAY)
 
-    # Pass 2: if the plan ran out before the target, use the leftovers.
-    if len(leads) < MAX_LEADS and not fatal_error:
+    # Pass 2: if the search budget ran out before the target, use the leftovers.
+    if len(leads) < MAX_LEADS:
         for lead in reserve:
             if len(leads) >= MAX_LEADS:
                 break
@@ -477,7 +518,7 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
         f"{'⚠️' if fatal_error else '✅'} Pipeline Completed\n"
         f"🎯 Verified leads: {len(leads)}/{MAX_LEADS}\n"
         f"📨 Sent to Telegram: {sent}\n"
-        f"🔎 Queries run: {stats['queries']}\n"
+        f"🔎 SerpApi searches used: {stats['searches']}\n"
         f"🚫 Skipped (no valid phone): {stats['no_phone_or_name']}\n"
         f"♻️ Duplicates skipped: {stats['duplicates']}\n"
         f"⏱ Duration: {elapsed}s\n"
@@ -493,14 +534,14 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
 def main():
     validate_pitches()
 
-    api_key = os.getenv("GOOGLE_PLACES_API_KEY", "").strip()
+    api_key = os.getenv("SERPAPI_API_KEY", "").strip()
     bot_token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
     chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
     alert_chat = os.getenv("ALERT_CHAT_ID", "").strip() or chat_id
     alert_token = os.getenv("ALERT_BOT_TOKEN", "").strip() or bot_token
 
     missing = [name for name, val in [
-        ("GOOGLE_PLACES_API_KEY", api_key),
+        ("SERPAPI_API_KEY", api_key),
         ("TELEGRAM_BOT_TOKEN", bot_token),
         ("TELEGRAM_CHAT_ID", chat_id),
     ] if not val]
