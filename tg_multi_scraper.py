@@ -18,11 +18,11 @@ Required:
 Optional:
     ALERT_CHAT_ID           Chat for pipeline status alerts (default: TELEGRAM_CHAT_ID)
     ALERT_BOT_TOKEN         Bot token for alerts (default: TELEGRAM_BOT_TOKEN)
-    MAX_LEADS               Leads per run                          (default: 20)
+    MAX_LEADS               Leads per run                          (default: 5)
     MAX_PER_QUERY           Leads taken per category/city search on the first
                             pass, to keep categories/cities mixed   (default: 3)
     MAX_SEARCHES            Hard cap on SerpApi searches per run, protects your
-                            monthly quota                           (default: 15)
+                            monthly quota                           (default: 5)
     CSV_PATH                Output CSV path                         (default: Axiomate_Leads.csv)
 
 Install:  pip install requests pandas pytz
@@ -109,9 +109,9 @@ CSV_COLUMNS = [
 
 IST = pytz.timezone("Asia/Kolkata")
 
-MAX_LEADS = int(os.getenv("MAX_LEADS", "20"))
+MAX_LEADS = int(os.getenv("MAX_LEADS", "5"))
 MAX_PER_QUERY = int(os.getenv("MAX_PER_QUERY", "3"))
-MAX_SEARCHES = int(os.getenv("MAX_SEARCHES", "15"))
+MAX_SEARCHES = int(os.getenv("MAX_SEARCHES", "5"))
 CSV_PATH = os.getenv("CSV_PATH", "Axiomate_Leads.csv")
 
 REQUEST_TIMEOUT = 60      # seconds (Maps searches can take a few seconds)
@@ -119,15 +119,32 @@ MAX_RETRIES = 3
 QUERY_DELAY = 1.0         # seconds between SerpApi requests
 TELEGRAM_DELAY = 1.1      # seconds between Telegram messages (~1 msg/sec per chat)
 
-# Websites that are NOT a business's own domain. An email built from these
-# would be fake, so the Email field is left empty for them.
+# Websites that are NOT a business's own domain (social, directories, link-in-bio
+# pages, free site builders / hosting). An email built from these would be fake,
+# so the Email field is left empty for them. Entries are registered domains.
 NON_BUSINESS_DOMAINS = {
+    # social / messaging / link shorteners
     "facebook.com", "instagram.com", "linkedin.com", "twitter.com", "x.com",
-    "youtube.com", "wa.me", "whatsapp.com", "linktr.ee", "google.com",
-    "business.site", "sites.google.com", "justdial.com", "practo.com",
-    "sulekha.com", "indiamart.com", "urbancompany.com", "wixsite.com",
-    "godaddysites.com", "weebly.com", "blogspot.com", "wordpress.com",
-    "carrd.co", "square.site", "mystrikingly.com",
+    "youtube.com", "tiktok.com", "pinterest.com", "wa.me", "whatsapp.com",
+    "linktr.ee", "bio.link", "lnk.bio", "bit.ly", "goo.gl", "g.page",
+    # Google properties
+    "google.com", "business.site", "page.link",
+    # directories / marketplaces
+    "justdial.com", "practo.com", "sulekha.com", "indiamart.com",
+    "urbancompany.com", "magicbricks.com", "99acres.com", "housing.com",
+    "tripadvisor.com", "yelp.com",
+    # free site builders / hosting (the domain belongs to the platform)
+    "wixsite.com", "wix.com", "godaddysites.com", "weebly.com", "blogspot.com",
+    "wordpress.com", "carrd.co", "square.site", "mystrikingly.com",
+    "webflow.io", "myshopify.com", "netlify.app", "vercel.app", "github.io",
+    "pages.dev", "web.app", "firebaseapp.com", "squarespace.com",
+}
+
+# Two-part public suffixes, so 'clinic.co.in' is treated as the registered domain.
+MULTI_PART_SUFFIXES = {
+    "co.in", "org.in", "net.in", "ac.in", "edu.in", "gov.in", "nic.in",
+    "firm.in", "gen.in", "ind.in", "res.in", "co.uk", "org.uk", "com.au",
+    "co.nz", "co.za", "com.sg",
 }
 
 logging.basicConfig(
@@ -175,11 +192,24 @@ def normalize_indian_phone(raw):
     return None
 
 
+def registered_domain(host):
+    """'book.smileclinic.co.in' -> 'smileclinic.co.in'; 'www.abc.com' -> 'abc.com'."""
+    labels = host.split(".")
+    if len(labels) >= 3 and ".".join(labels[-2:]) in MULTI_PART_SUFFIXES:
+        return ".".join(labels[-3:])
+    return ".".join(labels[-2:])
+
+
 def email_from_website(website_uri):
     """
     Build 'contact@domain' from the listing's own website domain.
-    Returns '' when there is no website or it is a social/aggregator/free-builder
-    site. Never generates synthetic emails.
+
+    Returns '' (never a made-up address) when:
+      - there is no website, or it cannot be parsed,
+      - the host is an IP address / not a well-formed domain,
+      - the site is social media, a directory, a link-in-bio page or a free
+        site-builder / hosting subdomain (the domain isn't the business's own).
+    Subdomains are stripped, so 'www.' or 'book.' prefixes never leak into the email.
     """
     if not website_uri:
         return ""
@@ -190,13 +220,18 @@ def email_from_website(website_uri):
         host = (urlparse(uri).hostname or "").lower().strip(".")
     except ValueError:
         return ""
-    if host.startswith("www."):
-        host = host[4:]
-    if not host or not re.fullmatch(r"[a-z0-9-]+(\.[a-z0-9-]+)+", host):
+
+    if not host or re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", host):
+        return ""  # empty or raw IP address
+    if not re.fullmatch(r"[a-z0-9-]+(\.[a-z0-9-]+)+", host):
+        return ""  # malformed domain
+    if not re.fullmatch(r"[a-z]{2,}|xn--[a-z0-9]+", host.rsplit(".", 1)[-1]):
+        return ""  # invalid TLD
+
+    domain = registered_domain(host)
+    if domain in NON_BUSINESS_DOMAINS:
         return ""
-    if any(host == d or host.endswith("." + d) for d in NON_BUSINESS_DOMAINS):
-        return ""
-    return f"contact@{host}"
+    return f"contact@{domain}"
 
 
 def build_map_pin_url(result, name):
@@ -362,10 +397,17 @@ def telegram_send(session, token, chat_id, text, plain_text=None, parse_mode=Non
     return False
 
 
+def whatsapp_link(phone):
+    """'+919876543210' -> 'https://wa.me/919876543210' (digits only, as wa.me requires)."""
+    digits = re.sub(r"\D", "", phone)
+    return "https://wa.me/" + digits
+
+
 def format_lead_card(lead):
     """Return (markdown_text, plain_text) for a lead card."""
     email = lead["Email"] or "Not listed"
     map_url = lead["Google Maps URL"].replace(")", "%29")
+    wa_url = whatsapp_link(lead["Contact Number"])
 
     markdown = (
         f"🆕 *New Verified Lead* — {md_escape(lead['Category'])}\n\n"
@@ -373,7 +415,8 @@ def format_lead_card(lead):
         f"📍 {md_escape(lead['Location'])}\n"
         f"📞 {lead['Contact Number']}\n"
         f"✉️ {md_escape(email)}\n"
-        f"🗺 [Open Map Pin]({map_url})\n\n"
+        f"🗺 [Open Map Pin]({map_url})\n"
+        f"🔗 [Direct Outreach: Click to Chat on WhatsApp]({wa_url})\n\n"
         f"💬 *Pitch:*\n{md_escape(lead['Pitch Text'])}"
     )
     plain = (
@@ -382,7 +425,8 @@ def format_lead_card(lead):
         f"📍 {lead['Location']}\n"
         f"📞 {lead['Contact Number']}\n"
         f"✉️ {email}\n"
-        f"🗺 {lead['Google Maps URL']}\n\n"
+        f"🗺 {lead['Google Maps URL']}\n"
+        f"🔗 Direct Outreach (WhatsApp): {wa_url}\n\n"
         f"💬 Pitch:\n{lead['Pitch Text']}"
     )
     return markdown, plain
