@@ -7,25 +7,6 @@ engine. SerpApi does the Maps fetching on its own infrastructure, so there is
 NO Google Cloud project, billing account or Google API key involved, and
 GitHub Actions IPs never talk to Google directly. Every lead is verified to
 have a real Indian mobile number; there is no synthetic / placeholder data.
-
-Environment variables
----------------------
-Required:
-    SERPAPI_API_KEY         Key from https://serpapi.com (free plan available)
-    TELEGRAM_BOT_TOKEN      Bot token used to send lead cards
-    TELEGRAM_CHAT_ID        Chat that receives lead cards
-
-Optional:
-    ALERT_CHAT_ID           Chat for pipeline status alerts (default: TELEGRAM_CHAT_ID)
-    ALERT_BOT_TOKEN         Bot token for alerts (default: TELEGRAM_BOT_TOKEN)
-    MAX_LEADS               Leads per run                          (default: 5)
-    MAX_PER_QUERY           Leads taken per category/city search on the first
-                            pass, to keep categories/cities mixed   (default: 3)
-    MAX_SEARCHES            Hard cap on SerpApi searches per run, protects your
-                            monthly quota                           (default: 5)
-    CSV_PATH                Output CSV path                         (default: Axiomate_Leads.csv)
-
-Install:  pip install requests pandas pytz
 """
 
 import json
@@ -50,7 +31,7 @@ SERPAPI_URL = "https://serpapi.com/search.json"
 
 AGENCY_LINK = "https://axiomate-ai-website.vercel.app/"
 
-# City -> Google Maps viewport (lat, lng) used to keep results local.
+# City -> Google Maps viewport (lat, lng) targeting major Indian hubs.
 CITIES = {
     "Mumbai": (19.0760, 72.8777),
     "Thane": (19.2183, 72.9781),
@@ -60,39 +41,24 @@ CITIES = {
     "Delhi": (28.6139, 77.2090),
 }
 
-# "query" is the search phrase sent to Google Maps; "pitch" is the outreach text.
+# Refined Categories: Strictly targeting high-value Skin & Hair Clinics,
+# Real Estate Developers/Corporate Builders, Dental Clinics, and General/Multispecialty Clinics.
 CATEGORIES = {
-    "Gym & Fitness Hub": {
-        "query": "gym fitness center",
-        "pitch": f"Hello! Boost gym membership signups with automated WhatsApp appointment funnels. View demo: {AGENCY_LINK}",
-    },
-    "Auto Modification Studio": {
-        "query": "car modification studio",
-        "pitch": f"Hello! Axiomate AI provides automated booking systems for auto modification centers. View demo: {AGENCY_LINK}",
-    },
-    "Coaching Institute": {
-        "query": "coaching institute",
-        "pitch": f"Hello! Axiomate AI helps coaching institutes automate student lead follow-ups 24/7. View demo: {AGENCY_LINK}",
-    },
     "Skin & Hair Clinic": {
-        "query": "skin and hair clinic",
-        "pitch": f"Hi! We build automated consultation booking systems for skin & hair clinics. View demo: {AGENCY_LINK}",
+        "query": "skin and hair clinic dermatology hospital",
+        "pitch": f"Hi! Maximize skin & hair clinic profitability with automated WhatsApp pre-consultation screening and seamless patient follow-up systems. Turn consultation funnels into instant lead qualification. View demo: {AGENCY_LINK}",
     },
-    "Real Estate Agency": {
-        "query": "real estate agency",
-        "pitch": f"Hello! Axiomate AI automates property inquiry follow-ups on WhatsApp. View demo: {AGENCY_LINK}",
-    },
-    "Digital Marketing Agency": {
-        "query": "digital marketing agency",
-        "pitch": f"Hello! Axiomate AI builds custom WhatsApp agents & voice bots for agencies. View demo: {AGENCY_LINK}",
+    "Real Estate Developer & Builder": {
+        "query": "real estate developer builder corporate office",
+        "pitch": f"Hello! Beat your competitors to every buyer enquiry. Upgrade your real estate sales operations with AI voice qualification and automated WhatsApp property workflows for growing developers and corporate builders. Let's automate your pipeline: View demo: {AGENCY_LINK}",
     },
     "Dental Clinic": {
-        "query": "dental clinic",
-        "pitch": f"Hello! We help dental clinics get 20+ new patient bookings monthly. View demo: {AGENCY_LINK}",
+        "query": "dental clinic dental hospital",
+        "pitch": f"Hello! Stop losing patient revenue to missed calls and empty slots with automated patient re-engagement, smart calendar scheduling, and effortless follow-up appointment flows. Automate your clinic's booking loops with Axiomate AI: {AGENCY_LINK}",
     },
-    "Interior Designer": {
-        "query": "interior designer",
-        "pitch": f"Hello! We help interior design studios capture high-ticket client leads. View demo: {AGENCY_LINK}",
+    "General Clinic": {
+        "query": "multispecialty clinic medical hospital",
+        "pitch": f"Hello! Stop losing patient revenue to missed calls and empty slots with automated patient re-engagement, smart calendar scheduling, and effortless follow-up appointment flows. Automate your clinic's booking loops with Axiomate AI: {AGENCY_LINK}",
     },
 }
 
@@ -114,33 +80,26 @@ MAX_PER_QUERY = int(os.getenv("MAX_PER_QUERY", "3"))
 MAX_SEARCHES = int(os.getenv("MAX_SEARCHES", "5"))
 CSV_PATH = os.getenv("CSV_PATH", "Axiomate_Leads.csv")
 
-REQUEST_TIMEOUT = 60      # seconds (Maps searches can take a few seconds)
+REQUEST_TIMEOUT = 60      # seconds
 MAX_RETRIES = 3
 QUERY_DELAY = 1.0         # seconds between SerpApi requests
-TELEGRAM_DELAY = 1.1      # seconds between Telegram messages (~1 msg/sec per chat)
+TELEGRAM_DELAY = 1.1      # seconds between Telegram messages
 
-# Websites that are NOT a business's own domain (social, directories, link-in-bio
-# pages, free site builders / hosting). An email built from these would be fake,
-# so the Email field is left empty for them. Entries are registered domains.
+# Non-business domains filter to avoid fake/synthetic emails
 NON_BUSINESS_DOMAINS = {
-    # social / messaging / link shorteners
     "facebook.com", "instagram.com", "linkedin.com", "twitter.com", "x.com",
     "youtube.com", "tiktok.com", "pinterest.com", "wa.me", "whatsapp.com",
     "linktr.ee", "bio.link", "lnk.bio", "bit.ly", "goo.gl", "g.page",
-    # Google properties
     "google.com", "business.site", "page.link",
-    # directories / marketplaces
     "justdial.com", "practo.com", "sulekha.com", "indiamart.com",
     "urbancompany.com", "magicbricks.com", "99acres.com", "housing.com",
     "tripadvisor.com", "yelp.com",
-    # free site builders / hosting (the domain belongs to the platform)
     "wixsite.com", "wix.com", "godaddysites.com", "weebly.com", "blogspot.com",
     "wordpress.com", "carrd.co", "square.site", "mystrikingly.com",
     "webflow.io", "myshopify.com", "netlify.app", "vercel.app", "github.io",
     "pages.dev", "web.app", "firebaseapp.com", "squarespace.com",
 }
 
-# Two-part public suffixes, so 'clinic.co.in' is treated as the registered domain.
 MULTI_PART_SUFFIXES = {
     "co.in", "org.in", "net.in", "ac.in", "edu.in", "gov.in", "nic.in",
     "firm.in", "gen.in", "ind.in", "res.in", "co.uk", "org.uk", "com.au",
@@ -156,12 +115,9 @@ log = logging.getLogger("tg_multi_scraper")
 
 
 class SearchProviderError(Exception):
-    """Fatal SerpApi problem (bad key, quota exhausted). Retrying will not help."""
+    """Fatal SerpApi problem (bad key, quota exhausted)."""
 
 
-# --------------------------------------------------------------------------- #
-# Sanity check: agency link must be the approved one everywhere
-# --------------------------------------------------------------------------- #
 def validate_pitches():
     for name, cfg in CATEGORIES.items():
         pitch = cfg["pitch"]
@@ -169,17 +125,7 @@ def validate_pitches():
             raise ValueError(f"Pitch for '{name}' does not use the approved agency link.")
 
 
-# --------------------------------------------------------------------------- #
-# Verification helpers
-# --------------------------------------------------------------------------- #
 def normalize_indian_phone(raw):
-    """
-    Return '+91XXXXXXXXXX' for a valid Indian mobile number, else None.
-
-    Accepts the number with or without the 91 prefix (and with the trunk
-    prefix 0 that Google often shows, e.g. '098765 43210'). The 10 digits
-    must start with 6, 7, 8 or 9, so landlines are rejected.
-    """
     if not raw:
         return None
     digits = re.sub(r"\D", "", str(raw))
@@ -193,7 +139,6 @@ def normalize_indian_phone(raw):
 
 
 def registered_domain(host):
-    """'book.smileclinic.co.in' -> 'smileclinic.co.in'; 'www.abc.com' -> 'abc.com'."""
     labels = host.split(".")
     if len(labels) >= 3 and ".".join(labels[-2:]) in MULTI_PART_SUFFIXES:
         return ".".join(labels[-3:])
@@ -201,16 +146,6 @@ def registered_domain(host):
 
 
 def email_from_website(website_uri):
-    """
-    Build 'contact@domain' from the listing's own website domain.
-
-    Returns '' (never a made-up address) when:
-      - there is no website, or it cannot be parsed,
-      - the host is an IP address / not a well-formed domain,
-      - the site is social media, a directory, a link-in-bio page or a free
-        site-builder / hosting subdomain (the domain isn't the business's own).
-    Subdomains are stripped, so 'www.' or 'book.' prefixes never leak into the email.
-    """
     if not website_uri:
         return ""
     try:
@@ -222,11 +157,11 @@ def email_from_website(website_uri):
         return ""
 
     if not host or re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", host):
-        return ""  # empty or raw IP address
+        return ""
     if not re.fullmatch(r"[a-z0-9-]+(\.[a-z0-9-]+)+", host):
-        return ""  # malformed domain
+        return ""
     if not re.fullmatch(r"[a-z]{2,}|xn--[a-z0-9]+", host.rsplit(".", 1)[-1]):
-        return ""  # invalid TLD
+        return ""
 
     domain = registered_domain(host)
     if domain in NON_BUSINESS_DOMAINS:
@@ -235,11 +170,6 @@ def email_from_website(website_uri):
 
 
 def build_map_pin_url(result, name):
-    """
-    Direct link to this exact business on Google Maps, built with Google's
-    documented Maps URL scheme from the listing's Place ID. If SerpApi did not
-    return a usable Place ID, fall back to name + exact coordinates.
-    """
     place_id = result.get("place_id")
     if isinstance(place_id, str) and place_id.startswith("ChIJ"):
         return (
@@ -255,18 +185,17 @@ def build_map_pin_url(result, name):
 
 
 def extract_lead(result, category, timestamp):
-    """Convert one SerpApi Maps result into a verified lead dict, or None to skip."""
     name = str(result.get("title") or "").strip()
     if not name:
         return None
 
     phone = normalize_indian_phone(result.get("phone"))
     if not phone:
-        return None  # no valid mobile number -> skip immediately
+        return None
 
     maps_url = build_map_pin_url(result, name)
     if not maps_url:
-        return None  # can't link to the exact pin
+        return None
 
     return {
         "Timestamp": timestamp,
@@ -281,11 +210,7 @@ def extract_lead(result, category, timestamp):
     }
 
 
-# --------------------------------------------------------------------------- #
-# SerpApi (Google Maps engine)
-# --------------------------------------------------------------------------- #
 def search_maps(session, api_key, query, city):
-    """Run one Google Maps search via SerpApi with retries. Returns local results."""
     lat, lng = CITIES[city]
     params = {
         "engine": "google_maps",
@@ -317,7 +242,7 @@ def search_maps(session, api_key, query, city):
         if status == 200:
             if error_text:
                 if "hasn't returned any results" in error_text:
-                    return []  # normal "no results" response
+                    return []
                 log.error("SerpApi error for '%s': %s", params["q"], error_text[:300])
                 return []
             return payload.get("local_results", []) or []
@@ -347,19 +272,11 @@ def search_maps(session, api_key, query, city):
     return []
 
 
-# --------------------------------------------------------------------------- #
-# Telegram
-# --------------------------------------------------------------------------- #
 def md_escape(text):
-    """Escape characters that break Telegram legacy Markdown."""
     return re.sub(r"([_*`\[])", r"\\\1", str(text))
 
 
 def telegram_send(session, token, chat_id, text, plain_text=None, parse_mode=None):
-    """
-    Send a message with retry. If Telegram rejects the Markdown (HTTP 400),
-    resend as plain text so a lead is never lost to a formatting issue.
-    """
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     payload = {"chat_id": chat_id, "text": text, "disable_web_page_preview": True}
     if parse_mode:
@@ -398,13 +315,11 @@ def telegram_send(session, token, chat_id, text, plain_text=None, parse_mode=Non
 
 
 def whatsapp_link(phone):
-    """'+919876543210' -> 'https://wa.me/919876543210' (digits only, as wa.me requires)."""
     digits = re.sub(r"\D", "", phone)
     return "https://wa.me/" + digits
 
 
 def format_lead_card(lead):
-    """Return (markdown_text, plain_text) for a lead card."""
     email = lead["Email"] or "Not listed"
     map_url = lead["Google Maps URL"].replace(")", "%29")
     wa_url = whatsapp_link(lead["Contact Number"])
@@ -432,23 +347,18 @@ def format_lead_card(lead):
     return markdown, plain
 
 
-# --------------------------------------------------------------------------- #
-# CSV
-# --------------------------------------------------------------------------- #
 def load_existing_phones(path):
-    """Phones already saved in earlier runs, so leads are not repeated."""
     if not os.path.exists(path) or os.path.getsize(path) == 0:
         return set()
     try:
         df = pd.read_csv(path, dtype=str, keep_default_na=False)
         return set(df["Contact Number"].tolist()) if "Contact Number" in df.columns else set()
-    except Exception as exc:  # noqa: BLE001 - a corrupt CSV must not stop the run
+    except Exception as exc:
         log.warning("Could not read existing CSV (%s); continuing without history", exc)
         return set()
 
 
 def save_leads_csv(leads, path):
-    """Append leads to the CSV (header written only for a new file)."""
     if not leads:
         return
     df = pd.DataFrame(leads, columns=CSV_COLUMNS)
@@ -457,14 +367,7 @@ def save_leads_csv(leads, path):
     log.info("Saved %d lead(s) to %s", len(df), path)
 
 
-# --------------------------------------------------------------------------- #
-# Query planning
-# --------------------------------------------------------------------------- #
 def build_query_plan():
-    """
-    All category x city combinations, shuffled per category and interleaved so
-    that consecutive searches hit different categories.
-    """
     per_category = []
     for category in CATEGORIES:
         cities = list(CITIES)
@@ -478,9 +381,6 @@ def build_query_plan():
     return plan
 
 
-# --------------------------------------------------------------------------- #
-# Pipeline
-# --------------------------------------------------------------------------- #
 def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
     start = datetime.now(IST)
     timestamp = start.strftime("%Y-%m-%d %H:%M:%S")
@@ -502,7 +402,6 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
             seen_ids.add(lead["_place_id"])
         leads.append(lead)
 
-    # Pass 1: take at most MAX_PER_QUERY per search to keep results diverse.
     for category, city in build_query_plan():
         if len(leads) >= MAX_LEADS or stats["searches"] >= MAX_SEARCHES:
             break
@@ -532,7 +431,6 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
                 reserve.append(lead)
         time.sleep(QUERY_DELAY)
 
-    # Pass 2: if the search budget ran out before the target, use the leftovers.
     if len(leads) < MAX_LEADS:
         for lead in reserve:
             if len(leads) >= MAX_LEADS:
@@ -541,7 +439,6 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
                 continue
             accept(lead)
 
-    # Save first, so data survives even if Telegram is down.
     save_leads_csv(leads, CSV_PATH)
 
     sent = 0
@@ -551,7 +448,6 @@ def run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat):
             sent += 1
         time.sleep(TELEGRAM_DELAY)
 
-    # Completion alert
     by_category = {}
     for lead in leads:
         by_category[lead["Category"]] = by_category.get(lead["Category"], 0) + 1
@@ -596,7 +492,7 @@ def main():
     session = requests.Session()
     try:
         return run_pipeline(session, api_key, bot_token, chat_id, alert_token, alert_chat)
-    except Exception as exc:  # noqa: BLE001 - report any unexpected crash to Telegram
+    except Exception as exc:
         log.exception("Pipeline crashed")
         telegram_send(session, alert_token, alert_chat,
                       f"❌ Pipeline Failed\n{exc.__class__.__name__}: {str(exc)[:300]}")
