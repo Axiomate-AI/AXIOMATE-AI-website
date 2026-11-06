@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
-</style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4S6JXMZ438"></script>
     <script>
@@ -857,13 +856,9 @@
 
         @media (max-width: 767px) {
             .mobile-sticky-wa { display: block; }
-            /* Generous bottom padding on the main body container (~pb-24/mb-16
-               equivalent) so content never sits under the sticky CTA bar
-               (48px button + 24px padding + safe area + extra breathing room) */
             body {
                 padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
             }
-            /* Ensure the footer has extra clearance too */
             body > footer {
                 margin-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
             }
@@ -971,26 +966,271 @@
                 font-size: 16px !important;
             }
 
-            /* Prevent horizontal overflow from any long strings */
             main, section, footer {
                 overflow-x: hidden;
             }
 
-            /* Slightly tighten gaps in stacks */
             .glass-card + .glass-card,
             .feature-card + .feature-card {
                 margin-top: 2px;
             }
         }
 
-        /* Tighten vertical section spacing (py-12 equivalent) across the
-           full mobile range, matching the breakpoint where the sticky CTA
-           bar is shown, so scrolling stays compact on phones and small
-           tablets alike */
         @media (max-width: 767px) {
             main > section > div[class*="max-w-"] {
                 padding-top: 2.25rem !important;
                 padding-bottom: 2.25rem !important;
+            }
+        }
+
+        /* ============================================================
+           DIWALI SPECIAL OFFER BANNER STYLES
+           ============================================================ */
+        .diwali-banner-wrapper {
+            position: relative;
+            z-index: 45;
+            background: linear-gradient(135deg, #2b0e00 0%, #451205 35%, #591a03 70%, #2e0d00 100%);
+            border-bottom: 1.5px solid rgba(251, 191, 36, 0.45);
+            box-shadow: 0 4px 28px -4px rgba(245, 158, 11, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            color: #fff7ed;
+            animation: diwaliGlow 3.5s ease-in-out infinite alternate;
+            overflow: hidden;
+            transition: opacity 0.35s ease, transform 0.35s ease, max-height 0.35s ease;
+        }
+
+        html.light .diwali-banner-wrapper {
+            background: linear-gradient(135deg, #7c2d12 0%, #9a3412 35%, #b45309 70%, #7c2d12 100%);
+            border-bottom: 1.5px solid rgba(245, 158, 11, 0.55);
+            box-shadow: 0 4px 22px -3px rgba(217, 119, 6, 0.35);
+        }
+
+        @keyframes diwaliGlow {
+            0% {
+                box-shadow: 0 4px 20px -3px rgba(245, 158, 11, 0.35), inset 0 0 16px rgba(251, 191, 36, 0.12);
+            }
+            100% {
+                box-shadow: 0 6px 32px 3px rgba(249, 115, 22, 0.55), inset 0 0 26px rgba(251, 191, 36, 0.28);
+            }
+        }
+
+        .diwali-ambient-glow {
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.22) 0%, rgba(249, 115, 22, 0.08) 50%, transparent 80%);
+            pointer-events: none;
+            animation: diwaliPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes diwaliPulse {
+            0% { opacity: 0.6; transform: translateX(-50%) scale(0.95); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+        }
+
+        .diwali-banner-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px 14px;
+            padding: 10px 16px;
+        }
+
+        .diwali-text-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 1 320px;
+            min-width: 0;
+        }
+
+        .diwali-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 9999px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .03em;
+            background: rgba(251, 191, 36, 0.22);
+            border: 1px solid rgba(251, 191, 36, 0.65);
+            color: #fef08a;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .diwali-text-headline {
+            font-size: 13px;
+            line-height: 1.35;
+            color: #ffedd5;
+            font-weight: 500;
+        }
+
+        .diwali-text-headline strong {
+            color: #fef08a;
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+        }
+
+        .diwali-sub-highlight {
+            display: inline-block;
+            font-size: 11px;
+            color: #fdba74;
+            margin-left: 4px;
+        }
+
+        .diwali-timer-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.45);
+            border: 1px solid rgba(251, 191, 36, 0.35);
+            border-radius: 10px;
+            padding: 4px 10px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .diwali-timer-title {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .03em;
+            color: #fed7aa;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .diwali-countdown-display {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+        }
+
+        .diwali-cd-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 24px;
+            line-height: 1;
+        }
+
+        .diwali-cd-val {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        }
+
+        .diwali-cd-lbl {
+            font-size: 8.5px;
+            text-transform: uppercase;
+            color: #fcd34d;
+            font-weight: 600;
+            margin-top: 1px;
+        }
+
+        .diwali-cd-sep {
+            font-size: 12px;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 5px;
+        }
+
+        .diwali-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .diwali-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1;
+            text-decoration: none;
+            box-shadow: 0 4px 14px -3px rgba(234, 88, 12, 0.7);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .diwali-cta-btn:hover {
+            transform: translateY(-1px) scale(1.02);
+            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+            box-shadow: 0 6px 20px -4px rgba(234, 88, 12, 0.85);
+            color: #fff;
+        }
+
+        .diwali-close-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffedd5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            line-height: 1;
+            transition: all 0.2s ease;
+            padding: 0;
+        }
+
+        .diwali-close-btn:hover {
+            background: rgba(255, 255, 255, 0.28);
+            color: #ffffff;
+            transform: scale(1.08);
+        }
+
+        @media (max-width: 900px) {
+            .diwali-banner-content {
+                justify-content: center;
+                text-align: center;
+            }
+            .diwali-text-group {
+                justify-content: center;
+                flex: 1 1 100%;
+            }
+            .diwali-sub-highlight {
+                display: block;
+                margin-left: 0;
+                margin-top: 2px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .diwali-banner-content {
+                padding: 9px 12px;
+                gap: 8px;
+            }
+            .diwali-text-headline {
+                font-size: 12px;
+            }
+            .diwali-timer-box {
+                padding: 3px 8px;
+            }
+            .diwali-cd-val {
+                font-size: 12px;
+            }
+            .diwali-cta-btn {
+                padding: 5px 11px;
+                font-size: 11px;
             }
         }
     </style>
@@ -1079,6 +1319,123 @@
             </nav>
         </div>
     </header>
+
+    <!-- ============================================================
+         DIWALI SPECIAL OFFER ANNOUNCEMENT BANNER
+         ============================================================ -->
+    <section id="diwaliOfferBanner" class="diwali-banner-wrapper" role="region" aria-label="Diwali Special Offer">
+        <div class="diwali-ambient-glow" aria-hidden="true"></div>
+        <div class="max-w-6xl mx-auto diwali-banner-content">
+            <div class="diwali-text-group">
+                <span class="diwali-tag">🪔 Diwali Offer</span>
+                <div class="diwali-text-headline">
+                    <span>🪔✨ Shubh Diwali Offer! Celebrate Growth with <strong>20% OFF</strong> on All AI &amp; Automation Pilots! 🎇🎉</span>
+                    <span class="diwali-sub-highlight">(Clinic Follow-Up &amp; Real-Estate Pilots)</span>
+                </div>
+            </div>
+
+            <div class="diwali-timer-box">
+                <span class="diwali-timer-title">Offer Ends In:</span>
+                <div class="diwali-countdown-display" id="diwaliCountdown" aria-live="polite">
+                    <div class="diwali-cd-unit">
+                        <span class="diwali-cd-val" id="cdDays">00</span>
+                        <span class="diwali-cd-lbl">Days</span>
+                    </div>
+                    <span class="diwali-cd-sep">:</span>
+                    <div class="diwali-cd-unit">
+                        <span class="diwali-cd-val" id="cdHours">00</span>
+                        <span class="diwali-cd-lbl">Hrs</span>
+                    </div>
+                    <span class="diwali-cd-sep">:</span>
+                    <div class="diwali-cd-unit">
+                        <span class="diwali-cd-val" id="cdMins">00</span>
+                        <span class="diwali-cd-lbl">Min</span>
+                    </div>
+                    <span class="diwali-cd-sep">:</span>
+                    <div class="diwali-cd-unit">
+                        <span class="diwali-cd-val" id="cdSecs">00</span>
+                        <span class="diwali-cd-lbl">Sec</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diwali-actions">
+                <a href="#pricing" class="diwali-cta-btn">
+                    <span>Claim 20% Off</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+                <button type="button" class="diwali-close-btn" id="diwaliCloseBtn" aria-label="Dismiss Diwali offer banner" title="Dismiss banner">&times;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diwali Banner Script (Auto-Expiry Aware) -->
+    <script>
+        (function() {
+            var banner = document.getElementById('diwaliOfferBanner');
+            var closeBtn = document.getElementById('diwaliCloseBtn');
+            var cdDays = document.getElementById('cdDays');
+            var cdHours = document.getElementById('cdHours');
+            var cdMins = document.getElementById('cdMins');
+            var cdSecs = document.getElementById('cdSecs');
+            var timerId = null;
+
+            function hideBanner(animate) {
+                if (!banner) return;
+                if (timerId) {
+                    clearInterval(timerId);
+                    timerId = null;
+                }
+                if (animate) {
+                    banner.style.opacity = '0';
+                    banner.style.transform = 'translateY(-10px)';
+                    setTimeout(function() {
+                        banner.style.display = 'none';
+                    }, 300);
+                } else {
+                    banner.style.display = 'none';
+                }
+            }
+
+            if (closeBtn && banner) {
+                closeBtn.addEventListener('click', function() {
+                    hideBanner(true);
+                });
+            }
+
+            // Target Deadline: November 13, 2026 at 23:59:59
+            var targetDate = new Date('2026-11-13T23:59:59').getTime();
+
+            function updateCountdown() {
+                var now = new Date().getTime();
+                var distance = targetDate - now;
+
+                // Auto-Hide on Expiry: Hide completely when target time is reached
+                if (distance <= 0) {
+                    hideBanner(true);
+                    return;
+                }
+
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                if (cdDays) cdDays.textContent = String(days).padStart(2, '0');
+                if (cdHours) cdHours.textContent = String(hours).padStart(2, '0');
+                if (cdMins) cdMins.textContent = String(minutes).padStart(2, '0');
+                if (cdSecs) cdSecs.textContent = String(seconds).padStart(2, '0');
+            }
+
+            // If already expired prior to rendering, immediately hide with no flicker
+            if (targetDate - new Date().getTime() <= 0) {
+                hideBanner(false);
+            } else {
+                updateCountdown();
+                timerId = setInterval(updateCountdown, 1000);
+            }
+        })();
+    </script>
 
     <main id="top">
 
@@ -2177,160 +2534,6 @@
                                 </a>
                                 <a href="https://wa.me/919004600946" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Chat with Axiomate AI on WhatsApp">
                                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                                </a>
-                                <a href="mailto:axiomate.ai@gmail.com" class="social-link" aria-label="Email Axiomate AI">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                                </a>
-                            </div>
-                        </div>
-
-                        <a href="https://wa.me/919004600946" target="_blank" rel="noopener noreferrer" class="btn-whatsapp mt-4 w-full sm:w-auto">
-                            <i class="fab fa-whatsapp text-base"></i>
-                            Chat on WhatsApp
-                        </a>
-                    </div>
-
-                    <div class="reveal-right">
-                        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-main">
-                            Book a strategy call
-                        </h2>
-                        <p class="mt-1.5 text-xs text-soft">
-                            We'll get back to you within 2 hours during business hours.
-                        </p>
-
-                        <form id="contactForm" novalidate onsubmit="return submitForm(event)" class="mt-5 space-y-3">
-
-                            <!-- Honeypot -->
-                            <div class="honeypot" aria-hidden="true">
-                                <label for="website">Website</label>
-                                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
-                            </div>
-
-                            <div>
-                                <label for="fullName" class="block text-xs font-medium text-soft mb-1">Full name</label>
-                                <input type="text" id="fullName" name="name" placeholder="Your name" class="form-input" required />
-                            </div>
-
-                            <div>
-                                <label for="email" class="block text-xs font-medium text-soft mb-1">Email address</label>
-                                <input type="email" id="email" name="email" placeholder="you@example.com" class="form-input" required />
-                            </div>
-
-                            <div>
-                                <label for="phoneNumber" class="block text-xs font-medium text-soft mb-1">Phone number</label>
-                                <input type="tel" id="phoneNumber" name="phone" placeholder="+91 90046 00946" class="form-input" required />
-                            </div>
-
-                            <div>
-                                <label for="businessType" class="block text-xs font-medium text-soft mb-1">Business type</label>
-                                <select id="businessType" name="clinic_type" class="form-input" required>
-                                    <option value="">Select business type</option>
-                                    <option>Clinic / Healthcare</option>
-                                    <option>Real Estate</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="serviceInterested" class="block text-xs font-medium text-soft mb-1">Pilot interested</label>
-                                <select id="serviceInterested" name="service" class="form-input" required>
-                                    <option value="">Select a pilot</option>
-                                    <option>Clinic Follow-Up Pilot</option>
-                                    <option>Real-Estate Speed-to-Lead Pilot</option>
-                                    <option>Custom / multiple branches</option>
-                                    <option>Something else</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="message" class="block text-xs font-medium text-soft mb-1">Business details / message</label>
-                                <textarea id="message" name="message" rows="3" placeholder="Tell us about your business..." class="form-input" required></textarea>
-                            </div>
-
-                            <label class="consent-row">
-                                <input type="checkbox" name="consent" required />
-                                <span>
-                                    I consent to being contacted about my inquiry. My data will be handled per the
-                                    <a href="/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-                                    and DPDP Act principles. I can withdraw consent at any time.
-                                </span>
-                            </label>
-
-                            <button type="submit" class="btn-primary w-full">
-                                <i class="fas fa-paper-plane text-xs"></i>
-                                Send message
-                            </button>
-                        </form>
-
-                        <!-- Success state -->
-                        <div id="formSuccess" class="hidden mt-4 glass-card p-4 sm:p-5" role="status" aria-live="polite">
-                            <div class="flex items-start gap-3">
-                                <div class="icon-tile" aria-hidden="true" style="background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.32); color: #22c55e;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-sm font-bold text-main">Thanks — your request is in.</p>
-                                    <p class="mt-1 text-xs leading-relaxed text-soft">
-                                        To speed things up, you can also send your details to us on WhatsApp. We'll reply within business hours.
-                                    </p>
-                                    <a id="waContinue" href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20would%20like%20to%20discuss%20an%20automation%20project." target="_blank" rel="noopener noreferrer" class="btn-whatsapp mt-3">
-                                        <i class="fab fa-whatsapp text-sm"></i>
-                                        Continue on WhatsApp
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Error state -->
-                        <div id="formError" class="hidden mt-4 glass-card p-4 sm:p-5" role="alert" aria-live="assertive">
-                            <div class="flex items-start gap-3">
-                                <div class="icon-tile" aria-hidden="true" style="background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.32); color: #ef4444;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-sm font-bold text-main">Something went wrong.</p>
-                                    <p class="mt-1 text-xs leading-relaxed text-soft">
-                                        Your form didn't go through. Please WhatsApp us directly and we'll pick it up from there.
-                                    </p>
-                                    <a id="waError" href="https://wa.me/919004600946?text=Hi%20Axiomate%20AI,%20I%20would%20like%20to%20discuss%20an%20automation%20project." target="_blank" rel="noopener noreferrer" class="btn-whatsapp mt-3">
-                                        <i class="fab fa-whatsapp text-sm"></i>
-                                        WhatsApp us directly
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="border-t" style="border-color: var(--border); background: var(--bg-soft);">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
-                <div class="flex items-center gap-3 flex-wrap justify-center md:justify-start text-center md:text-left">
-                    <a href="#top" class="flex items-center gap-1" aria-label="Axiomate AI home">
-                        <span class="text-sm font-extrabold tracking-tight text-main">AXIOMATE</span>
-                        <span class="text-sm font-extrabold tracking-tight text-accent">AI</span>
-                    </a>
-                    <span class="text-muted">© 2026 Axiomate AI. All rights reserved.</span>
-                </div>
-
-                <div class="flex items-center gap-1.5 flex-wrap justify-center">
-                    <a href="https://www.instagram.com/axiomate_ai/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Follow Axiomate AI on Instagram">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                    </a>
-                    <a href="https://www.threads.net/@axiomate_ai" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Follow Axiomate AI on Threads">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/></svg>
-                    </a>
-                    <a href="https://www.linkedin.com/in/owais-axiomate/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Connect with Owais on LinkedIn">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    </a>
-                    <a href="https://wa.me/919004600946" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Chat with Axiomate AI on WhatsApp">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                     </a>
                     <a href="mailto:axiomate.ai@gmail.com" class="social-link" aria-label="Email Axiomate AI">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
@@ -2435,7 +2638,7 @@
         var AXIOMATE_SUPPORTED = ['INR', 'USD'];
 
         function setCurrency(c) {
-            if (AXIOMATE_SUPPORTED.indexOf(c) === -1) c = AXIOMATE_DEFAULTY_CURRENCY;
+            if (AXIOMATE_SUPPORTED.indexOf(c) === -1) c = AXIOMATE_DEFAULT_CURRENCY;
 
             document.querySelectorAll('[data-inr][data-usd]').forEach(function(el) {
                 var v = c === 'INR' ? el.getAttribute('data-inr') : el.getAttribute('data-usd');
@@ -2795,174 +2998,4 @@
                     <strong>Axiomate AI</strong>
                     <span>India market context</span>
                 </div>
-                <button type="button" class="ax-chat-close" id="axChatClose" aria-label="Close chat">&times;</button>
-            </div>
-            <div class="ax-chat-log" id="axChatLog" aria-live="polite"></div>
-            <form class="ax-chat-form" id="axChatForm">
-                <input id="axChatInput" type="text" maxlength="800" autocomplete="off" placeholder="Ask about the India market…" aria-label="Message" />
-                <button type="submit" id="axChatSend">Send</button>
-            </form>
-        </div>
-        <button type="button" class="ax-chat-launcher" id="axChatLauncher" aria-expanded="false" aria-controls="axChatPanel" aria-label="Open AI chat"></button>
-    </div>
-
-    <script>
-        (function () {
-            var ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-            var MODEL = 'openai/gpt-oss-120b';
-            var API_KEY = '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';
-            var SYSTEM = [
-                'You are the assistant for Axiomate AI, which builds WhatsApp and AI voice workflow systems for clinics and real-estate teams.',
-                'Every reply must stay at India\u2019s broad, national market level only.',
-                'Never name, compare, rank, or imply any specific city, state, union territory, district, metro, or neighbourhood in India or elsewhere.',
-                'If the user mentions a place, do not repeat that place name. Answer only with all-India patterns.',
-                'Do not give city-level or state-level prices, demand, regulations, or examples.',
-                'Keep answers concise, practical, and in plain language.'
-            ].join(' ');
-
-            var PLACE_NAMES = [
-                'Andaman and Nicobar', 'Arunachal Pradesh', 'Himachal Pradesh', 'Madhya Pradesh',
-                'Andhra Pradesh', 'Uttar Pradesh', 'Tamil Nadu', 'West Bengal', 'Jammu and Kashmir',
-                'Dadra and Nagar Haveli', 'Daman and Diu', 'New Delhi', 'Navi Mumbai',
-                'Thiruvananthapuram', 'Visakhapatnam', 'Tiruchirappalli', 'Bhubaneswar',
-                'Tiruvananthapuram', 'Puducherry', 'Pondicherry', 'Chandigarh', 'Chhattisgarh',
-                'Uttarakhand', 'Maharashtra', 'Jharkhand', 'Telangana', 'Karnataka', 'Rajasthan',
-                'Meghalaya', 'Nagaland', 'Lakshadweep', 'Ahmedabad', 'Hyderabad', 'Bengaluru',
-                'Bangalore', 'Allahabad', 'Prayagraj', 'Coimbatore', 'Jamshedpur', 'Trivandrum',
-                'Mangaluru', 'Mangalore', 'Kalaburagi', 'Gulbarga', 'Belagavi', 'Tirunelveli',
-                'Ulhasnagar', 'Saharanpur', 'Gorakhpur', 'Bhiwandi', 'Faridabad', 'Ghaziabad',
-                'Jalandhar', 'Tiruppur', 'Moradabad', 'Amritsar', 'Aurangabad', 'Ludhiana',
-                'Vadodara', 'Dehradun', 'Srinagar', 'Varanasi', 'Guwahati', 'Jabalpur',
-                'Vijayawada', 'Thiruvananthapuram', 'Kolkata', 'Calcutta', 'Chennai', 'Madras',
-                'Mumbai', 'Bombay', 'Lucknow', 'Jaipur', 'Indore', 'Nagpur', 'Kanpur', 'Bhopal',
-                'Patna', 'Rajkot', 'Nashik', 'Meerut', 'Agra', 'Surat', 'Pune', 'Delhi', 'Noida',
-                'Gurgaon', 'Gurugram', 'Kochi', 'Cochin', 'Mysuru', 'Mysore', 'Madurai', 'Raipur',
-                'Ranchi', 'Howrah', 'Gwalior', 'Jodhpur', 'Kota', 'Salem', 'Warangal', 'Guntur',
-                'Bareilly', 'Aligarh', 'Bikaner', 'Amravati', 'Bhilai', 'Cuttack', 'Firozabad',
-                'Udaipur', 'Siliguri', 'Jhansi', 'Jammu', 'Sangli', 'Belgaum', 'Gaya', 'Jalgaon',
-                'Malegaon', 'Ambattur', 'Hubli', 'Solapur', 'Dhanbad', 'Thane', 'Nanded',
-                'Kolhapur', 'Ajmer', 'Akola', 'Jamnagar', 'Ujjain', 'Loni', 'Odisha', 'Orissa',
-                'Gujarat', 'Haryana', 'Kerala', 'Punjab', 'Sikkim', 'Bihar', 'Assam', 'Goa',
-                'Manipur', 'Mizoram', 'Tripura', 'Ladakh', 'Kashmir', 'Andaman', 'Nicobar'
-            ].sort(function (a, b) { return b.length - a.length; });
-
-            var placeRe = new RegExp('\\b(?:' + PLACE_NAMES.map(function (n) {
-                return n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            }).join('|') + ')\\b', 'i');
-
-            var root = document.getElementById('axChatRoot');
-            var launcher = document.getElementById('axChatLauncher');
-            var closeBtn = document.getElementById('axChatClose');
-            var log = document.getElementById('axChatLog');
-            var form = document.getElementById('axChatForm');
-            var input = document.getElementById('axChatInput');
-            var sendBtn = document.getElementById('axChatSend');
-            var history = [];
-            var busy = false;
-
-            function addBubble(text, kind) {
-                var el = document.createElement('div');
-                el.className = 'ax-chat-msg ' + kind;
-                el.textContent = text;
-                log.appendChild(el);
-                log.scrollTop = log.scrollHeight;
-                return el;
-            }
-
-            function setOpen(open) {
-                root.classList.toggle('is-open', open);
-                launcher.setAttribute('aria-expanded', open ? 'true' : 'false');
-                launcher.setAttribute('aria-label', open ? 'Close AI chat' : 'Open AI chat');
-                if (open) {
-                    if (!log.childNodes.length) {
-                        addBubble('Ask about clinics, real estate, or WhatsApp and voice automation in India\u2019s national market.', 'bot');
-                    }
-                    setTimeout(function () { input.focus(); }, 30);
-                }
-            }
-
-            launcher.addEventListener('click', function () {
-                setOpen(!root.classList.contains('is-open'));
-            });
-            closeBtn.addEventListener('click', function () { setOpen(false); });
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') setOpen(false);
-            });
-
-            function scrubPlaces(text) {
-                var re = new RegExp(placeRe.source, 'gi');
-                return text.replace(re, 'India');
-            }
-
-            function requestCompletion(messages) {
-                return fetch(ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + API_KEY
-                    },
-                    body: JSON.stringify({
-                        model: MODEL,
-                        temperature: 0.4,
-                        max_tokens: 900,
-                        messages: messages
-                    })
-                }).then(function (res) {
-                    return res.json().then(function (data) {
-                        if (!res.ok) {
-                            var msg = (data && data.error && (data.error.message || data.error)) || ('Request failed (' + res.status + ')');
-                            throw new Error(typeof msg === 'string' ? msg : 'Request failed');
-                        }
-                        var content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-                        if (!content) throw new Error('Empty response from the model.');
-                        return String(content).trim();
-                    });
-                });
-            }
-
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                var text = input.value.trim();
-                if (!text || busy) return;
-                busy = true;
-                sendBtn.disabled = true;
-                input.value = '';
-                addBubble(text, 'user');
-                var pending = addBubble('Thinking\u2026', 'bot');
-                history.push({ role: 'user', content: text });
-                if (history.length > 12) history = history.slice(-12);
-
-                var messages = [{ role: 'system', content: SYSTEM }].concat(history);
-
-                requestCompletion(messages).then(function (answer) {
-                    if (placeRe.test(answer)) {
-                        return requestCompletion([
-                            { role: 'system', content: SYSTEM },
-                            { role: 'user', content: 'Rewrite the answer below so it discusses only India at a national level. Delete every city, state, union territory, district, and metro name. Do not mention those place names.\n\n' + answer }
-                        ]).then(function (rewritten) {
-                            return placeRe.test(rewritten) ? scrubPlaces(rewritten) : rewritten;
-                        }).catch(function () {
-                            return scrubPlaces(answer);
-                        });
-                    }
-                    return answer;
-                }).then(function (finalText) {
-                    pending.textContent = finalText;
-                    pending.className = 'ax-chat-msg bot';
-                    history.push({ role: 'assistant', content: finalText });
-                }).catch(function (err) {
-                    pending.textContent = err && err.message ? err.message : 'The assistant could not reply. Try again.';
-                    pending.className = 'ax-chat-msg err';
-                    history.pop();
-                }).then(function () {
-                    busy = false;
-                    sendBtn.disabled = false;
-                    log.scrollTop = log.scrollHeight;
-                    input.focus();
-                });
-            });
-        })();
-    </script>
-
-</body>
-</html>
+                <button type="button" class="ax-chat-close" id="
